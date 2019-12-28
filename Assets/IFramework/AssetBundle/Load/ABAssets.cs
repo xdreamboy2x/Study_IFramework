@@ -208,7 +208,7 @@ namespace IFramework.AB
             if (ABTool.ActiveBundleMode) return Instance.InitializeBundle();
             return true;
 #else
-			return InitializeBundle();
+			return Instance.InitializeBundle();
 #endif
         }
         private bool InitializeBundle()
@@ -285,14 +285,13 @@ namespace IFramework.AB
             Asset asset = Instance.assets.Find(obj => { return obj.assetPath == path; });
             if (asset == null)
             {
-                if ((Application.platform== RuntimePlatform.LinuxEditor 
-                    || Application.platform== RuntimePlatform.OSXEditor 
-                    || Application.platform== RuntimePlatform.WindowsEditor) 
-                    && !ABTool.ActiveBundleMode)
+#if UNITY_EDITOR
+                if (!ABTool.ActiveBundleMode)
                 {
                     asset = new Asset(path, type);
                 }
-                else
+#endif
+                if (asset==null)
                 {
                     if (isAsynnc)
                         asset = new AsyncBundleAsset(path, type);

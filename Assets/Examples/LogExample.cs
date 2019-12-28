@@ -17,11 +17,11 @@ namespace IFramework_Demo
         public void Say()
         {
             string world = "Hello  World";
-            //Log.L(world);
-            //world.Log();
-            //this.Log(world);
-            //Log.W(world);
-            //Log.E(world);
+            Log.L(world);
+            world.Log();
+            this.Log(world);
+            Log.W(world);
+            Log.E(world);
 
 
             Log.L("sa         with IFramework");
