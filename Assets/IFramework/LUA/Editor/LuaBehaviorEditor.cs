@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using UnityEditorInternal;
 using UnityEngine;
 
-namespace IFramework
+namespace IFramework.Lua
 {
     [CustomEditor(typeof(LuaBehavior))]
 	public class LuaBehaviorEditor:Editor

@@ -11,7 +11,7 @@ using UnityEditor;
 using UnityEditor.Experimental.AssetImporters;
 #if UNITY_2018_1_OR_NEWER
 
-namespace IFramework
+namespace IFramework.Lua
 {
     [CustomEditor(typeof(LuaImporter))]
     public class LuaImporterEditorView: ScriptedImporterEditor,ILayoutGUIDrawer

@@ -12,29 +12,63 @@ using System.Collections.Generic;
 using System;
 
 
-namespace IFramework
+namespace IFramework.Lua
 {
     public interface IXLuaLoader
     {
         byte[] load(ref string filepath);
     }
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-    public class XLuaLoaderAttribute : Attribute { }
+    [MonoSingletonPath("IFramework/XLuaEnvironment")]
     public class XLuaEnvironment :MonoSingletonPropertyClass<XLuaEnvironment>
 	{
-       protected override void OnSingletonInit()
+        private LuaEnv LuaEnv;
+        private List<LuaTable> tables;
+        private static float LastGCTime;
+
+        public static LuaTable GlobalTable { get { return Instance.LuaEnv.Global; } }
+        public static float GCInterval=1f;
+        public static bool Disposed { get; private set; }
+        public static Action OnDispose;
+
+        public static LuaTable NewTable()
+        {
+            LuaTable table = Instance.LuaEnv.NewTable();
+            Instance.tables.Add(table);
+            return table;
+        }
+        public static void AddLoader(IXLuaLoader loader)
+        {
+           Instance. LuaEnv.AddLoader(loader.load);
+        }
+
+        public static object[] DoString(byte[] chunk, string chunkName = "chunk", LuaTable env = null)
+        {
+            return Instance.LuaEnv.DoString(chunk, chunkName, env);
+        }
+        public static object[] DoString(string chunk, string chunkName = "chunk", LuaTable env = null)
+        {
+            return Instance.LuaEnv.DoString(chunk, chunkName, env);
+        }
+        public static LuaFunction LoadString(string chunk, string chunkName = "chunk", LuaTable env = null)
+        {
+            return Instance.LuaEnv.LoadString(chunk, chunkName, env);
+        }
+        public static T LoadString<T>(string chunk, string chunkName = "chunk", LuaTable env = null)
+        {
+            return Instance.LuaEnv.LoadString<T>(chunk, chunkName, env);
+        }
+        public static T LoadString<T>(byte[] chunk, string chunkName = "chunk", LuaTable env = null)
+        {
+            return Instance.LuaEnv.LoadString<T>(chunk, chunkName, env);
+        }
+
+
+        protected override void OnSingletonInit()
         {
             Disposed = false;
             LuaEnv = new LuaEnv();
             tables = new List<LuaTable>();
-            typeof(IXLuaLoader).GetSubTypesInAssemblys().ForEach((type) =>
-            {
-                if (type.IsAbstract || !type.IsDefined(typeof(XLuaLoaderAttribute),false)) return;
-                IXLuaLoader loader= Activator.CreateInstance(type) as IXLuaLoader;
-                AddLoader(loader.load);
-            });
         }
-
         public override void Dispose()
         {
             if (OnDispose != null) OnDispose();
@@ -50,17 +84,10 @@ namespace IFramework
             LuaEnv = null;
             Disposed = true;
         }
-        public static Action OnDispose;
         private void OnDestroy()
         {
             Dispose();
         }
-        private LuaEnv LuaEnv;
-        private List<LuaTable> tables;
-        public static LuaTable Global { get { return Instance.LuaEnv.Global; } }
-        private static float LastGCTime;
-        public static float GCInterval=1f;
-        public static bool Disposed { get; private set; }
         private void Update()
         {
             if (LuaEnv == null) return;
@@ -70,19 +97,10 @@ namespace IFramework
                 LastGCTime = Time.time;
             }
         }
-        public static object[] DoString(string chunk, string chunkName = "chunk", LuaTable env = null)
+
+        public static void FullGc()
         {
-            return Instance.LuaEnv.DoString(chunk, chunkName, env);
-        }
-        public static LuaTable NewTable()
-        {
-            LuaTable table = Instance.LuaEnv.NewTable();
-            Instance.tables.Add(table);
-            return table;
-        }
-        public static void AddLoader(LuaEnv.CustomLoader loader)
-        {
-           Instance. LuaEnv.AddLoader(loader);
+            Instance.LuaEnv.FullGc();
         }
     }
 }

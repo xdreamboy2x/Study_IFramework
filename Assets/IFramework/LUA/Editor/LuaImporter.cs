@@ -10,7 +10,7 @@ using System.IO;
 using UnityEditor.Experimental.AssetImporters;
 using UnityEngine;
 #if UNITY_2018_1_OR_NEWER
-namespace IFramework
+namespace IFramework.Lua
 {
     [ScriptedImporter(1, "lua")]
     public class LuaImporter : ScriptedImporter
