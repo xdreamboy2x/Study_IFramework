@@ -13,7 +13,7 @@ using System.Linq;
 namespace IFramework
 {
     [CustomEditor(typeof(UIManager))]
-    internal class UIManagerEditorView : Editor
+    class UIManagerEditorView : Editor
     {
         private UIManager UIMgr;
 

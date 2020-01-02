@@ -24,13 +24,11 @@ namespace IFramework
     }
     public class UIEventArgs : IEventArgs
     {
-        public UIPanel StackTop;
-        public UIPanel PressOne;
-        public UIPanel PopOne;
+
         public bool isInspectorBtn;
     }
 
-    public interface IUIPanel
+    internal interface IUIPanel
     {
         UIPanelLayer PanelLayer { get; set; }
         string PanelName { get; set; }
@@ -38,20 +36,20 @@ namespace IFramework
         void OnTop(UIEventArgs arg);
         void OnPress(UIEventArgs arg);
         void OnPop(UIEventArgs arg);
-        void OnCacheClear(UIEventArgs arg);
+        void OnClear(UIEventArgs arg);
     }
     public abstract class UIPanel : MonoBehaviour, IUIPanel
     {
         public UIPanelLayer PanelLayer { get; set; }
         public virtual string PanelName  { get { return this.name; } set { this.name = value; } }
 
-        void IUIPanel.OnCacheClear(UIEventArgs arg) { OnCacheClear(arg); }
+        void IUIPanel.OnClear(UIEventArgs arg) { OnClear(arg); }
         void IUIPanel.OnLoad(UIEventArgs arg) { OnLoad(arg); }
         void IUIPanel.OnPop(UIEventArgs arg) { OnPop(arg); }
         void IUIPanel.OnPress(UIEventArgs arg) { OnPress(arg); }
         void IUIPanel.OnTop(UIEventArgs arg) { OnTop(arg); }
 
-        protected abstract void OnCacheClear(UIEventArgs arg);
+        protected abstract void OnClear(UIEventArgs arg);
         protected abstract void OnLoad(UIEventArgs arg);
         protected abstract void OnPop(UIEventArgs arg);
         protected abstract void OnPress(UIEventArgs arg);

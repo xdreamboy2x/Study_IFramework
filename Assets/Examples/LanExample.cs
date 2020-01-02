@@ -17,7 +17,7 @@ namespace IFramework_Demo
         LanCtrl.LanObserver observer;
         private void Awake()
         {
-            observer= LanCtrl.CreatLanObserver(key, SystemLanguage.Icelandic).ObserveEvent((key, lan, val) => { Log.E(val); });
+            observer= LanCtrl.CreatObserver(key, SystemLanguage.Icelandic).ObserveEvent((lan, val) => { Log.E(val); });
         }
         int index;
         private void Update()

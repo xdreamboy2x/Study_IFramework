@@ -41,7 +41,7 @@ namespace IFramework_Demo
 
         }
 
-        protected override void OnCacheClear(UIEventArgs arg)
+        protected override void OnClear(UIEventArgs arg)
         {
             Log.L(GetType() + " OnCacheClear " + arg.isInspectorBtn);
             if (UIManager.IsInUse(this)) return;

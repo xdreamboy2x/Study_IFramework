@@ -22,38 +22,40 @@ namespace IFramework
         {
             Instance.UILoader.Add(UILoader);
         }
-        public static UIPanel LoadUIPanel(Type type, string path, UIPanelLayer layer, string name, UIEventArgs arg)
+        public static UIPanel Load(Type type, string path, UIPanelLayer layer, string name, UIEventArgs arg)
         {
             UIPanel ui = default(UIPanel);
-            if (Instance.UILoader == null || LoaderCount == 0) Log.E("NO UILoader");
-            else
+            if (Instance.UILoader == null || LoaderCount == 0)
             {
-                for (int i = 0; i < Instance.UILoader.Count; i++)
-                {
-                    var result = Instance.UILoader[i].Invoke(type, path, name, layer, arg);
-                    if (result != null)
-                    {
-                        ui = result;
-                        break;
-                    }
-                }
-            }
-            if (ui == null)
-            {
-                Log.E(string.Format("NO ui Type: {0}  Path: {1}  Layer: {2}  Name: {3}", type, path, layer, name));
+                Log.E("NO UILoader");
                 return ui;
             }
-            ui = Instantiate(ui);
-            ui.PanelLayer = layer;
-            Instance.SetParent(ui);
-            (ui as IUIPanel).OnLoad(arg);
-            ui.PanelName = name;
-            if (!Instance.panelDic.ContainsKey(type)) Instance.panelDic.Add(type, new List<UIPanel>()); Instance.panelDic[type].Add(ui);
+            for (int i = 0; i < Instance.UILoader.Count; i++)
+            {
+                var result = Instance.UILoader[i].Invoke(type, path, name, layer, arg);
+                if (result == null) continue;
+
+                ui = result;
+                ui = Instantiate(ui);
+                ui.PanelLayer = layer;
+                Instance.SetParent(ui);
+                (ui as IUIPanel).OnLoad(arg);
+                ui.PanelName = name;
+                if (!Instance.panelDic.ContainsKey(type))
+                    Instance.panelDic.Add(type, new List<UIPanel>());
+                Instance.panelDic[type].Add(ui);
+                return ui;
+            }
+            Log.E(string.Format("NO ui Type: {0}  Path: {1}  Layer: {2}  Name: {3}", type, path, layer, name));
             return ui;
         }
-        public static T LoadUIPanel<T>(string path, string name, UIPanelLayer layer, UIEventArgs arg) where T : UIPanel
+        public static T Load<T>(string path, string name, UIPanelLayer layer, UIEventArgs arg) where T : UIPanel
         {
-            return (T)LoadUIPanel(typeof(T), path, layer, name, arg);
+            return (T)Load(typeof(T), path, layer, name, arg);
+        }
+        public static bool HaveLoadPanel(Type type, UIPanelLayer layer, string name)
+        {
+            return null== Instance.panelDic[type].Find((p) => { return  p.PanelLayer == layer && p.PanelName == name; });
         }
 
 
@@ -67,20 +69,16 @@ namespace IFramework
         public static bool IsInCache(UIPanel panel) { return Instance.UICache.Contains(panel); }
         public static bool IsInUse(UIPanel panel) { return IsInCache(panel) || IsInStack(panel); }
 
+        public static UIPanel Current { get { return Peek(); } }
         public static UIPanel Peek() { return Instance.UIStack.Peek(); }
         public static UIPanel CachePeek() { return Instance.UICache.Peek(); }
 
         public static void Push(UIPanel ui, UIEventArgs arg)
         {
-            arg.PopOne = null;
-            arg.StackTop = null;
-            arg.PressOne = null;
-            if (StackCount != 0) arg.PressOne = Peek();
+            if (StackCount != 0)
+                (Current as IUIPanel).OnPress(arg); 
             Instance.UIStack.Push(ui);
-            arg.StackTop = Peek();
-
-            if (arg.PressOne != null) (arg.PressOne as IUIPanel).OnPress(arg);
-            (arg.StackTop as IUIPanel).OnTop(arg);
+            (Current as IUIPanel).OnTop(arg);
             if (Instance.UICache.Count > 0) ClearCache(arg);
 
         }
@@ -88,43 +86,32 @@ namespace IFramework
         {
             if (CacheCount == 0) return;
             var ui = Instance.UICache.Pop();
-            arg.PopOne = null;
-            arg.StackTop = null;
-            arg.PressOne = null;
-            if (StackCount != 0) arg.PressOne = Peek();
+            if (StackCount != 0)
+                (Current as IUIPanel).OnPress(arg);
             Instance.UIStack.Push(ui);
-            arg.StackTop = Peek();
-
-            if (arg.PressOne != null) (arg.PressOne as IUIPanel).OnPress(arg);
-            (arg.StackTop as IUIPanel).OnTop(arg);
+            (Current as IUIPanel).OnTop(arg);
         }
         public static void GoBack(UIEventArgs arg)
         {
             if (StackCount == 0) return;
-            arg.PopOne = null;
-            arg.StackTop = null;
-            arg.PressOne = null;
             if (StackCount > 0)
             {
-                var info = Instance.UIStack.Pop();
-                Instance.UICache.Push(info);
-                arg.PopOne = info;
+                var ui = Instance.UIStack.Pop();
+                Instance.UICache.Push(ui);
+                (ui as IUIPanel).OnPop(arg);
             }
-            if (StackCount > 0) arg.StackTop = Peek();
-
-            if (arg.PopOne != null) (arg.PopOne as IUIPanel).OnPop(arg);
-            if (arg.StackTop != null) (arg.StackTop as IUIPanel).OnTop(arg);
-
+            if (StackCount > 0)
+                (Current as IUIPanel).OnTop(arg);
         }
         public static void ClearCache(UIEventArgs arg)
         {
             while (Instance.UICache.Count != 0)
             {
                 UIPanel p = Instance.UICache.Pop();
-                if (!IsInUse(p))
+                if (!IsInStack(p))
                 {
                     Instance.panelDic[p.GetType()].Remove(p);
-                    (p as IUIPanel).OnCacheClear(arg);
+                    (p as IUIPanel).OnClear(arg);
                 }
             }
         }
@@ -140,13 +127,13 @@ namespace IFramework
 
             if (loadNew || !Instance.panelDic.ContainsKey(type))
             {
-                UIPanel ui = LoadUIPanel(type, path, layer, name, arg);
+                UIPanel ui = Load(type, path, layer, name, arg);
                 Push(ui, arg);
                 return ui;
             }
             else
             {
-                UIPanel ui = Instance.panelDic[type].Find((p) => { return p.GetType() == type && p.PanelLayer == layer && p.PanelName == name; });
+                UIPanel ui = Instance.panelDic[type].Find((p) => { return  p.PanelLayer == layer && p.PanelName == name; });
                 if (ui == null) return Get(type, path, layer, name, arg, true);
                 else
                 {

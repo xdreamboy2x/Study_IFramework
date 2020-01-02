@@ -9,65 +9,38 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using UnityEngine;
 
 namespace IFramework
 {
-    public class LanCtrl : ISingleton
+    public class LanCtrl : SingletonPropertyClass<LanCtrl>
     {
         private LanCtrl() { }
-        public void Dispose()
+        public override void Dispose()
         {
-            SingletonProperty<LanCtrl>.Dispose();
+            base.Dispose();
             lanPairs.Clear();
             lanPairLoaders.Clear();
             lanObservers.Clear();
         }
-        void ISingleton.OnSingletonInit()
+        protected override void OnSingletonInit()
         {
+            base.OnSingletonInit();
             lanPairs = new List<LanPair>();
             lanPairLoaders = new List<Func<List<LanPair>>>();
             lanObservers = new List<LanObserver>();
-            Init();
         }
-        private void Init() {
-            List<LanPair> tmpPairs = new List<LanPair>();
-            var types = typeof(ILanguageLoader).GetSubTypesInAssemblys()
-                   .ToList()
-                   .FindAll((type) => { return type.IsDefined(typeof(LanguageLoaderAttribute), true); });
-            types.ForEach((type) => {
-                var ctor = type.GetConstructors(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
-                     .ToList()
-                     .Find((c) => { return c.GetParameters().Length == 0; });
-                ILanguageLoader loader = (ILanguageLoader)ctor.Invoke(null);
-
-                tmpPairs.AddRange(loader.Load());
-                loader.Dispose();
-            });
-
-            tmpPairs.ForEach((tmpPair) => {
-                LanPair pair = lanPairs.Find((p) => { return p.Lan == tmpPair.Lan && p.key == tmpPair.key; });
-                if (pair != null && pair.Value != tmpPair.Value)
-                    pair.Value = tmpPair.Value;
-                else
-                    lanPairs.Add(tmpPair);
-            });
-            tmpPairs.Clear();
-            Fresh();
-        }
-        private static LanCtrl Instance { get { return SingletonProperty<LanCtrl>.Instance; } }
         private List<LanPair> lanPairs;
         private Dictionary<string, List<LanPair>> keyDic;
-        public static List<Func<List<LanPair>>> lanPairLoaders;
-        public static void AddlanPairLoader(Func<List<LanPair>> loader)
+        private List<Func<List<LanPair>>> lanPairLoaders;
+        public static void AddLoader(Func<List<LanPair>> loader)
         {
-            lanPairLoaders.Add(loader);
+            Instance.lanPairLoaders.Add(loader);
         }
-        public static void LoadLanPairs(bool reWrite = true)
+        public static void Load(bool reWrite = true)
         {
             List<LanPair> tmpPairs = new List<LanPair>();
-            lanPairLoaders.ForEach((loader) => {
+            Instance.lanPairLoaders.ForEach((loader) => {
                 List<LanPair> result = loader.Invoke();
                 if (result != null && result.Count > 0)
                     tmpPairs.AddRange(result);
@@ -82,7 +55,7 @@ namespace IFramework
             tmpPairs.Clear();
             Instance.Fresh();
         }
-        public static void LoadLanPair(Func<List<LanPair>> loader, bool reWrite = true)
+        public static void Load(Func<List<LanPair>> loader, bool reWrite = true)
         {
             List<LanPair> tmpPairs = loader.Invoke();
             tmpPairs.ForEach((tmpPair) => {
@@ -117,7 +90,7 @@ namespace IFramework
             }
         }
 
-        public static LanObserver CreatLanObserver(string key, SystemLanguage fallback, bool autoStart = true)
+        public static LanObserver CreatObserver(string key, SystemLanguage fallback, bool autoStart = true)
         {
             if (!Instance.keyDic.ContainsKey(key)) throw new Exception(string.Format("Key Not Found {0}", key));
             List<LanPair> pairs = Instance.keyDic[key];
@@ -145,8 +118,8 @@ namespace IFramework
                 Pause();
                 if (autoStart) Start();
             }
-            private Action<string, SystemLanguage, string> observeEvent;
-            public LanObserver ObserveEvent(Action<string, SystemLanguage, string> eve)
+            private Action<SystemLanguage, string> observeEvent;
+            public LanObserver ObserveEvent(Action<SystemLanguage, string> eve)
             {
                 this.observeEvent = eve;
                 return this;
@@ -162,7 +135,7 @@ namespace IFramework
             {
                 if (isDisposed || isPaused) return;
                 if (observeEvent != null)
-                    observeEvent(Key, CurLan, GetValueInPairs());
+                    observeEvent(CurLan, GetValueInPairs());
             }
             public void Start() { UnPause(); }
 
