@@ -7,7 +7,7 @@
  *History:        2018.11--
 *********************************************************************************/
 using IFramework;
-using IFramework.Astar;
+using IFramework.Utility.Astar;
 
 namespace IFramework_Demo
 {

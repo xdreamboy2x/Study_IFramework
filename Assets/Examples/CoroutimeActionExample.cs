@@ -7,7 +7,7 @@
  *History:        2018.11--
 *********************************************************************************/
 using IFramework;
-using IFramework.NodeAction;
+using IFramework.Moudles.NodeAction;
 using System;
 
 namespace IFramework_Demo

@@ -7,7 +7,7 @@
  *History:        2018.11--
 *********************************************************************************/
 using IFramework;
-using IFramework.FSM;
+using IFramework.Moudles.Fsm;
 using UnityEngine;
 namespace IFramework_Demo
 {
@@ -35,7 +35,7 @@ namespace IFramework_Demo
     }
     public class FsmExample : MonoBehaviour
 	{
-        FsmMoudle f = new FsmMoudle();
+        FsmMoudle f = FsmMoudle.CreatInstance<FsmMoudle>();
         State1 s1 = new State1();
         State2 s2 = new State2();
 
