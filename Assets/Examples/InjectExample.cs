@@ -30,13 +30,11 @@ namespace IFramework_Demo
         static INNN nnn;
         private void Awake()
         {
+            Framework.Init();
             Framework.Container.RegisterInstance<INNN>(new NNN());
-            //Framework.Container.onNotExistType += (type, name) =>
-            //{
-            //    return new NNN();
-            //};
             Framework.Container.Inject(this);
             nnn.ToDo();
+            Framework.Dispose();
         }
 
     }

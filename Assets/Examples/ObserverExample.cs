@@ -22,25 +22,25 @@ namespace IFramework_Demo
         {
             public Listenner()
             {
-                Framework.MessageMoudle.Subscribe<Pub>(this);
+                Framework.moudles.Message.Subscribe<Pub>(this);
 
                 //Framework.MessageMoudle.Subscribe<ObserverExample>(this);
             }
             public void Listen(IPublisher publisher, Type eventType, int code, IEventArgs args, params object[] param)
             {
-                Log.L(Framework.MessageMoudle.name);
+                Log.L(Framework.moudles.Message.name);
                 Log.L(string.Format("Recieve code {0} from type {1}", code,eventType));
             }
         }
         private void Awake()
         {
-            Framework.MessageMoudle = MessageMoudle.CreatInstance<MessageMoudle>();
+            Framework.moudles.Message = MessageMoudle.CreatInstance<MessageMoudle>();
             Framework.Init();
-            Framework.MessageMoudle.BindFramework();
+            Framework.moudles.Message.BindFramework();
             Listenner listenner = new Listenner();
-          Debug.Log(  Framework.MessageMoudle.Publish<IPub>( 100, null));
+            Debug.Log(Framework.moudles.Message.Publish<IPub>( 100, null));
 
-            Framework.MessageMoudle.DelayPublish(this, 100, null);
+            Framework.moudles.Message.DelayPublish(this, 100, null);
         }
         private void Update()
         {

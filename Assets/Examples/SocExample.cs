@@ -14,18 +14,13 @@ using System.Text;
 using System.Threading;
 namespace IFramework_Demo
 {
-	public class SocExample
+	public class SocExample:UnityEngine.MonoBehaviour
 	{
         void packetTest()
         {
-            Packet pack = new Packet();
-            pack.Head = new PacketHeader();
-            pack.Head.PackCount = 1;
-            pack.Head.PackID = 11;
-            pack.Head.PackType = 2;
-            pack.MsgBuff = Encoding.Default.GetBytes("haha");
+            Packet pack = new Packet(1,11,2,Encoding.Default.GetBytes("haha"));
             byte[] buf = pack.Pack();
-
+          
             Packet pac = new Packet();
             pac.UnPack(buf, 0, buf.Length);
             PacketReader p = new PacketReader(128);

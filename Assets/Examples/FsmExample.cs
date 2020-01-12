@@ -33,39 +33,46 @@ namespace IFramework_Demo
     public class State2 : State
     {
     }
-    public class FsmExample : MonoBehaviour
-	{
-        FsmMoudle f = FsmMoudle.CreatInstance<FsmMoudle>();
-        State1 s1 = new State1();
-        State2 s2 = new State2();
+    public class FsmExample : MonoBehaviour { 
+
 
         private void Awake()
+        
         {
-            f.SubscribeState(s1);
-            f.EnterState = s1;
-            f.SubscribeState(s2); 
+            Framework.Init();
+            Framework.moudles.Fsm = FsmMoudle.CreatInstance<FsmMoudle>();
+            State1 s1 = new State1();
+            State2 s2 = new State2();
+            Framework.moudles.Fsm.SubscribeState(s1);
+            Framework.moudles.Fsm.EnterState = s1;
+            Framework.moudles.Fsm.SubscribeState(s2); 
             //f.ExitState = s2;
-         var val=   f.CreateConditionValue<bool>("bool", true);
+         var val= Framework.moudles.Fsm.CreateConditionValue<bool>("bool", true);
 
-            var t1=  f.CreateTransition(s1, s2);
-            var t2 = f.CreateTransition(s2, s1);
+            var t1= Framework.moudles.Fsm.CreateTransition(s1, s2);
+            var t2 = Framework.moudles.Fsm.CreateTransition(s2, s1);
 
-            t1.BindCondition(f.CreateCondition<bool>("bool", false, ConditionCompareType.EqualsWithCompare));
-            t2.BindCondition(f.CreateCondition<bool>(val, true, ConditionCompareType.EqualsWithCompare));
+            t1.BindCondition(Framework.moudles.Fsm.CreateCondition<bool>("bool", false, ConditionCompareType.EqualsWithCompare));
+            t2.BindCondition(Framework.moudles.Fsm.CreateCondition<bool>(val, true, ConditionCompareType.EqualsWithCompare));
 
-            f.Start();
+            Framework.moudles.Fsm.Start();
         }
         private void Update()
         {
-            f.Update();
+            Framework.Update();
             if (Input.GetKeyDown(KeyCode.Space))
             {
-               f.SetBool("bool", false);
+                Framework.moudles.Fsm.SetBool("bool", false);
             }
             if (Input.GetKeyDown(KeyCode.Q))
             {
-                f.SetBool("bool", true);
+                Framework.moudles.Fsm.SetBool("bool", true);
             }
+        }
+        private void OnDisable()
+        {
+            Framework.Dispose();
+
         }
     }
 }

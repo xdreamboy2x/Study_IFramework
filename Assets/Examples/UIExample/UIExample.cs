@@ -12,9 +12,12 @@ namespace IFramework_Demo
 {
 	internal class UIExample: MonoBehaviour
     {
+        UIMoudle mou;
         private void Start()
         {
-            UIManager.AddLoader((type, path,pt,name,arg) =>
+            Framework.Init();
+            mou = UIMoudle.CreatInstance<UIMoudle>();
+            mou.AddLoader((type, path,pt,name,arg) =>
             {
                 GameObject go = Resources.Load<GameObject>(path);
                 return go.GetComponent<UIPanel>();
@@ -22,14 +25,19 @@ namespace IFramework_Demo
         }
         public void Update()
         {
+            Framework.Update();
             if (Input.GetKeyDown(KeyCode.Q))
             {
-                UIManager.Get(typeof(Panel1), "Canvas", UIPanelLayer.Background, "Panel1", new UIEventArgs(), false);
+                mou.Get(typeof(Panel1), "Canvas", UIPanelLayer.Background, "Panel1", new UIEventArgs(), true);
             }
             if (Input.GetKeyDown(KeyCode.W))
             {
-                UIManager.Get(typeof(Panel2), "Canvas1", UIPanelLayer.Guide, "Panel2", new UIEventArgs(), false);
+                mou.Get(typeof(Panel2), "Canvas1", UIPanelLayer.Guide, "Panel2", new UIEventArgs(), true);
             }
+        }
+        private void OnDisable()
+        {
+            Framework.Dispose();
         }
     }
 }

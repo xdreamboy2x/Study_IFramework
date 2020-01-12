@@ -45,10 +45,10 @@ namespace IFramework_Demo
         protected override void OnClear(UIEventArgs arg)
         {
             Log.L(GetType() + " OnCacheClear " + arg.isInspectorBtn);
-            if (UIManager.IsInUse(this)) return;
-            {
+            //if (UIManager.IsInUse(this)) return;
+            //{
 
-            }
+            //}
             Destroy(this.gameObject);
         }
     }
