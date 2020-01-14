@@ -12,8 +12,7 @@ using IFramework.Moudles.Message;
 using UnityEngine;
 namespace IFramework_Demo
 {
-
-    public class ObserverExample:MonoBehaviour,IPublisher
+    public class MessageExample:MonoBehaviour,IPublisher
 	{
         public interface IPub : IPublisher { }
         public class Pub:IPub
@@ -23,12 +22,10 @@ namespace IFramework_Demo
             public Listenner()
             {
                 Framework.moudles.Message.Subscribe<Pub>(this);
-
-                //Framework.MessageMoudle.Subscribe<ObserverExample>(this);
+                Framework.moudles.Message.Subscribe<MessageExample>(this);
             }
             public void Listen(IPublisher publisher, Type eventType, int code, IEventArgs args, params object[] param)
             {
-                Log.L(Framework.moudles.Message.name);
                 Log.L(string.Format("Recieve code {0} from type {1}", code,eventType));
             }
         }
@@ -36,17 +33,18 @@ namespace IFramework_Demo
         {
             Framework.moudles.Message = MessageMoudle.CreatInstance<MessageMoudle>();
             Framework.Init();
-            Framework.moudles.Message.BindFramework();
             Listenner listenner = new Listenner();
+            Framework.moudles.Message.DelayPublish(this, 100, null);
             Debug.Log(Framework.moudles.Message.Publish<IPub>( 100, null));
 
-            Framework.moudles.Message.DelayPublish(this, 100, null);
         }
         private void Update()
         {
-            //Framework.Update();
-
-
+            Framework.Update();
+        }
+        private void OnDisable()
+        {
+            Framework.Dispose();
         }
     }
 }

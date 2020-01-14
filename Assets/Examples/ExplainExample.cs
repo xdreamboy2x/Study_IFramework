@@ -13,12 +13,12 @@ namespace IFramework_Demo
 {
     public class ExplainExample :UnityEngine.MonoBehaviour, IExplainer<string, int>
     {
-        public int ExplainToV(string t, IEventArgs arg, params object[] param)
+        public int Explain(string t, IEventArgs arg, params object[] param)
         {
             return int.Parse(t);
         }
 
-        public string ExplainToT(int v, IEventArgs arg, params object[] param)
+        public string Explain(int v, IEventArgs arg, params object[] param)
         {
             return v.ToString();
         }

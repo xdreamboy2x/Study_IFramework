@@ -35,7 +35,7 @@ namespace IFramework_Demo
                 .TimeSpan(new TimeSpan(0, 0, 5),false)
                 .OnCompelete((ss) => { /*ss.Reset();*/ })
                 .OnDispose((ss) => { Log.L("dispose"); })
-                .Run(Framework.moudles.Coroutine);
+                .Run(Framework.moudles.Coroutine as CoroutineMoudle);
         }
         private void Update()
         {

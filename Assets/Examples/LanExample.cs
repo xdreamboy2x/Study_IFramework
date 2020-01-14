@@ -7,27 +7,50 @@
  *History:        2018.11--
 *********************************************************************************/
 using IFramework;
+using System.Collections.Generic;
 using UnityEngine;
 namespace IFramework_Demo
 {
 	public class LanExample:MonoBehaviour
 	{
         [LanguageKey]
-        public string key;
-        LanCtrl.LanObserver observer;
+        public string key="77";
+        LanguageMoudle.LanObserver observer;
+        LanguageMoudle mou;
         private void Awake()
         {
-            observer= LanCtrl.CreatObserver(key, SystemLanguage.Icelandic).ObserveEvent((lan, val) => { Log.E(val); });
+            Framework.Init();
+            mou = Framework.moudles.CreateMoudle<LanguageMoudle>();
+            mou.Load(() =>
+            {
+                return new List<LanPair>()
+                {
+                    new LanPair()
+                    {
+                        Lan= SystemLanguage.Chinese,
+                        Value="哈哈",
+                        key="77"
+                    },
+                    new LanPair()
+                    {
+                        Lan= SystemLanguage.English,
+                        Value="haha",
+                        key="77"
+                    }
+                };
+            });
+            observer= mou.CreatObserver(key, SystemLanguage.English).ObserveEvent((lan, val) => { Log.E(val); });
         }
         int index;
         private void Update()
         {
+            Framework.Update();
             index = ++index % 40;
-            LanCtrl.Lan = (SystemLanguage)index;
+            mou.Lan = (SystemLanguage)index;
         }
         private void OnDestroy()
         {
-            observer.Dispose();
+            Framework.Dispose();
         }
     }
 }
