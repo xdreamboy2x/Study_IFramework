@@ -310,7 +310,7 @@ namespace IFramework.AB
         }
         private class AssetBundleBulidWindow : AssetBundleWindowBase, IRectGUIDrawer, ILayoutGUIDrawer
         {
-            private SubWinTree abBuildInfoTree;
+            public SubWinTree abBuildInfoTree;
             private const string ABBWin = "AssetBundleBuild";
             private const string ABBItemWin = "ABBItemWin";
             private const string ABBContentWin = "ABBContent";
@@ -775,7 +775,8 @@ namespace IFramework.AB
                             {
                                 ReFreashValue();
                             })
-                            //.Button(new GUIContent(),(rect)=> {
+                            //.Button(new GUIContent(), (rect) =>
+                            //{
                             //    File.WriteAllText(tmpLayout_ABBuildInfoPath, abBulidWindow.abBuildInfoTree.Serialize());
                             //})
                             ;

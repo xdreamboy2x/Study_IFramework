@@ -18,7 +18,7 @@ namespace IFramework_Demo
         void Start()
         {
             Framework.Init();
-            Framework.moudles.Coroutine = CoroutineMoudle.CreatInstance<CoroutineMoudle>();
+            Framework.moudles.Coroutine = Framework.moudles.CreateMoudle<CoroutineMoudle>();
             Framework.moudles.Coroutine.StartCoroutine(wait2());
         }
         IEnumerator wait()

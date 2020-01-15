@@ -16,7 +16,8 @@ namespace IFramework_Demo
         private void Start()
         {
             Framework.Init();
-            mou = UIMoudle.CreatInstance<UIMoudle>();
+            
+            mou = Framework.moudles.CreateMoudle<UIMoudle>();
             mou.AddLoader((type, path,pt,name,arg) =>
             {
                 GameObject go = Resources.Load<GameObject>(path);
@@ -28,7 +29,7 @@ namespace IFramework_Demo
             Framework.Update();
             if (Input.GetKeyDown(KeyCode.Q))
             {
-                mou.Get(typeof(Panel1), "Canvas", UIPanelLayer.Background, "Panel1", new UIEventArgs(), true);
+                mou.Get(typeof(Panel1), "Canvas", UIPanelLayer.Background, "Panel1", new UIEventArgs(), false);
             }
             if (Input.GetKeyDown(KeyCode.W))
             {

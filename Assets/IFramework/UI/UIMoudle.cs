@@ -71,7 +71,8 @@ namespace IFramework
             UIStack.Clear();
             UICache.Clear();
             loaders.Clear();
-            GameObject.Destroy(UIRoot.gameObject);
+            if (Canvas!=null)
+                GameObject.Destroy(Canvas.gameObject);
         }
         protected override void OnUpdate() { }
 

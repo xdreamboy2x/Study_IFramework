@@ -40,7 +40,7 @@ namespace IFramework_Demo
         
         {
             Framework.Init();
-            Framework.moudles.Fsm = FsmMoudle.CreatInstance<FsmMoudle>();
+            Framework.moudles.Fsm = Framework.moudles.CreateMoudle<FsmMoudle>();
             State1 s1 = new State1();
             State2 s2 = new State2();
             Framework.moudles.Fsm.SubscribeState(s1);

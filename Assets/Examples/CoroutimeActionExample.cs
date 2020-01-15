@@ -20,7 +20,7 @@ namespace IFramework_Demo
         private void Start()
         {
             Framework.Init();
-            Framework.moudles.Coroutine = FrameworkMoudle.CreatInstance<CoroutineMoudle>();
+            Framework.moudles.Coroutine = Framework.moudles.CreateMoudle<CoroutineMoudle>();
 
            this.Sequence()
                 .Repeat((r) => {

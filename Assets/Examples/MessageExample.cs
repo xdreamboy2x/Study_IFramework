@@ -31,7 +31,7 @@ namespace IFramework_Demo
         }
         private void Awake()
         {
-            Framework.moudles.Message = MessageMoudle.CreatInstance<MessageMoudle>();
+            Framework.moudles.Message = Framework.moudles.CreateMoudle<MessageMoudle>();
             Framework.Init();
             Listenner listenner = new Listenner();
             Framework.moudles.Message.DelayPublish(this, 100, null);
