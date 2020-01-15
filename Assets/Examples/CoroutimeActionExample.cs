@@ -7,7 +7,6 @@
  *History:        2018.11--
 *********************************************************************************/
 using IFramework;
-using IFramework.Moudles;
 using IFramework.Moudles.Coroutine;
 using IFramework.Moudles.NodeAction;
 using System;
@@ -26,13 +25,13 @@ namespace IFramework_Demo
                 .Repeat((r) => {
                     r.Sequence((s) =>
                     {
-                        s.TimeSpan(new TimeSpan(0, 0, 5), false)
-                         .Event(() => { Log.L("GG"); }, false)
+                        s.TimeSpan(new TimeSpan(0, 0, 5))
+                         .Event(() => { Log.L("GG"); })
                          .OnCompelete(() => { Log.L(1231); });
                     }, false)
                     ;
-                },2,false)
-                .TimeSpan(new TimeSpan(0, 0, 5),false)
+                },2)
+                .TimeSpan(new TimeSpan(0, 0, 5))
                 .OnCompelete((ss) => { /*ss.Reset();*/ })
                 .OnDispose((ss) => { Log.L("dispose"); })
                 .Run(Framework.moudles.Coroutine as CoroutineMoudle);
@@ -41,7 +40,7 @@ namespace IFramework_Demo
         {
             Framework.Update();
         }
-        private void OnDestroy()
+        private void OnDisable()
         {
             Framework.Dispose();
         }
