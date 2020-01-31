@@ -113,6 +113,10 @@ namespace IFramework_Demo
         private void Start()
         {
             packetTest();
+            Udp();
+          //  Log.L(c.IsConnected);
+            //byte[] bu = Encoding.UTF8.GetBytes("123");
+            //c.SendAsync(new BufferSegment(bu, 0, bu.Length));
         }
 
         private static void WebSocketDemo()

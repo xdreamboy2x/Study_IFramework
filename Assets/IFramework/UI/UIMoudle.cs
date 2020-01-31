@@ -15,6 +15,8 @@ namespace IFramework
 {
     public class UIMoudle : FrameworkMoudle
     {
+        protected override bool needUpdate { get { return false; } }
+
         public Canvas Canvas { get; private set; }
         private RectTransform UIRoot;
 

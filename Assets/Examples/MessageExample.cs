@@ -34,7 +34,7 @@ namespace IFramework_Demo
             Framework.moudles.Message = Framework.moudles.CreateMoudle<MessageMoudle>();
             Framework.Init();
             Listenner listenner = new Listenner();
-            Framework.moudles.Message.DelayPublish(this, 100, null);
+
             Debug.Log(Framework.moudles.Message.Publish<IPub>( 100, null));
 
         }

@@ -80,7 +80,9 @@ namespace IFramework
         private List<Func<List<LanPair>>> lanPairLoaders;
         private List<LanObserver> lanObservers;
         private event Action ObserveEvent;
+
         private SystemLanguage lan = SystemLanguage.Unknown;
+
         public SystemLanguage Lan
         {
             get { return lan; }
@@ -92,6 +94,9 @@ namespace IFramework
                     ObserveEvent();
             }
         }
+
+        protected override bool needUpdate { get { return false; } }
+
         public void AddLoader(Func<List<LanPair>> loader)
         {
             lanPairLoaders.Add(loader);
