@@ -7,7 +7,7 @@
  *History:        2018.11--
 *********************************************************************************/
 using IFramework;
-using IFramework.Moudles.Fsm;
+using IFramework.Modules.Fsm;
 using UnityEngine;
 namespace IFramework_Demo
 {
@@ -40,33 +40,33 @@ namespace IFramework_Demo
         
         {
             Framework.Init();
-            Framework.moudles.Fsm = Framework.moudles.CreateMoudle<FsmMoudle>();
+            Framework.modules.Fsm = Framework.modules.CreateModule<FsmModule>();
             State1 s1 = new State1();
             State2 s2 = new State2();
-            Framework.moudles.Fsm.SubscribeState(s1);
-            Framework.moudles.Fsm.EnterState = s1;
-            Framework.moudles.Fsm.SubscribeState(s2); 
+            Framework.modules.Fsm.SubscribeState(s1);
+            Framework.modules.Fsm.EnterState = s1;
+            Framework.modules.Fsm.SubscribeState(s2); 
             //f.ExitState = s2;
-         var val= Framework.moudles.Fsm.CreateConditionValue<bool>("bool", true);
+         var val= Framework.modules.Fsm.CreateConditionValue<bool>("bool", true);
 
-            var t1= Framework.moudles.Fsm.CreateTransition(s1, s2);
-            var t2 = Framework.moudles.Fsm.CreateTransition(s2, s1);
+            var t1= Framework.modules.Fsm.CreateTransition(s1, s2);
+            var t2 = Framework.modules.Fsm.CreateTransition(s2, s1);
 
-            t1.BindCondition(Framework.moudles.Fsm.CreateCondition<bool>("bool", false, ConditionCompareType.EqualsWithCompare));
-            t2.BindCondition(Framework.moudles.Fsm.CreateCondition<bool>(val, true, ConditionCompareType.EqualsWithCompare));
+            t1.BindCondition(Framework.modules.Fsm.CreateCondition<bool>("bool", false, ConditionCompareType.EqualsWithCompare));
+            t2.BindCondition(Framework.modules.Fsm.CreateCondition<bool>(val, true, ConditionCompareType.EqualsWithCompare));
 
-            Framework.moudles.Fsm.Start();
+            Framework.modules.Fsm.Start();
         }
         private void Update()
         {
             Framework.Update();
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                Framework.moudles.Fsm.SetBool("bool", false);
+                Framework.modules.Fsm.SetBool("bool", false);
             }
             if (Input.GetKeyDown(KeyCode.Q))
             {
-                Framework.moudles.Fsm.SetBool("bool", true);
+                Framework.modules.Fsm.SetBool("bool", true);
             }
         }
         private void OnDisable()

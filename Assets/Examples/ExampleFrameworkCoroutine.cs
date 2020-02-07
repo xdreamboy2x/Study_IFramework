@@ -8,7 +8,7 @@
 *********************************************************************************/
 using System.Collections;
 using IFramework;
-using IFramework.Moudles.Coroutine;
+using IFramework.Modules.Coroutine;
 
 namespace IFramework_Demo
 {
@@ -18,8 +18,8 @@ namespace IFramework_Demo
         void Start()
         {
             Framework.Init();
-            Framework.moudles.Coroutine = Framework.moudles.CreateMoudle<CoroutineMoudle>();
-            Framework.moudles.Coroutine.StartCoroutine(wait2());
+            Framework.modules.Coroutine = Framework.modules.CreateModule<CoroutineModule>();
+            Framework.modules.Coroutine.StartCoroutine(wait2());
         }
         IEnumerator wait()
         {

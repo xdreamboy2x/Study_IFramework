@@ -8,7 +8,7 @@
 *********************************************************************************/
 using System;
 using IFramework;
-using IFramework.Moudles.Message;
+using IFramework.Modules.Message;
 using UnityEngine;
 namespace IFramework_Demo
 {
@@ -21,8 +21,8 @@ namespace IFramework_Demo
         {
             public Listenner()
             {
-                Framework.moudles.Message.Subscribe<Pub>(this);
-                Framework.moudles.Message.Subscribe<MessageExample>(this);
+                Framework.modules.Message.Subscribe<Pub>(this);
+                Framework.modules.Message.Subscribe<MessageExample>(this);
             }
             public void Listen(IPublisher publisher, Type eventType, int code, IEventArgs args, params object[] param)
             {
@@ -31,11 +31,11 @@ namespace IFramework_Demo
         }
         private void Awake()
         {
-            Framework.moudles.Message = Framework.moudles.CreateMoudle<MessageMoudle>();
+            Framework.modules.Message = Framework.modules.CreateModule<MessageModule>();
             Framework.Init();
             Listenner listenner = new Listenner();
 
-            Debug.Log(Framework.moudles.Message.Publish<IPub>( 100, null));
+            Debug.Log(Framework.modules.Message.Publish<IPub>( 100, null));
 
         }
         private void Update()

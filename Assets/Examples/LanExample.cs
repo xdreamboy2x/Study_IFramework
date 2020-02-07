@@ -15,12 +15,12 @@ namespace IFramework_Demo
 	{
         [LanguageKey]
         public string key="77";
-        LanguageMoudle.LanObserver observer;
-        LanguageMoudle mou;
+        LanguageModule.LanObserver observer;
+        LanguageModule mou;
         private void Awake()
         {
             Framework.Init();
-            mou = Framework.moudles.CreateMoudle<LanguageMoudle>();
+            mou = Framework.modules.CreateModule<LanguageModule>();
             mou.Load(() =>
             {
                 return new List<LanPair>()

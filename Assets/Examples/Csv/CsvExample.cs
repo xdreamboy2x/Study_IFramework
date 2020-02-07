@@ -55,7 +55,7 @@ namespace IFramework_Demo
             CsvWriter w = new CsvWriter(new System.IO.StreamWriter(path, false),
                 new CsvRow(),
                 new CsvExplainer());
-            w.Write(cs, "");
+            w.Write(cs);
             w.Dispose();
         }
     }

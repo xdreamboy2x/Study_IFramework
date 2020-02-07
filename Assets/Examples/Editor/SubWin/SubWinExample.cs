@@ -14,7 +14,7 @@ using UnityEngine;
 
 namespace IFramework_Demo
 {
-    [EditorWindowCache("IFramework_Demo.SubWin Exampe")]
+    [EditorWindowCache]
     public partial class SubWinExample: EditorWindow,ILayoutGUIDrawer
     {
         [SerializeField]

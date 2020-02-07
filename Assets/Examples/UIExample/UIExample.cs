@@ -12,12 +12,12 @@ namespace IFramework_Demo
 {
 	internal class UIExample: MonoBehaviour
     {
-        UIMoudle mou;
+        UIModule mou;
         private void Start()
         {
             Framework.Init();
             
-            mou = Framework.moudles.CreateMoudle<UIMoudle>();
+            mou = Framework.modules.CreateModule<UIModule>();
             mou.AddLoader((type, path,pt,name,arg) =>
             {
                 GameObject go = Resources.Load<GameObject>(path);

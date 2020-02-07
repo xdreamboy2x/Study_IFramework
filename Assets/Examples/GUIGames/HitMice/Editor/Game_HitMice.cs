@@ -16,7 +16,7 @@ using IFramework;
 
 namespace IFramework_Demo.GUIGames
 {
-    [EditorWindowCache("IFramework_Demo.GUIGames.Game_HitMice")]
+    [EditorWindowCache]
 	public class Game_HitMice:EditorWindow
 	{
         private class BtnMice

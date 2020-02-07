@@ -15,7 +15,7 @@ using UnityEngine;
 
 namespace IFramework_Demo.GUIGames
 {
-    [EditorWindowCache("IFramework_Demo.GUIGames.Game_2048")]
+    [EditorWindowCache]
 	public class Game2048:EditorWindow
 	{
         GUICanvas guiCanvas;
