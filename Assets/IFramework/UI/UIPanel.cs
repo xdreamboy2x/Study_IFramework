@@ -28,14 +28,13 @@ namespace IFramework
         public UIPanel popPanel;
         public UIPanel curPanel;
         public UIPanel pressPanel;
-
-        protected override void OnReset()
+        protected override void OnDataReset()
         {
             popPanel = null;
             curPanel = null;
             pressPanel = null;
-
         }
+       
     }
 
     internal interface IUIPanel

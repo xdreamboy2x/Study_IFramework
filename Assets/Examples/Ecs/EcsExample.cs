@@ -33,7 +33,10 @@ namespace IFramework_Demo
         {
             public UnityEngine.GameObject go;
         }
-
+        private struct SpeedComponent: IComponent
+        {
+            public float speed;
+        }
         private class PlayerSystem : ExcuteSystem<SimpleEnity>
         {
             public PlayerSystem(ECSModule module) : base(module) { }
@@ -52,12 +55,15 @@ namespace IFramework_Demo
             public PCSystem(ECSModule module) : base(module) { }
             protected override bool Fitter(SimpleEnity enity)
             {
-                return enity.ContainsComponent<PCComponent>() && enity.ContainsComponent<RotaComponet>();
+                return enity.ContainsComponent<PCComponent>() && enity.ContainsComponent<RotaComponet>()&& enity.ContainsComponent<SpeedComponent>();
             }
             protected override void Excute(SimpleEnity enity)
             {
+                SpeedComponent sp = enity.GetComponent<SpeedComponent>();
                 RotaComponet rc = enity.GetComponent<RotaComponet>();
-                rc.go.transform.Rotate(UnityEngine.Vector3.forward, 1);
+                rc.go.transform.Rotate(UnityEngine.Vector3.forward,sp.speed);
+                sp.speed += 0.01f;
+                enity.ReFreshComponent(sp);
             }
         }
 
@@ -76,6 +82,7 @@ namespace IFramework_Demo
             playerRO.go.transform.position = new UnityEngine.Vector3(0, -2,0);
 
             var pc = module.CreateEnity<SimpleEnity>();
+            pc.AddComponent<SpeedComponent>();
             pc.AddComponent<PCComponent>();
             var pcRO = pc.AddComponent<RotaComponet>();
             pcRO.go = UnityEngine.GameObject.CreatePrimitive(UnityEngine.PrimitiveType.Cube);

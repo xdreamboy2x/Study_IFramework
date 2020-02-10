@@ -34,6 +34,7 @@ namespace IFramework_Demo
                 .TimeSpan(new TimeSpan(0, 0, 5))
                 .OnCompelete((ss) => { /*ss.Reset();*/ })
                 .OnDispose((ss) => { Log.L("dispose"); })
+                .OnRecyle(() => { Log.L(123132); })
                 .Run(Framework.modules.Coroutine as CoroutineModule);
         }
         private void Update()
