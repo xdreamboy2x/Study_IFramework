@@ -10,14 +10,14 @@ using IFramework;
 using UnityEngine;
 namespace IFramework_Demo
 {
-	internal class UIExample: MonoBehaviour
+    [RequireComponent(typeof(APP))]
+    internal class UIExample: MonoBehaviour
     {
         UIModule mou;
         private void Start()
         {
-            Framework.Init();
             
-            mou = Framework.modules.CreateModule<UIModule>();
+            mou = Framework.env1.modules.CreateModule<UIModule>();
             mou.AddLoader((type, path,pt,name,arg) =>
             {
                 GameObject go = Resources.Load<GameObject>(path);
@@ -26,7 +26,6 @@ namespace IFramework_Demo
         }
         public void Update()
         {
-            Framework.Update();
             if (Input.GetKeyDown(KeyCode.Q))
             {
                 mou.Get(typeof(Panel1), "Canvas", UIPanelLayer.Background, "Panel1", new UIEventArgs(), false);
@@ -36,9 +35,6 @@ namespace IFramework_Demo
                 mou.Get(typeof(Panel2), "Canvas1", UIPanelLayer.Guide, "Panel2", new UIEventArgs(), true);
             }
         }
-        private void OnDisable()
-        {
-            Framework.Dispose();
-        }
+       
     }
 }

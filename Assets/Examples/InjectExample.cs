@@ -10,10 +10,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using IFramework;
+using UnityEngine;
 
 namespace IFramework_Demo
 {
-	public class InjectExample:UnityEngine.MonoBehaviour
+    [RequireComponent(typeof(APP))]
+
+    public class InjectExample:UnityEngine.MonoBehaviour
 	{
 	    public interface INNN
         {
@@ -30,11 +33,9 @@ namespace IFramework_Demo
         static INNN nnn;
         private void Awake()
         {
-            Framework.Init();
-            Framework.Container.RegisterInstance<INNN>(new NNN());
-            Framework.Container.Inject(this);
+            Framework.env1.Container.RegisterInstance<INNN>(new NNN());
+            Framework.env1.Container.Inject(this);
             nnn.ToDo();
-            Framework.Dispose();
         }
 
     }

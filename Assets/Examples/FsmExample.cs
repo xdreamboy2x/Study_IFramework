@@ -33,46 +33,41 @@ namespace IFramework_Demo
     public class State2 : State
     {
     }
-    public class FsmExample : MonoBehaviour { 
+    [RequireComponent(typeof(APP))]
+    public class FsmExample : MonoBehaviour {
 
-
-        private void Awake()
+        FsmModule fsm { get { return Framework.env1.modules.Fsm; } set { Framework.env1.modules.Fsm = value; } }
+        private void Start()
         
         {
-            Framework.Init();
-            Framework.modules.Fsm = Framework.modules.CreateModule<FsmModule>();
+            fsm = Framework.env1.modules.CreateModule<FsmModule>();
             State1 s1 = new State1();
             State2 s2 = new State2();
-            Framework.modules.Fsm.SubscribeState(s1);
-            Framework.modules.Fsm.EnterState = s1;
-            Framework.modules.Fsm.SubscribeState(s2); 
+            fsm.SubscribeState(s1);
+            fsm.EnterState = s1;
+            fsm.SubscribeState(s2); 
             //f.ExitState = s2;
-         var val= Framework.modules.Fsm.CreateConditionValue<bool>("bool", true);
+         var val= fsm.CreateConditionValue<bool>("bool", true);
 
-            var t1= Framework.modules.Fsm.CreateTransition(s1, s2);
-            var t2 = Framework.modules.Fsm.CreateTransition(s2, s1);
+            var t1= fsm.CreateTransition(s1, s2);
+            var t2 = fsm.CreateTransition(s2, s1);
 
-            t1.BindCondition(Framework.modules.Fsm.CreateCondition<bool>("bool", false, ConditionCompareType.EqualsWithCompare));
-            t2.BindCondition(Framework.modules.Fsm.CreateCondition<bool>(val, true, ConditionCompareType.EqualsWithCompare));
+            t1.BindCondition(fsm.CreateCondition<bool>("bool", false, ConditionCompareType.EqualsWithCompare));
+            t2.BindCondition(fsm.CreateCondition<bool>(val, true, ConditionCompareType.EqualsWithCompare));
 
-            Framework.modules.Fsm.Start();
+            fsm.Start();
         }
         private void Update()
         {
-            Framework.Update();
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                Framework.modules.Fsm.SetBool("bool", false);
+                fsm.SetBool("bool", false);
             }
             if (Input.GetKeyDown(KeyCode.Q))
             {
-                Framework.modules.Fsm.SetBool("bool", true);
+                fsm.SetBool("bool", true);
             }
         }
-        private void OnDisable()
-        {
-            Framework.Dispose();
-
-        }
+       
     }
 }

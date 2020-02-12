@@ -9,23 +9,24 @@
 using System.Collections;
 using IFramework;
 using IFramework.Modules.Coroutine;
+using UnityEngine;
 
 namespace IFramework_Demo
 {
+    [RequireComponent(typeof(APP))]
 
     public class ExampleFrameworkCoroutine : UnityEngine.MonoBehaviour
     {
         void Start()
         {
-            Framework.Init();
-            Framework.modules.Coroutine = Framework.modules.CreateModule<CoroutineModule>();
-            Framework.modules.Coroutine.StartCoroutine(wait2());
+            Framework.env1.modules.Coroutine = Framework.env1.modules.CreateModule<CoroutineModule>();
+            Framework.env1.modules.Coroutine.StartCoroutine(wait2());
         }
         IEnumerator wait()
         {
             //Log.L(Framework.DeltaTime);
             //Log.L(Framework.TimeSinceInit);
-            yield return new WaitForSeconds(2);
+            yield return new IFramework.Modules.Coroutine.WaitForSeconds(2);
 
         }
         IEnumerator wait1()
@@ -44,17 +45,6 @@ namespace IFramework_Demo
             yield return wait();
             Log.L("wait2 end");
         }
-        // Update is called once per frame
-        void Update()
-        {
-
-
-            Framework.Update();
-        }
-        private void OnDestroy()
-        {
-
-            Framework.Dispose();
-        }
+      
     }
 }

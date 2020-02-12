@@ -10,16 +10,17 @@ using IFramework;
 using IFramework.Modules.Coroutine;
 using IFramework.Modules.NodeAction;
 using System;
+using UnityEngine;
 
 namespace IFramework_Demo
 {
+    [RequireComponent(typeof(APP))]
 
     public class CoroutimeActionExample:UnityEngine.MonoBehaviour
 	{
         private void Start()
         {
-            Framework.Init();
-            Framework.modules.Coroutine = Framework.modules.CreateModule<CoroutineModule>();
+            Framework.env1.modules.Coroutine = Framework.env1.modules.CreateModule<CoroutineModule>();
 
            this.Sequence()
                 .Repeat((r) => {
@@ -35,15 +36,8 @@ namespace IFramework_Demo
                 .OnCompelete((ss) => { /*ss.Reset();*/ })
                 .OnDispose((ss) => { Log.L("dispose"); })
                 .OnRecyle(() => { Log.L(123132); })
-                .Run(Framework.modules.Coroutine as CoroutineModule);
+                .Run(Framework.env1.modules.Coroutine as CoroutineModule);
         }
-        private void Update()
-        {
-            Framework.Update();
-        }
-        private void OnDisable()
-        {
-            Framework.Dispose();
-        }
+       
     }
 }

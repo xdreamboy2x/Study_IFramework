@@ -8,22 +8,16 @@
 *********************************************************************************/
 using IFramework;
 using IFramework.Modules.ECS;
+using UnityEngine;
+
 namespace IFramework_Demo
 {
+    [RequireComponent(typeof(APP))]
+
     public class EcsExample:UnityEngine.MonoBehaviour
 	{
-        private void Awake()
-        {
-            Framework.Init();
-        }
-        private void Update()
-        {
-            Framework.Update();
-        }
-        private void OnDestroy()
-        {
-            Framework.Dispose();
-        }
+
+
 
         private class SimpleEnity : Enity { }
         private class PlayerComponent : IComponent { }
@@ -67,10 +61,10 @@ namespace IFramework_Demo
             }
         }
 
-        private ECSModule module { get { return Framework.modules.ECS; } }
+        private ECSModule module { get { return Framework.env1.modules.ECS; } }
         private void Start()
         {
-            Framework.modules.ECS = Framework.modules.CreateModule<ECSModule>();
+            Framework.env1.modules.ECS = Framework.env1.modules.CreateModule<ECSModule>();
             module.AddSystem(new PlayerSystem(module));
             module.AddSystem(new PCSystem(module));
 

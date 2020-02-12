@@ -78,7 +78,7 @@ namespace IFramework
             searcher.onEndEdit += (str) => {
                 searchText = str;
                 if (!EditorApplication.isPlaying) return;
-                moudle = Framework.modules.FindModule<UIModule>(str);
+                moudle = Framework.env1.modules.FindModule<UIModule>(str);
                 if (moudle==null)
                 {
                     ShowNotification(new GUIContent("Not Find,Moudle Must Bind Framework First"));

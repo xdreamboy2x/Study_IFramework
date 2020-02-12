@@ -12,6 +12,7 @@ using IFramework.Modules.Message;
 using UnityEngine;
 namespace IFramework_Demo
 {
+    [RequireComponent(typeof(APP))]
     public class MessageExample:MonoBehaviour,IPublisher
 	{
         public interface IPub : IPublisher { }
@@ -21,30 +22,23 @@ namespace IFramework_Demo
         {
             public Listenner()
             {
-                Framework.modules.Message.Subscribe<Pub>(this);
-                Framework.modules.Message.Subscribe<MessageExample>(this);
+                Framework.env1.modules.Message.Subscribe<Pub>(this);
+                Framework.env1.modules.Message.Subscribe<MessageExample>(this);
             }
             public void Listen(IPublisher publisher, Type eventType, int code, IEventArgs args, params object[] param)
             {
                 Log.L(string.Format("Recieve code {0} from type {1}", code,eventType));
             }
         }
-        private void Awake()
+        MessageModule Message { get { return Framework.env1.modules.Message; } set { Framework.env1.modules.Message = value; } }
+        private void Start()
         {
-            Framework.modules.Message = Framework.modules.CreateModule<MessageModule>();
-            Framework.Init();
+            Message = Framework.env1.modules.CreateModule<MessageModule>();
             Listenner listenner = new Listenner();
 
-            Debug.Log(Framework.modules.Message.Publish<IPub>( 100, null));
+            Debug.Log(Message.Publish<IPub>( 100, null));
 
         }
-        private void Update()
-        {
-            Framework.Update();
-        }
-        private void OnDisable()
-        {
-            Framework.Dispose();
-        }
+       
     }
 }

@@ -11,16 +11,16 @@ using System.Collections.Generic;
 using UnityEngine;
 namespace IFramework_Demo
 {
-	public class LanExample:MonoBehaviour
+    [RequireComponent(typeof(APP))]
+    public class LanExample:MonoBehaviour
 	{
         [LanguageKey]
         public string key="77";
         LanguageModule.LanObserver observer;
         LanguageModule mou;
-        private void Awake()
+        private void Start()
         {
-            Framework.Init();
-            mou = Framework.modules.CreateModule<LanguageModule>();
+            mou = Framework.env1.modules.CreateModule<LanguageModule>();
             mou.Load(() =>
             {
                 return new List<LanPair>()
@@ -44,13 +44,9 @@ namespace IFramework_Demo
         int index;
         private void Update()
         {
-            Framework.Update();
             index = ++index % 40;
             mou.Lan = (SystemLanguage)index;
         }
-        private void OnDestroy()
-        {
-            Framework.Dispose();
-        }
+        
     }
 }
