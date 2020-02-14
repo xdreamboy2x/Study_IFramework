@@ -22,7 +22,7 @@ namespace IFramework_Demo
         {
             Framework.env1.modules.Coroutine = Framework.env1.modules.CreateModule<CoroutineModule>();
 
-           this.Sequence()
+           this.Sequence(1)
                 .Repeat((r) => {
                     r.Sequence((s) =>
                     {
@@ -36,7 +36,7 @@ namespace IFramework_Demo
                 .OnCompelete((ss) => { /*ss.Reset();*/ })
                 .OnDispose((ss) => { Log.L("dispose"); })
                 .OnRecyle(() => { Log.L(123132); })
-                .Run(Framework.env1.modules.Coroutine as CoroutineModule);
+                .Run();
         }
        
     }
