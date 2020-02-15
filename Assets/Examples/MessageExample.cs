@@ -10,24 +10,27 @@ using System;
 using IFramework;
 using IFramework.Modules.Message;
 using UnityEngine;
+
 namespace IFramework_Demo
 {
     [RequireComponent(typeof(APP))]
-    public class MessageExample:MonoBehaviour,IPublisher
+    public class MessageExample:MonoBehaviour,IMessagePublisher
 	{
-        public interface IPub : IPublisher { }
+        public interface IPub : IMessagePublisher { }
         public class Pub:IPub
         { }
-        public class Listenner : IObserver
+        public class Listenner : IMessageListener
         {
             public Listenner()
             {
-                Framework.env1.modules.Message.Subscribe<Pub>(this);
-                Framework.env1.modules.Message.Subscribe<MessageExample>(this);
+                Framework.env1.modules.Message.Subscribe<IPub>(Listen);
+                Framework.env1.modules.Message.Unsubscribe<IPub>(Listen);
+
+                // Framework.env1.modules.Message.Subscribe<MessageExample>(this);
             }
-            public void Listen(IPublisher publisher, Type eventType, int code, IEventArgs args, params object[] param)
+            public void Listen(IMessagePublisher publisher, Type eventType, int code, IEventArgs args, params object[] param)
             {
-                Log.L(string.Format("Recieve code {0} from type {1}", code,eventType));
+                Log.L(string.Format("Recieve code {0} from type {1}", code,eventType)); 
             }
         }
         MessageModule Message { get { return Framework.env1.modules.Message; } set { Framework.env1.modules.Message = value; } }
@@ -36,7 +39,9 @@ namespace IFramework_Demo
             Message = Framework.env1.modules.CreateModule<MessageModule>();
             Listenner listenner = new Listenner();
 
-            Debug.Log(Message.Publish<IPub>( 100, null));
+            Debug.Log(Framework.Version);
+
+            Debug.Log(Message.Publish<Pub>( 100, null));
 
         }
        
