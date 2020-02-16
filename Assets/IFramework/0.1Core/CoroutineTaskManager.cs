@@ -74,9 +74,9 @@ namespace IFramework
     [MonoSingletonPath("IFramework/CoroutineTask")]
     public class CoroutineTaskManager : MonoSingletonPropertyClass<CoroutineTaskManager>
     {
-        private class TaskCreater : ObjectPool<CoroutineTask>
+        private class TaskCreater : ListPool<CoroutineTask>
         {
-            protected override CoroutineTask CreatNew(IEventArgs arg, params object[] param)
+            protected override CoroutineTask CreatNew(IEventArgs arg)
             {
                 return new CoroutineTask();
             }

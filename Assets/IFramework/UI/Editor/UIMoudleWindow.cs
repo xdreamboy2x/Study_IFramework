@@ -10,6 +10,9 @@ using UnityEditor;
 using IFramework.GUITool;
 using UnityEngine;
 using System.Linq;
+using System;
+using System.Collections.Generic;
+using System.IO;
 
 namespace IFramework
 {
@@ -30,7 +33,6 @@ namespace IFramework
         [SerializeField] private bool ShowTop = true;
         [SerializeField] private bool ShowTopTop = true;
 
-        [SerializeField] private bool IsDicOn = true;
         [SerializeField] private bool IsStackOn = true;
         [SerializeField] private bool IsCacheOn = true;
 
@@ -38,6 +40,11 @@ namespace IFramework
         [SerializeField] private Vector2 stackSroll, cacheScroll,scroll0;
         private const float typeWith = 200;
         private const float paneltypeWith = 100;
+        [SerializeField] ViewType viewType;
+        private enum ViewType
+        {
+            GenCode, Runtime,
+        }
         private class Styles
         {
             public static GUIStyle BoldLabel = EditorStyles.boldLabel;
@@ -67,9 +74,281 @@ namespace IFramework
             public static GUIContent Top = new GUIContent("Top", "Top");
             public static GUIContent TopTop = new GUIContent("TopTop", "TopTop");
         }
+
+        private class SearchablePopup : PopupWindowContent
+        {
+            public class InnerSearchField : FocusAbleGUIDrawer
+            {
+                private class Styles
+                {
+                    public static GUIStyle SearchTextFieldStyle = new GUIStyle("ToolbarSeachTextField");
+                    public static GUIStyle SearchCancelButtonStyle = new GUIStyle("SearchCancelButton");
+                    public static GUIStyle SearchCancelButtonEmptyStyle = new GUIStyle("SearchCancelButtonEmpty");
+                }
+
+                public string OnGUI(Rect position, string value)
+                {
+                    GUIStyle cancelBtnStyle = string.IsNullOrEmpty(value) ? Styles.SearchCancelButtonEmptyStyle : Styles.SearchCancelButtonStyle;
+                    position.width -= cancelBtnStyle.fixedWidth;
+
+                    Styles.SearchTextFieldStyle.fixedHeight = position.height;
+                    cancelBtnStyle.fixedHeight = position.height;
+
+                    Styles.SearchTextFieldStyle.alignment = TextAnchor.MiddleLeft;
+                    while (Styles.SearchTextFieldStyle.lineHeight < position.height - 15)
+                    {
+                        Styles.SearchTextFieldStyle.fontSize++;
+                    }
+                    GUI.SetNextControlName(FocusID);
+
+                    value = GUI.TextField(new Rect(position.x,
+                                                                     position.y + 1,
+                                                                     position.width,
+                                                                     position.height - 1),
+                                                                     value,
+                                                                     Styles.SearchTextFieldStyle);
+                    if (GUI.Button(new Rect(position.x + position.width,
+                                            position.y + 1,
+                                            cancelBtnStyle.fixedWidth,
+                                            cancelBtnStyle.fixedHeight
+                                            ),
+                                            GUIContent.none,
+                                            cancelBtnStyle))
+                    {
+                        value = string.Empty;
+                        GUI.changed = true;
+                        GUIUtility.keyboardControl = 0;
+                    }
+
+
+                    Event e = Event.current;
+                    if (position.Contains(e.mousePosition))
+                    {
+                        if (!Focused)
+                            if ((e.type == EventType.MouseDown /*&& e.clickCount == 2*/) /*|| e.keyCode == KeyCode.F2*/)
+                            {
+                                Focused = true;
+                                GUIFocusControl.Focus(this);
+                                if (e.type != EventType.Repaint && e.type != EventType.Layout)
+                                    Event.current.Use();
+                            }
+                    }
+                    //if ((/*e.keyCode == KeyCode.Return ||*/ e.keyCode == KeyCode.Escape || e.character == '\n'))
+                    //{
+                    //    GUIFocusControl.Focus(null, Focused);
+                    //    Focused = false;
+                    //    if (e.type != EventType.Repaint && e.type != EventType.Layout)
+                    //        Event.current.Use();
+                    //}
+                    return value;
+                }
+
+            }
+            private const float rowHeight = 16.0f;
+            private const float rowIndent = 8.0f;
+            public static void Show(Rect activatorRect, string[] options, int current, Action<int, string> onSelectionMade)
+            {
+                SearchablePopup win = new SearchablePopup(options, current, onSelectionMade);
+                PopupWindow.Show(activatorRect, win);
+            }
+            private static void Repaint() { EditorWindow.focusedWindow.Repaint(); }
+            private static void DrawBox(Rect rect, Color tint)
+            {
+                Color c = GUI.color;
+                GUI.color = tint;
+                GUI.Box(rect, "", Selection);
+                GUI.color = c;
+            }
+            private class FilteredList
+            {
+                public struct Entry
+                {
+                    public int Index;
+                    public string Text;
+                }
+                private readonly string[] allItems;
+                public FilteredList(string[] items)
+                {
+                    allItems = items;
+                    Entries = new List<Entry>();
+                    UpdateFilter("");
+                }
+                public string Filter { get; private set; }
+                public List<Entry> Entries { get; private set; }
+                public int Count { get { return allItems.Length; } }
+                public bool UpdateFilter(string filter)
+                {
+                    if (Filter == filter)
+                        return false;
+                    Filter = filter;
+                    Entries.Clear();
+                    for (int i = 0; i < allItems.Length; i++)
+                    {
+                        if (string.IsNullOrEmpty(Filter) || allItems[i].ToLower().Contains(Filter.ToLower()))
+                        {
+                            Entry entry = new Entry
+                            {
+                                Index = i,
+                                Text = allItems[i]
+                            };
+                            if (string.Equals(allItems[i], Filter, StringComparison.CurrentCultureIgnoreCase))
+                                Entries.Insert(0, entry);
+                            else
+                                Entries.Add(entry);
+                        }
+                    }
+                    return true;
+                }
+            }
+
+            private readonly Action<int, string> onSelectionMade;
+            private readonly int currentIndex;
+            private readonly FilteredList list;
+            private Vector2 scroll;
+            private int hoverIndex;
+            private int scrollToIndex;
+            private float scrollOffset;
+            private static GUIStyle Selection = "SelectionRect";
+
+            private SearchablePopup(string[] names, int currentIndex, Action<int, string> onSelectionMade)
+            {
+                list = new FilteredList(names);
+                this.currentIndex = currentIndex;
+                this.onSelectionMade = onSelectionMade;
+                hoverIndex = currentIndex;
+                scrollToIndex = currentIndex;
+                scrollOffset = GetWindowSize().y - rowHeight * 2;
+            }
+
+            public override void OnOpen()
+            {
+                base.OnOpen();
+                EditorApplication.update += Repaint;
+            }
+            public override void OnClose()
+            {
+                base.OnClose();
+                EditorApplication.update -= Repaint;
+            }
+
+            public override Vector2 GetWindowSize()
+            {
+                return new Vector2(base.GetWindowSize().x,
+                    Mathf.Min(600, list.Count * rowHeight + EditorStyles.toolbar.fixedHeight));
+            }
+
+            public override void OnGUI(Rect rect)
+            {
+                Rect searchRect = new Rect(0, 0, rect.width, EditorStyles.toolbar.fixedHeight);
+                Rect scrollRect = Rect.MinMaxRect(0, searchRect.yMax, rect.xMax, rect.yMax);
+
+                HandleKeyboard();
+                DrawSearch(searchRect);
+                DrawSelectionArea(scrollRect);
+            }
+            private InnerSearchField searchField = new InnerSearchField();
+            private void DrawSearch(Rect rect)
+            {
+                GUI.Label(rect, "", EditorStyles.toolbar);
+                if (list.UpdateFilter(searchField.OnGUI(rect.Zoom(AnchorType.MiddleCenter, -2), list.Filter)))
+                {
+                    hoverIndex = 0;
+                    scroll = Vector2.zero;
+                }
+            }
+
+            private void DrawSelectionArea(Rect scrollRect)
+            {
+                Rect contentRect = new Rect(0, 0,
+                    scrollRect.width - GUI.skin.verticalScrollbar.fixedWidth,
+                    list.Entries.Count * rowHeight);
+
+                scroll = GUI.BeginScrollView(scrollRect, scroll, contentRect);
+
+                Rect rowRect = new Rect(0, 0, scrollRect.width, rowHeight);
+
+                for (int i = 0; i < list.Entries.Count; i++)
+                {
+                    if (scrollToIndex == i &&
+                        (Event.current.type == EventType.Repaint
+                         || Event.current.type == EventType.Layout))
+                    {
+                        Rect r = new Rect(rowRect);
+                        r.y += scrollOffset;
+                        GUI.ScrollTo(r);
+                        scrollToIndex = -1;
+                        scroll.x = 0;
+                    }
+
+                    if (rowRect.Contains(Event.current.mousePosition))
+                    {
+                        if (Event.current.type == EventType.MouseMove ||
+                            Event.current.type == EventType.ScrollWheel)
+                            hoverIndex = i;
+                        if (Event.current.type == EventType.MouseDown)
+                        {
+                            onSelectionMade(list.Entries[i].Index, list.Entries[i].Text);
+                            EditorWindow.focusedWindow.Close();
+                        }
+                    }
+
+                    DrawRow(rowRect, i);
+
+                    rowRect.y = rowRect.yMax;
+                }
+
+                GUI.EndScrollView();
+            }
+
+            private void DrawRow(Rect rowRect, int i)
+            {
+                if (list.Entries[i].Index == currentIndex)
+                    DrawBox(rowRect, Color.cyan);
+                else if (i == hoverIndex)
+                    DrawBox(rowRect, Color.white);
+                Rect labelRect = new Rect(rowRect);
+                labelRect.xMin += rowIndent;
+                GUI.Label(labelRect, list.Entries[i].Text);
+            }
+            private void HandleKeyboard()
+            {
+                Event e = Event.current;
+                if (e.type == EventType.KeyDown)
+                {
+                    if (e.keyCode == KeyCode.DownArrow)
+                    {
+                        hoverIndex = Mathf.Min(list.Entries.Count - 1, hoverIndex + 1);
+                        Event.current.Use();
+                        scrollToIndex = hoverIndex;
+                        scrollOffset = rowHeight;
+                    }
+                    if (e.keyCode == KeyCode.UpArrow)
+                    {
+                        hoverIndex = Mathf.Max(0, hoverIndex - 1);
+                        Event.current.Use();
+                        scrollToIndex = hoverIndex;
+                        scrollOffset = -rowHeight;
+                    }
+                    if (e.keyCode == KeyCode.Return || e.character == '\n')
+                    {
+                        if (hoverIndex >= 0 && hoverIndex < list.Entries.Count)
+                        {
+                            onSelectionMade(list.Entries[hoverIndex].Index, list.Entries[hoverIndex].Text);
+                            EditorWindow.focusedWindow.Close();
+                        }
+                    }
+                    if (e.keyCode == KeyCode.Escape)
+                    {
+                        EditorWindow.focusedWindow.Close();
+                    }
+                }
+            }
+        }
+
     }
     partial class UIMoudleWindow 
     {
+
         private void OnEnable()
         {
             searcher = new SearchFieldDrawer() {
@@ -87,14 +366,523 @@ namespace IFramework
         }
         private void OnGUI()
         {
-            this.BeginHorizontal()
-                .Label("Search UIMoudle ")
-                .FlexibleSpace()
-                .Label("", GUILayout.MaxWidth(300))
-                .Pan(() => {
-                    searcher.OnGUI(GUILayoutUtility.GetLastRect());
+            int viewIndex = (int)viewType;
+            this.Toolbar(ref viewIndex, Enum.GetNames(typeof(ViewType)))
+                .Pan(() =>
+                {
+                    viewType = (ViewType)viewIndex;
+                    switch (viewType)
+                    {
+                        case ViewType.GenCode: GenCode_View(); break;
+                        case ViewType.Runtime: RT_View(); break;
+                    }
+                });
+          
+            this.Repaint();
+        }
+
+        private int hashID;
+        private bool DropdownButton(int id, Rect position, GUIContent content)
+        {
+            Event e = Event.current;
+            switch (e.type)
+            {
+                case EventType.MouseDown:
+                    if (position.Contains(e.mousePosition) && e.button == 0)
+                    {
+                        Event.current.Use();
+                        return true;
+                    }
+                    break;
+                case EventType.KeyDown:
+                    if (GUIUtility.keyboardControl == id && e.character == '\n')
+                    {
+                        Event.current.Use();
+                        return true;
+                    }
+                    break;
+                case EventType.Repaint:
+                    Styles.BoldLabel.Draw(position, content, id, false);
+                    break;
+            }
+            return false;
+        }
+        private List<string> panelTypes;
+        private string panelType;
+        private string PanelGenDir;
+        private string UIMapDir;
+
+        private void GenCode_View()
+        {
+            this.DrawHorizontal(() =>
+            {
+                this.Label("Drag UIMap Gen Dir", Styles.toolbar);
+                this.Label(UIMapDir);
+                Rect rect = GUILayoutUtility.GetLastRect();
+                if (string.IsNullOrEmpty(UIMapDir)) 
+                    rect.DrawOutLine(10, Color.red);
+                else
+                    rect.DrawOutLine(2, Color.black);
+                if (rect.Contains(Event.current.mousePosition))
+                {
+                    var drag = DragAndDropUtil.Drag(Event.current, rect);
+                    if (drag.Finsh && drag.EnterArera && drag.paths.Length == 1)
+                    {
+                        string path = drag.paths[0];
+                        if (path.Contains("Assets"))
+                        {
+                            if (path.IsDirectory())
+                                UIMapDir = path;
+                            else
+                                UIMapDir = path.GetDirPath();
+                        }
+
+                    }
+                }
+
+            })
+            .DrawHorizontal(() =>
+            {
+                this.FlexibleSpace()
+                    .Button(() =>
+                    {
+                        if (string.IsNullOrEmpty(UIMapDir) )
+                        {
+                            ShowNotification(new GUIContent("Set UI Map Gen Dir ")); 
+                            return;
+                        }
+                        string uimapGenPath = FrameworkConfig.FrameworkPath.CombinePath("UI/Editor/MapGen.txt");
+                        CreateUIMapGen(uimapGenPath);
+                        WriteTxt(UIMapDir.CombinePath("UIMap.cs"), uimapGenPath);
+                        AssetDatabase.Refresh(); 
+
+                    }, "Copy UIMap From Source");
+
+            })
+            .Space(30);
+              
+            
+            if (hashID == 0) hashID = "UIMoudleWindow".GetHashCode();
+            this.DrawHorizontal(() =>
+            {
+                this.Label("Click Choose Panel Type", Styles.toolbar);
+                GUILayout.Label("");
+                Rect pos = GUILayoutUtility.GetLastRect();
+
+                int ctrlId = GUIUtility.GetControlID(hashID, FocusType.Keyboard, pos);
+                {
+                    if (DropdownButton(ctrlId, pos, new GUIContent(string.Format("PanelType: {0}", panelType))))
+                    {
+                        if (panelTypes==null)
+                        {
+                            ShowNotification(new GUIContent("Fresh Panel Types"));
+                            return;
+                        }
+                        int index = -1;
+                        for (int i = 0; i < panelTypes.Count; i++)
+                        {
+                            if (panelTypes[i] == panelType)
+                            {
+                                index = i; break;
+                            }
+                        }
+                        SearchablePopup.Show(pos, panelTypes.ToArray(), index, (i, str) =>
+                        {
+                            panelType = str;
+                            Repaint();
+                        });
+                    }
+                }
+            })
+                .Space(10)
+                .DrawHorizontal(() =>
+                {
+                    this.Label("Drag Choose Panel Gen Dir", Styles.toolbar);
+                    this.Label(PanelGenDir);
+                    Rect rect = GUILayoutUtility.GetLastRect();
+                    if (string.IsNullOrEmpty(PanelGenDir))
+                        rect.DrawOutLine(10, Color.red);
+                    else
+                        rect.DrawOutLine(2, Color.black);
+                    if (rect.Contains(Event.current.mousePosition))
+                    {
+                        var drag = DragAndDropUtil.Drag(Event.current, rect);
+                        if (drag.Finsh && drag.EnterArera && drag.paths.Length == 1)
+                        {
+                            string path = drag.paths[0];
+                            if (path.Contains("Assets"))
+                            {
+                                if (path.IsDirectory())
+                                    PanelGenDir = path;
+                                else
+                                    PanelGenDir = path.GetDirPath();
+                            }
+
+                        }
+                    }
+
                 })
-                .EndHorizontal();
+                .Space(10)
+                .DrawHorizontal(() =>
+                {
+                    this.Button(() =>
+                         {
+                             panelTypes = typeof(UIPanel).GetSubTypesInAssemblys().Select((type) =>
+                             {
+                                 return type.FullName;
+                             }).ToList();
+                         }, "Fresh Panel Types")
+                       .Space(20)
+                       .Button(() =>
+                       {
+                           if (string.IsNullOrEmpty(UIMapDir) )
+                           {
+                               ShowNotification(new GUIContent("Set UI Map Gen Dir "));
+                               return;
+                           }
+                           if (!File.Exists(UIMapDir.CombinePath("UIMap.cs")))
+                           {
+                               ShowNotification(new GUIContent("Copy UI Map"));
+                               return;
+                           }
+                           if (string.IsNullOrEmpty(panelType))
+                           {
+                               ShowNotification(new GUIContent("Choose UI Panel Type "));
+                               return;
+                           }
+                           if (string.IsNullOrEmpty(PanelGenDir))
+                           {
+                               ShowNotification(new GUIContent("Set UI Panel Gen Dir "));
+
+                               return;
+                           }
+                            string type = panelType.Split('.').ToList().Last();
+                           string sensorGenPath = FrameworkConfig.FrameworkPath.CombinePath("UI/Editor/SensorGen.txt");
+                           string policyGenPath = FrameworkConfig.FrameworkPath.CombinePath("UI/Editor/PolicyGen.txt");
+
+                           string excutorGenPath = FrameworkConfig.FrameworkPath.CombinePath("UI/Editor/ExcutorGen.txt");
+                           string viewGenPath = FrameworkConfig.FrameworkPath.CombinePath("UI/Editor/ViewGen.txt");
+                           string EnityGenPath = FrameworkConfig.FrameworkPath.CombinePath("UI/Editor/EnityGen.txt");
+
+                           CreateSensorGen(sensorGenPath);
+                           CreatePolicyGen(policyGenPath);
+                           CreatePolicyExcutorGen(excutorGenPath);
+                           CreateViewGen(viewGenPath);
+                           CreateEnityGen(EnityGenPath);
+
+                           WriteTxt(PanelGenDir.CombinePath(type.Append("Sensor.cs")), sensorGenPath);
+                           WriteTxt(PanelGenDir.CombinePath(type.Append("Policy.cs")), policyGenPath);
+                           WriteTxt(PanelGenDir.CombinePath(type.Append("Excutor.cs")), excutorGenPath);
+                           WriteTxt(PanelGenDir.CombinePath(type.Append("View.cs")), viewGenPath);
+                           WriteTxt(PanelGenDir.CombinePath(type.Append("Enity.cs")), EnityGenPath);
+                           WriteMap(UIMapDir.CombinePath("UIMap.cs"), UIMapDir.CombinePath("UIMap.cs"));
+                           AssetDatabase.Refresh();
+                       }, "Gen");
+                });
+                
+        }
+
+        private static void CreateUIMapGen(string genSourcePath)
+        {
+            if (File.Exists(genSourcePath)) return;
+            using (FileStream fs = new FileStream(genSourcePath, FileMode.Create, FileAccess.Write))
+            {
+                using (StreamWriter sw = new StreamWriter(fs))
+                {
+                    fs.Lock(0, fs.Length);
+                    sw.WriteLine("/*********************************************************************************");
+                    sw.WriteLine(" *Author:         #User#");
+                    sw.WriteLine(" *Version:        #UserVERSION#");
+                    sw.WriteLine(" *UnityVersion:   #UserUNITYVERSION#");
+                    sw.WriteLine(" *Date:           #UserDATE#");
+                    sw.WriteLine(" *Description:    #UserDescription#");
+                    sw.WriteLine(" *History:        #UserDATE#--");
+                    sw.WriteLine("*********************************************************************************/");
+                    sw.WriteLine("using System;");
+                    sw.WriteLine("using System.Collections;");
+                    sw.WriteLine("using System.Collections.Generic;");
+                    sw.WriteLine("using IFramework;");
+
+                    sw.WriteLine("");
+                    sw.WriteLine("namespace #UserNameSpace#");
+                    sw.WriteLine("{");
+                    sw.WriteLine("\tpublic class UIMap ");
+                    sw.WriteLine("\t{");
+                    sw.WriteLine("\t\t private static Dictionary<Type, Tuple<Type, Type, Type, Type, Type>> map =");
+                    sw.WriteLine("\t\t new Dictionary<Type, Tuple<Type, Type, Type, Type, Type>>()");
+                    sw.WriteLine("\t\t{");
+                    sw.WriteLine("\t\t\t//ToDo");
+                    sw.WriteLine("\t\t};");
+                    sw.WriteLine("\t}");
+                    sw.WriteLine("}");
+                    fs.Unlock(0, fs.Length);
+                    sw.Flush();
+                    fs.Flush();
+                }
+
+            }
+            AssetDatabase.Refresh();
+        }
+
+        private static void CreateEnityGen(string genSourcePath)
+        {
+            if (File.Exists(genSourcePath)) return;
+            using (FileStream fs = new FileStream(genSourcePath, FileMode.Create, FileAccess.Write))
+            {
+                using (StreamWriter sw = new StreamWriter(fs))
+                {
+                    fs.Lock(0, fs.Length);
+                    sw.WriteLine("/*********************************************************************************");
+                    sw.WriteLine(" *Author:         #User#");
+                    sw.WriteLine(" *Version:        #UserVERSION#");
+                    sw.WriteLine(" *UnityVersion:   #UserUNITYVERSION#");
+                    sw.WriteLine(" *Date:           #UserDATE#");
+                    sw.WriteLine(" *Description:    #UserDescription#");
+                    sw.WriteLine(" *History:        #UserDATE#--");
+                    sw.WriteLine("*********************************************************************************/");
+                    sw.WriteLine("using System;");
+                    sw.WriteLine("using System.Collections;");
+                    sw.WriteLine("using System.Collections.Generic;");
+                    sw.WriteLine("using IFramework;");
+
+                    sw.WriteLine("");
+                    sw.WriteLine("namespace #UserNameSpace#");
+                    sw.WriteLine("{");
+                    sw.WriteLine("\tpublic class #UserSCRIPTNAME# : UIEnity");
+                    sw.WriteLine("\t{");
+                    sw.WriteLine("\t}");
+
+
+                    sw.WriteLine("}");
+                    fs.Unlock(0, fs.Length);
+                    sw.Flush();
+                    fs.Flush();
+                }
+
+            }
+            AssetDatabase.Refresh();
+        }
+        private static void CreateSensorGen(string genSourcePath)
+        {
+            if (File.Exists(genSourcePath)) return;
+            using (FileStream fs = new FileStream(genSourcePath, FileMode.Create, FileAccess.Write))
+            {
+                using (StreamWriter sw = new StreamWriter(fs))
+                {
+                    fs.Lock(0, fs.Length);
+                    sw.WriteLine("/*********************************************************************************");
+                    sw.WriteLine(" *Author:         #User#");
+                    sw.WriteLine(" *Version:        #UserVERSION#");
+                    sw.WriteLine(" *UnityVersion:   #UserUNITYVERSION#");
+                    sw.WriteLine(" *Date:           #UserDATE#");
+                    sw.WriteLine(" *Description:    #UserDescription#");
+                    sw.WriteLine(" *History:        #UserDATE#--");
+                    sw.WriteLine("*********************************************************************************/");
+                    sw.WriteLine("using System;");
+                    sw.WriteLine("using System.Collections;");
+                    sw.WriteLine("using System.Collections.Generic;");
+                    sw.WriteLine("using IFramework;");
+
+                    sw.WriteLine("");
+                    sw.WriteLine("namespace #UserNameSpace#");
+                    sw.WriteLine("{");
+                    sw.WriteLine("\tpublic class #UserSCRIPTNAME# : UISensor");
+                    sw.WriteLine("\t{");
+
+                    sw.WriteLine("\t\tprotected override void OnClear()");
+                    sw.WriteLine("\t\t{");
+                    sw.WriteLine("\t\t");
+                    sw.WriteLine("\t\t}");
+
+                    sw.WriteLine("\t\tprotected override void OnLoad()");
+                    sw.WriteLine("\t\t{");
+                    sw.WriteLine("\t\t");
+                    sw.WriteLine("\t\t}");
+                    sw.WriteLine("\t\tprotected override void OnPop(UIEventArgs arg)");
+                    sw.WriteLine("\t\t{");
+                    sw.WriteLine("\t\t");
+                    sw.WriteLine("\t\t}");
+                    sw.WriteLine("\t\tprotected override void OnPress(UIEventArgs arg)");
+                    sw.WriteLine("\t\t{");
+                    sw.WriteLine("\t\t");
+                    sw.WriteLine("\t\t}");
+                    sw.WriteLine("\t\tprotected override void OnTop(UIEventArgs arg)");
+                    sw.WriteLine("\t\t{");
+                    sw.WriteLine("\t\t");
+                    sw.WriteLine("\t\t}");
+
+                    sw.WriteLine("\t}");
+
+
+                    sw.WriteLine("}");
+                    fs.Unlock(0, fs.Length);
+                    sw.Flush();
+                    fs.Flush();
+                }
+
+            }
+            AssetDatabase.Refresh();
+        }
+        private static void CreatePolicyGen(string genSourcePath)
+        {
+            if (File.Exists(genSourcePath)) return;
+            using (FileStream fs = new FileStream(genSourcePath, FileMode.Create, FileAccess.Write))
+            {
+                using (StreamWriter sw = new StreamWriter(fs))
+                {
+                    fs.Lock(0, fs.Length);
+                    sw.WriteLine("/*********************************************************************************");
+                    sw.WriteLine(" *Author:         #User#");
+                    sw.WriteLine(" *Version:        #UserVERSION#");
+                    sw.WriteLine(" *UnityVersion:   #UserUNITYVERSION#");
+                    sw.WriteLine(" *Date:           #UserDATE#");
+                    sw.WriteLine(" *Description:    #UserDescription#");
+                    sw.WriteLine(" *History:        #UserDATE#--");
+                    sw.WriteLine("*********************************************************************************/");
+                    sw.WriteLine("using System;");
+                    sw.WriteLine("using System.Collections;");
+                    sw.WriteLine("using System.Collections.Generic;");
+                    sw.WriteLine("using IFramework;");
+
+                    sw.WriteLine("");
+                    sw.WriteLine("namespace #UserNameSpace#");
+                    sw.WriteLine("{");
+                    sw.WriteLine("\tpublic class #UserSCRIPTNAME# : UIPolicy");
+                    sw.WriteLine("\t{");
+
+                    sw.WriteLine("\t\tprotected override void OnSensor(int code, IEventArgs args, object[] param)");
+                    sw.WriteLine("\t\t{");
+                    sw.WriteLine("\t\t");
+                    sw.WriteLine("\t\t}");
+
+                    sw.WriteLine("\t}");
+                    sw.WriteLine("}");
+                    fs.Unlock(0, fs.Length);
+                    sw.Flush();
+                    fs.Flush();
+                }
+            }
+            AssetDatabase.Refresh();
+        }
+        private static void CreatePolicyExcutorGen(string genSourcePath)
+        {
+            if (File.Exists(genSourcePath)) return;
+            using (FileStream fs = new FileStream(genSourcePath, FileMode.Create, FileAccess.Write))
+            {
+                using (StreamWriter sw = new StreamWriter(fs))
+                {
+                    fs.Lock(0, fs.Length);
+                    sw.WriteLine("/*********************************************************************************");
+                    sw.WriteLine(" *Author:         #User#");
+                    sw.WriteLine(" *Version:        #UserVERSION#");
+                    sw.WriteLine(" *UnityVersion:   #UserUNITYVERSION#");
+                    sw.WriteLine(" *Date:           #UserDATE#");
+                    sw.WriteLine(" *Description:    #UserDescription#");
+                    sw.WriteLine(" *History:        #UserDATE#--");
+                    sw.WriteLine("*********************************************************************************/");
+                    sw.WriteLine("using System;");
+                    sw.WriteLine("using System.Collections;");
+                    sw.WriteLine("using System.Collections.Generic;");
+                    sw.WriteLine("using IFramework;");
+
+                    sw.WriteLine("");
+                    sw.WriteLine("namespace #UserNameSpace#");
+                    sw.WriteLine("{");
+                    sw.WriteLine("\tpublic class #UserSCRIPTNAME# : UIPolicyExecutor");
+                    sw.WriteLine("\t{");
+
+                    sw.WriteLine("\t\tprotected override void OnPolicy(int code, IEventArgs args, object[] param)");
+                    sw.WriteLine("\t\t{");
+                    sw.WriteLine("\t\t");
+                    sw.WriteLine("\t\t}");
+
+                    sw.WriteLine("\t}");
+                    sw.WriteLine("}");
+                    fs.Unlock(0, fs.Length);
+                    sw.Flush();
+                    fs.Flush();
+                }
+            }
+            AssetDatabase.Refresh();
+        }
+        private static void CreateViewGen(string genSourcePath)
+        {
+            if (File.Exists(genSourcePath)) return;
+            using (FileStream fs = new FileStream(genSourcePath, FileMode.Create, FileAccess.Write))
+            {
+                using (StreamWriter sw = new StreamWriter(fs))
+                {
+                    fs.Lock(0, fs.Length);
+                    sw.WriteLine("/*********************************************************************************");
+                    sw.WriteLine(" *Author:         #User#");
+                    sw.WriteLine(" *Version:        #UserVERSION#");
+                    sw.WriteLine(" *UnityVersion:   #UserUNITYVERSION#");
+                    sw.WriteLine(" *Date:           #UserDATE#");
+                    sw.WriteLine(" *Description:    #UserDescription#");
+                    sw.WriteLine(" *History:        #UserDATE#--");
+                    sw.WriteLine("*********************************************************************************/");
+                    sw.WriteLine("using System;");
+                    sw.WriteLine("using System.Collections;");
+                    sw.WriteLine("using System.Collections.Generic;");
+                    sw.WriteLine("using IFramework;");
+
+                    sw.WriteLine("");
+                    sw.WriteLine("namespace #UserNameSpace#");
+                    sw.WriteLine("{");
+                    sw.WriteLine("\tpublic class #UserSCRIPTNAME# : UIView");
+                    sw.WriteLine("\t{");
+
+                    sw.WriteLine("\t\tprotected override void OnPolicyPolicyExecutor(int code, IEventArgs args, object[] param)");
+                    sw.WriteLine("\t\t{");
+                    sw.WriteLine("\t\t");
+                    sw.WriteLine("\t\t}");
+
+                    sw.WriteLine("\t}");
+                    sw.WriteLine("}");
+                    fs.Unlock(0, fs.Length);
+                    sw.Flush();
+                    fs.Flush();
+                }
+            }
+            AssetDatabase.Refresh();
+        }
+        private static void WriteTxt(string writePath,string sourcePath)
+        {
+            var txt = File.ReadAllText(sourcePath);
+                txt = txt.Replace("#User#", EditorProjectConfig.UserName)
+                         .Replace("#UserSCRIPTNAME#", Path.GetFileNameWithoutExtension(writePath))
+                           .Replace("#UserNameSpace#", EditorProjectConfig.NameSpace)
+                           .Replace("#UserVERSION#", EditorProjectConfig.Version)
+                           .Replace("#UserDescription#", EditorProjectConfig.Description)
+                           .Replace("#UserUNITYVERSION#", Application.unityVersion)
+                           .Replace("#UserDATE#", DateTime.Now.ToString("yyyy-MM-dd"));
+            File.WriteAllText(writePath, txt, System.Text.Encoding.UTF8);
+        }
+
+
+        private void WriteMap(string writePath, string sourcePath)
+        {
+            var txt = File.ReadAllText(sourcePath);
+            string flag = "//ToDo";
+
+            string tmp = string.Format("typeof({0}),Tuple.Create(typeof({0}Enity),typeof({0}Sensor),typeof({0}Policy),typeof({0}Excutor),typeof({0}View))", panelType);
+            tmp = tmp.Append("},\n").AppendHead("{").Append(flag);
+            txt = txt.Replace(flag, tmp);
+            File.WriteAllText(writePath, txt, System.Text.Encoding.UTF8);
+        }
+
+
+
+        private void RT_View()
+        {
+            this.BeginHorizontal()
+              .Label("Search UIMoudle ")
+              .FlexibleSpace()
+              .Label("", GUILayout.MaxWidth(300))
+              .Pan(() => {
+                  searcher.OnGUI(GUILayoutUtility.GetLastRect());
+              })
+              .EndHorizontal();
             this.BeginHorizontal(Styles.toolbar)
                     .Toggle(ref ShowBGBG, Contents.BGBG, Styles.toolbarButton)
                     .Toggle(ref ShowBackGround, Contents.BackGround, Styles.toolbarButton)
@@ -124,152 +912,94 @@ namespace IFramework
 
 
             if (moudle == null || moudle.disposed || !EditorApplication.isPlaying) return;
-            this.BeginHorizontal(Styles.Fold, GUILayout.Height(20))
-                        .Space(10)
-                        .Foldout(ref IsDicOn, "Panel Dictionary (PreFabs)", true, Styles.FoldOut)
-                        .FlexibleSpace()
+            this.BeginHorizontal(Styles.toolbar)
+                .Label("UI Load Order", Styles.BoldLabel)
+            .EndHorizontal()
+            .Space(2)
+            .BeginVertical()
+                .BeginHorizontal(Styles.Fold, GUILayout.Height(20))
+                    .Space(10)
+                    .Foldout(ref IsStackOn, string.Format("Stack  Count:  {0}", moudle.StackCount), true, Styles.FoldOut)
+                    .FlexibleSpace()
                 .EndHorizontal()
                 .Pan(() => {
-                    if (!IsDicOn) return;
-                    this.Space(2)
-                        .BeginScrollView(ref scroll0)
-                            .BeginVertical()
-                                 .Pan(() =>
-                                 {
-                                     foreach (var item in moudle.panelDic.Keys)
-                                     {
-                                         var list = moudle.panelDic[item];
-                                         this.BeginHorizontal(Styles.toolbar)
-                                                  .Label(item.FullName)
-                                             .EndHorizontal()
-                                             .BeginHorizontal()
-                                                 .Space(10)
-                                                 .BeginVertical()
-                                                        .Pan(() =>
-                                                        {
-                                                            list.ForEach((panel) =>
-                                                            {
-                                                                bool canshow = FitCanShow(panel);
-
-                                                                if (!canshow) return;
-                                                                Rect rect;
-                                                                this.BeginHorizontal()
-                                                                            .Space(10)
-                                                                            .EBeginHorizontal(out rect, EditorStyles.toolbar)
-                                                                                .Space(10)
-                                                                                .Label(panel.PanelName)
-                                                                                .Label(panel.GetType().ToString(), GUILayout.MaxWidth(typeWith))
-                                                                                .Label(panel.PanelLayer.ToString(), GUILayout.Width(paneltypeWith))
-                                                                            .EEndHorizontal()
-                                                                            .Pan(() =>
-                                                                            {
-                                                                                if (Event.current.clickCount == 2 && rect.Contains(Event.current.mousePosition))
-                                                                                    Selection.activeGameObject = panel.gameObject;
-                                                                            })
-                                                                        .EndHorizontal();
-
-                                                            });
-                                                        })
-                                                  .EndVertical()
-                                             .EndHorizontal();
-                                         ;
-                                     }
-                                 })
-                            .EndVertical()
-                        .LayoutEndScrollView();
-                })
-
-
-                .Space(10)
-                .BeginHorizontal(Styles.toolbar)
-                    .Label("UI Load Order", Styles.BoldLabel)
-                .EndHorizontal()
-                .Space(2)
-                .BeginVertical()
-                    .BeginHorizontal(Styles.Fold, GUILayout.Height(20))
-                        .Space(10)
-                        .Foldout(ref IsStackOn, string.Format("Stack  Count:  {0}", moudle.StackCount), true, Styles.FoldOut)
-                        .FlexibleSpace()
-                    .EndHorizontal()
-                    .Pan(() => {
-                        if (moudle.StackCount <= 0) return;
-                        var o = moudle.UIStack.ToList();
+                    if (moudle.StackCount <= 0) return;
+                    var o = moudle.UIStack.ToList();
                         //GUI.enabled = false;
                         if (IsStackOn)
-                        {
-                            this.DrawScrollView(() => {
-                                for (int i = moudle.UIStack.Count - 1; i >= 0; i--)
-                                {
-                                    GUI.enabled = i == 0;
-                                    bool canshow = FitCanShow(o[i]);
-                                    if (!canshow) continue;
-                                    Rect rect;
-                                    this.BeginHorizontal()
-                                                .Space(10)
-                                                .EBeginHorizontal(out rect, EditorStyles.toolbar)
-                                                    .Space(10)
-                                                    .Label(o[i].PanelName)
-                                                    .Label(o[i].GetType().ToString(), GUILayout.MaxWidth(typeWith))
-                                                    .Label(o[i].PanelLayer.ToString(), GUILayout.Width(paneltypeWith))
-                                                .EEndHorizontal()
-                                                .Pan(() =>
-                                                {
-                                                    if (Event.current.clickCount == 2 && rect.Contains(Event.current.mousePosition))
-                                                        Selection.activeGameObject = o[i].gameObject;
-                                                })
-                                            .EndHorizontal();
-                                }
-                                GUI.enabled = true;
-                            }, ref stackSroll);
-                        }
-                    })
-                    .BeginHorizontal(Styles.Fold, GUILayout.Height(20))
-                        .Space(10)
-                        .Foldout(ref IsCacheOn, string.Format("Cache  Count:  {0}", moudle.CacheCount), true, Styles.FoldOut)
-                        .FlexibleSpace()
-                    .EndHorizontal()
-                    .Pan(() => {
-                        if (moudle.UICache.Count <= 0) return;
-                        var o = moudle.UICache.ToList();
-                        if (IsCacheOn)
-                        {
-                            this.DrawScrollView(() =>
+                    {
+                        this.DrawScrollView(() => {
+                            for (int i = moudle.UIStack.Count - 1; i >= 0; i--)
                             {
-                                GUI.enabled = false;
-                                for (int i = 0; i < moudle.UICache.Count; i++)
-                                {
-                                    bool canshow = FitCanShow(o[i]);
-                                    if (!canshow) continue;
-                                    Rect rect;
-                                    this.BeginHorizontal()
+                                GUI.enabled = i == 0;
+                                bool canshow = FitCanShow(o[i]);
+                                if (!canshow) continue;
+                                Rect rect;
+                                this.BeginHorizontal()
+                                            .Space(10)
+                                            .EBeginHorizontal(out rect, EditorStyles.toolbar)
                                                 .Space(10)
-                                                .EBeginHorizontal(out rect, EditorStyles.toolbar)
-                                                    .Space(10)
-                                                    .Label(o[i].PanelName)
-                                                    .Label(o[i].GetType().ToString(), GUILayout.MaxWidth(typeWith))
-                                                    .Label(o[i].PanelLayer.ToString(), GUILayout.Width(paneltypeWith))
-                                                .EEndHorizontal()
-                                                .Pan(() =>
-                                                {
-                                                    if (Event.current.clickCount == 2 && rect.Contains(Event.current.mousePosition))
-                                                        Selection.activeGameObject = o[i].gameObject;
-                                                })
-                                            .EndHorizontal();
+                                                .Label(o[i].PanelName)
+                                                .Label(o[i].GetType().ToString(), GUILayout.MaxWidth(typeWith))
+                                                .Label(o[i].PanelLayer.ToString(), GUILayout.Width(paneltypeWith))
+                                            .EEndHorizontal()
+                                            .Pan(() =>
+                                            {
+                                                if (Event.current.clickCount == 2 && rect.Contains(Event.current.mousePosition))
+                                                    Selection.activeGameObject = o[i].gameObject;
+                                            })
+                                        .EndHorizontal();
+                            }
+                            GUI.enabled = true;
+                        }, ref stackSroll);
+                    }
+                })
 
-                                }
-                                GUI.enabled = true;
+                .BeginHorizontal(Styles.Fold, GUILayout.Height(20))
+                    .Space(10)
+                    .Foldout(ref IsCacheOn, string.Format("Cache  Count:  {0}", moudle.CacheCount), true, Styles.FoldOut)
+                    .FlexibleSpace()
+                .EndHorizontal()
+                .Pan(() => {
+                    if (moudle.UICache.Count <= 0) return;
+                    var o = moudle.UICache.ToList();
+                    if (IsCacheOn)
+                    {
+                        this.DrawScrollView(() =>
+                        {
+                            GUI.enabled = false;
+                            for (int i = 0; i < moudle.UICache.Count; i++)
+                            {
+                                bool canshow = FitCanShow(o[i]);
+                                if (!canshow) continue;
+                                Rect rect;
+                                this.BeginHorizontal()
+                                            .Space(10)
+                                            .EBeginHorizontal(out rect, EditorStyles.toolbar)
+                                                .Space(10)
+                                                .Label(o[i].PanelName)
+                                                .Label(o[i].GetType().ToString(), GUILayout.MaxWidth(typeWith))
+                                                .Label(o[i].PanelLayer.ToString(), GUILayout.Width(paneltypeWith))
+                                            .EEndHorizontal()
+                                            .Pan(() =>
+                                            {
+                                                if (Event.current.clickCount == 2 && rect.Contains(Event.current.mousePosition))
+                                                    Selection.activeGameObject = o[i].gameObject;
+                                            })
+                                        .EndHorizontal();
 
-                            }, ref cacheScroll);
-                        }
-                       
-                    })
-                .EndVertical()
-                .FlexibleSpace()
-                .Space(20);
+                            }
+                            GUI.enabled = true;
+
+                        }, ref cacheScroll);
+                    }
+
+                })
+            .EndVertical()
+            .FlexibleSpace()
+            .Space(20);
             TestButton();
-            this.Repaint();
         }
-
         private bool FitCanShow(UIPanel panel)
         {
             bool canshow = false;
@@ -316,7 +1046,7 @@ namespace IFramework
                 {
                     if (GUILayout.Button("ClearCache", GUILayout.Height(30)))
                     {
-                        moudle.ClearCache(new UIEventArgs() { isInspectorBtn = true });
+                        moudle.ClearCache();
                     }
                 }
             }

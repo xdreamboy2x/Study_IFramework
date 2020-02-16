@@ -17,19 +17,19 @@ namespace IFramework_Demo
         class CubeObj : IPoolObject
         {
             public GameObject selfCube;
-            public void OnCreate(IEventArgs arg, params object[] param)
+            public void OnCreate(IEventArgs arg)
             {
                 selfCube = GameObject.Instantiate(cube);
             }
-            public void OnGet(IEventArgs arg, params object[] param)
+            public void OnGet(IEventArgs arg)
             {
                 selfCube.SetActive(true);
             }
-            public void OnSet(IEventArgs arg, params object[] param)
+            public void OnSet(IEventArgs arg)
             {
                 selfCube.SetActive(false);
             }
-            public void OnClear(IEventArgs arg, params object[] param)
+            public void OnClear(IEventArgs arg)
             {
                 GameObject.Destroy(selfCube);
             }

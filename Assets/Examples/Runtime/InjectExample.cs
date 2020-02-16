@@ -30,11 +30,11 @@ namespace IFramework_Demo
             }
         }
         [Inject]
-        static INNN nnn;
+        static INNN nnn=null;
         private void Awake()
         {
-            Framework.env1.Container.RegisterInstance<INNN>(new NNN());
-            Framework.env1.Container.Inject(this);
+            Framework.env1.container.RegisterInstance<INNN>(new NNN());
+            Framework.env1.container.Inject(this); 
             nnn.ToDo();
         }
 

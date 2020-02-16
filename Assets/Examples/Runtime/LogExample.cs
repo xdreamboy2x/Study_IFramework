@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace IFramework_Demo
 {
-    internal class LogExample : MonoBehaviour,ILog
+    internal class LogExample : MonoBehaviour
     {
         [ContextMenu("Log ")]
         public void Say()
@@ -19,7 +19,6 @@ namespace IFramework_Demo
             string world = "Hello  World";
             Log.L(world);
             world.Log();
-            this.Log(world);
             Log.W(world);
             Log.E(world);
 

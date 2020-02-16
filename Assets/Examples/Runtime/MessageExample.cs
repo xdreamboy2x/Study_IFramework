@@ -28,7 +28,7 @@ namespace IFramework_Demo
 
                 // Framework.env1.modules.Message.Subscribe<MessageExample>(this);
             }
-            public void Listen(IMessagePublisher publisher, Type eventType, int code, IEventArgs args, params object[] param)
+            public void Listen( Type eventType, int code, IEventArgs args, params object[] param)
             {
                 Log.L(string.Format("Recieve code {0} from type {1}", code,eventType)); 
             }

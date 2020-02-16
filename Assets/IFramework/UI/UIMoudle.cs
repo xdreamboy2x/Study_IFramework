@@ -11,15 +11,132 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using IFramework.Modules;
+using IFramework.Modules.MVP;
 namespace IFramework
 {
+    public class UIEnity:MVPEnity 
+    {
+        public UIPanel panel;
+        protected override void OnDestory()
+        {
+            base.OnDestory();
+            Debug.Log("des");
+            if (panel!=null && panel.gameObject!=null)
+                GameObject.Destroy(panel.gameObject);
+        }
+    }
+    internal interface IUISensor
+    {
+        void OnLoad();
+        void OnTop(UIEventArgs arg);
+        void OnPress(UIEventArgs arg);
+        void OnPop(UIEventArgs arg);
+        void OnClear();
+    }
+    public abstract class UISensor:SensorSystem, IUISensor
+    {
+        void IUISensor.OnLoad()
+        {
+            OnLoad();
+        }
+        void IUISensor.OnTop(UIEventArgs arg)
+        {
+            OnTop(arg);
+        }
+        void IUISensor.OnPress(UIEventArgs arg)
+        {
+            OnPress(arg);
+        }
+        void IUISensor.OnPop(UIEventArgs arg)
+        {
+            OnPop(arg);
+        }
+        void IUISensor.OnClear()
+        {
+            OnClear();
+        }
+
+        protected abstract void OnLoad();
+        protected abstract void OnTop(UIEventArgs arg);
+        protected abstract void OnPress(UIEventArgs arg);
+        protected abstract void OnPop(UIEventArgs arg);
+        protected abstract void OnClear();
+
+    }
+    public abstract class UIPolicy : PolicySystem
+    {
+        protected override void OnSensor(int code, IEventArgs args, object[] param)
+        {
+               
+        }
+    }
+    public abstract class UIPolicyExecutor : PolicyExecutorSystem
+    {
+        protected override void OnPolicy(int code, IEventArgs args, object[] param)
+        {
+        }
+    }
+    public abstract class UIView : ViewSystem
+    {
+        protected override void OnPolicyPolicyExecutor(int code, IEventArgs args, object[] param)
+        {
+                
+        }
+    }
+   
+   
+
+  
     public class UIModule : FrameworkModule
     {
-        protected override bool needUpdate { get { return false; } }
+        private class UIEnitys : FrameworkModuleContainer
+        {
+            public Dictionary<Type, Tuple<Type, Type, Type, Type, Type>> map;
+            public UIEnitys(string chunck) : base(chunck, null, false)
+            {
+
+            }
+            public MVPModule Subscribe(UIPanel panel)
+            {
+                var module = FindEnity(panel);
+                if (module != null) throw new Exception(string.Format("Have Subscribe Panel Name: {0}", panel.PanelName));
+                module = CreateModule<MVPModule>(panel.PanelName);
+                Tuple<Type, Type, Type, Type, Type> tuple;
+                map.TryGetValue(panel.GetType(), out tuple);
+                if (tuple == null) throw new Exception(string.Format("Could Not Find map with Type: {0}", panel.GetType()));
+                var enity = Activator.CreateInstance(tuple.Item1) as UIEnity;
+                enity.panel = panel;
+
+                var sensor = Activator.CreateInstance(tuple.Item2) as UISensor;
+                var policy = Activator.CreateInstance(tuple.Item3) as UIPolicy;
+                var executor = Activator.CreateInstance(tuple.Item4) as UIPolicyExecutor;
+                var view = Activator.CreateInstance(tuple.Item5) as UIView;
+
+                module.enity = enity;
+                module.sensor = sensor;
+                module.policyExecutor = executor;
+                module.policy = policy;
+                module.view = view;
+                return module;
+            }
+            public MVPModule FindEnity(UIPanel panel)
+            {
+                return FindEnity(panel.PanelName);
+            }
+            public MVPModule FindEnity(string panelName)
+            {
+                return FindModule<MVPModule>(panelName);
+            }
+            public void UnSubscribe(UIPanel panel)
+            {
+                var module = FindEnity(panel);
+                module.UnBind(false);
+            }
+        }
+        private UIEnitys _enitys;
 
         public Canvas Canvas { get; private set; }
         private RectTransform UIRoot;
-
         public RectTransform BGBG { get; private set; }
         public RectTransform Background { get; private set; }
         public RectTransform AnimationUnderPage { get; private set; }
@@ -62,24 +179,26 @@ namespace IFramework
             TopTop = InitTransform("TopTop");
             UICamera = InitTransform("UICamera");
 
-            panelDic = new Dictionary<Type, List<UIPanel>>();
+            //panelDic = new Dictionary<Type, List<UIPanel>>();
             UIStack = new Stack<UIPanel>();
             UICache = new Stack<UIPanel>();
             loaders = new List<LoadDel>();
+            _enitys = new UIEnitys(chunck);
         }
         protected override void OnDispose()
         {
-            panelDic.Clear();
+            //panelDic.Clear();
+            _enitys.Dispose();
             UIStack.Clear();
             UICache.Clear();
             loaders.Clear();
             if (Canvas!=null)
                 GameObject.Destroy(Canvas.gameObject);
         }
-        protected override void OnUpdate() { }
+        protected override void OnUpdate() { _enitys.Update(); }
 
 
-        public delegate UIPanel LoadDel(Type type, string path, string name, UIPanelLayer layer, UIEventArgs arg);
+        public delegate UIPanel LoadDel(Type type, string path, string name, UIPanelLayer layer);
         private List<LoadDel> loaders;
         public int LoaderCount { get { return loaders.Count; } }
         public void AddLoader(LoadDel loader)
@@ -129,8 +248,11 @@ namespace IFramework
             }
             ui.transform.LocalIdentity();
         }
-
-        public UIPanel Load(Type type, string path, UIPanelLayer layer, string name, UIEventArgs arg)
+        public void SetMap(Dictionary<Type, Tuple<Type, Type, Type, Type, Type>> map)
+        {
+            _enitys.map = map;
+        }
+        public UIPanel Load(Type type, string path, UIPanelLayer layer, string name)
         {
             UIPanel ui = default(UIPanel);
             if (loaders == null || LoaderCount == 0)
@@ -140,33 +262,31 @@ namespace IFramework
             }
             for (int i = 0; i < loaders.Count; i++)
             {
-                var result = loaders[i].Invoke(type, path, name, layer, arg);
+                var result = loaders[i].Invoke(type, path, name, layer);
                 if (result == null) continue;
 
                 ui = result;
                 ui = GameObject.Instantiate(ui);
                 ui.PanelLayer = layer;
                 SetParent(ui);
-                (ui as IUIPanel).OnLoad(arg);
                 ui.PanelName = name;
-                if (!panelDic.ContainsKey(type))
-                    panelDic.Add(type, new List<UIPanel>());
-                panelDic[type].Add(ui);
+                var enity=  _enitys.Subscribe(ui);
+                (enity.sensor as IUISensor).OnLoad();
                 return ui;
             }
             Log.E(string.Format("NO ui Type: {0}  Path: {1}  Layer: {2}  Name: {3}", type, path, layer, name));
             return ui;
         }
-        public T Load<T>(string path, string name, UIPanelLayer layer, UIEventArgs arg) where T : UIPanel
+        public T Load<T>(string path, string name, UIPanelLayer layer) where T : UIPanel
         {
-            return (T)Load(typeof(T), path, layer, name, arg);
+            return (T)Load(typeof(T), path, layer, name);
         }
-        public bool HaveLoadPanel(Type type, UIPanelLayer layer, string name)
+        public bool HaveLoadPanel( string panelName)
         {
-            return null == panelDic[type].Find((p) => { return p.PanelLayer == layer && p.PanelName == name; });
+            return null == _enitys.FindEnity(panelName);
         }
 
-        public Dictionary<Type, List<UIPanel>> panelDic { get; private set; }
+
         public Stack<UIPanel> UIStack;
         public Stack<UIPanel> UICache;
         public UIPanel StackTop { get { return UIStack.Peek(); } }
@@ -189,10 +309,11 @@ namespace IFramework
             UIStack.Push(ui);
 
             if (arg.pressPanel!=null)
-                (arg.pressPanel as IUIPanel).OnPress(arg);
-            (arg.curPanel as IUIPanel).OnTop(arg);
-
-            if (UICache.Count > 0) ClearCache(arg);
+            {
+                (_enitys.FindEnity(arg.pressPanel).sensor as IUISensor).OnPress(arg);
+            }
+            (_enitys.FindEnity(arg.curPanel).sensor as IUISensor).OnTop(arg);
+            if (UICache.Count > 0) ClearCache();
 
         }
         public void GoForWard(UIEventArgs arg)
@@ -206,8 +327,8 @@ namespace IFramework
             UIStack.Push(ui);
 
             if (arg.pressPanel!=null)
-                (arg.pressPanel as IUIPanel).OnPress(arg);
-            (arg.curPanel as IUIPanel).OnTop(arg);
+                (_enitys.FindEnity(arg.pressPanel).sensor as IUISensor).OnPress(arg);
+            (_enitys.FindEnity(arg.curPanel).sensor as IUISensor).OnTop(arg);
         }
         public void GoBack(UIEventArgs arg)
         {
@@ -219,52 +340,47 @@ namespace IFramework
 
             if (StackCount > 0)
                 arg.curPanel = Current;
+            (_enitys.FindEnity(arg.popPanel).sensor as IUISensor).OnPop(arg);
 
-            (arg.popPanel as IUIPanel).OnPop(arg);
             if (arg.curPanel!=null)
-            (arg.curPanel as IUIPanel).OnTop(arg);
+                (_enitys.FindEnity(arg.curPanel).sensor as IUISensor).OnTop(arg);
         }
-        public void ClearCache(UIEventArgs arg)
+        public void ClearCache()
         {
             while (UICache.Count != 0)
             {
                 UIPanel p = UICache.Pop();
-                if (!IsInStack(p))
+                if (p!=null && !IsInStack(p))
                 {
-                    panelDic[p.GetType()].Remove(p);
-                    (p as IUIPanel).OnClear(arg);
+                    var enity = _enitys.FindEnity(p);
+                    if (enity !=null)
+                    {
+                        (enity.sensor as IUISensor).OnClear();
+                        _enitys.UnSubscribe(p);
+                    }
                 }
             }
         }
 
-        public UIPanel Get(Type type, string path, UIPanelLayer layer, string name, UIEventArgs arg, bool loadNew = false)
+        public UIPanel Get(Type type, string name, UIEventArgs arg, string path="", UIPanelLayer layer= UIPanelLayer.Common)
         {
-            if (!type.IsSubclassOf(typeof(UIPanel)))
-            {
-                Log.E(string.Format("{0} is Not UIpanel", type));
-                return default(UIPanel);
-            }
             //if (UICache.Count > 0) ClearCache(arg);
-
-            if (loadNew || !panelDic.ContainsKey(type))
+            var enity = _enitys.FindEnity(name);
+            if (enity ==null)
             {
-                UIPanel ui = Load(type, path, layer, name, arg);
+                UIPanel ui = Load(type, path, layer, name);
                 Push(ui, arg);
                 return ui;
             }
             else
             {
-                UIPanel ui = panelDic[type].Find((p) => { return p.PanelLayer == layer && p.PanelName == name; });
-                if (ui == null) return Get(type, path, layer, name, arg, true);
-                else
-                {
-                    Push(ui, arg); return ui;
-                }
+                Push((enity.enity as UIEnity).panel, arg);
+                return (enity.enity as UIEnity).panel;
             }
         }
-        public T Get<T>(string path, UIPanelLayer layer, string name, UIEventArgs arg, bool loadNew = false) where T : UIPanel
+        public T Get<T>(string name, UIEventArgs arg, string path = "", UIPanelLayer layer = UIPanelLayer.Common) where T : UIPanel
         {
-            return (T)Get(typeof(T), path, layer, name, arg, loadNew);
+            return (T)Get(typeof(T), name, arg, path, layer);
         }
 
 

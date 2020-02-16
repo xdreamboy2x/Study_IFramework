@@ -65,8 +65,8 @@ namespace IFramework_Demo
         private void Start()
         {
             Framework.env1.modules.ECS = Framework.env1.modules.CreateModule<ECSModule>();
-            module.AddSystem(new PlayerSystem(module));
-            module.AddSystem(new PCSystem(module));
+            module.SubscribeSystem(new PlayerSystem(module));
+            module.SubscribeSystem(new PCSystem(module));
 
             var player = module.CreateEnity<SimpleEnity>();
             player.AddComponent<PlayerComponent>();

@@ -22,7 +22,7 @@ namespace IFramework_Demo
         {
             Framework.env1.modules.Coroutine = Framework.env1.modules.CreateModule<CoroutineModule>();
 
-           this.Sequence(1)
+           this.Sequence( FrameworkEnvironment.EnvironmentType.Ev1)
                 .Repeat((r) => {
                     r.Sequence((s) =>
                     {

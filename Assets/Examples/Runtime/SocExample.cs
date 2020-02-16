@@ -35,23 +35,23 @@ namespace IFramework_Demo
             TcpServerToken token = new TcpServerToken(2, 2048);
             token.onAcccept += (tok) =>
             {
-                Log.L(token.CurConCount);
-                Log.L("Accept " + tok.EndPoint);
+                Log.L(token.curConCount);
+                Log.L("Accept " + tok.endPoint);
 
             };
             token.onReceive += (tok, seg) =>
             {
                 //Log.I("Rec " + tok.EndPoint);
-                byte[] buffer = new byte[seg.Len];
-                Array.Copy(seg.Buffer, seg.Offset, buffer, 0, seg.Len);
+                byte[] buffer = new byte[seg.count];
+                Array.Copy(seg.buffer, seg.offset, buffer, 0, seg.count);
                 Log.L(Encoding.UTF8.GetString(buffer) + " SS ");
                 token.SendAsync( tok,seg, true);
             };
 
             token.onDisConnect += (tok) =>
             {
-                Log.L("Dis " + tok.EndPoint);
-                Log.L(token.CurConCount);
+                Log.L("Dis " + tok.endPoint);
+                Log.L(token.curConCount);
             };
             token.Start(8888);
             // token.Stop();
@@ -59,14 +59,14 @@ namespace IFramework_Demo
             c.onReceive += (tok, seg) =>
             {
                 //Log.I("Rec " + tok.EndPoint);
-                byte[] buffer = new byte[seg.Len];
-                Array.Copy(seg.Buffer, seg.Offset, buffer, 0, seg.Len);
+                byte[] buffer = new byte[seg.count];
+                Array.Copy(seg.buffer, seg.offset, buffer, 0, seg.count);
                 Thread.Sleep(1000);
                 Log.L(Encoding.UTF8.GetString(buffer) + " cc ");
                 c.SendAsync(seg, true);
             };
             c.ConnectAsync(8888, "127.0.0.1");
-            Log.L(c.IsConnected);
+            Log.L(c.connected);
             byte[] bu = Encoding.UTF8.GetBytes("123");
             c.SendAsync(new BufferSegment( bu, 0, bu.Length));
             Thread.Sleep(1000);
@@ -74,7 +74,7 @@ namespace IFramework_Demo
             c.DisConnect();
             while (true)
             {
-                if (c.IsConnected)
+                if (c.connected)
                 {
                     c.SendAsync(new BufferSegment( bu, 0, bu.Length));
                 }
@@ -86,10 +86,10 @@ namespace IFramework_Demo
             UdpServerToken s = new UdpServerToken(4096,32);
             s.onReceive += (tok,seg) =>
             {
-                byte[] buffer = new byte[seg.Len];
-                Array.Copy(seg.Buffer, seg.Offset, buffer, 0, seg.Len);
-                Log.L("SS Rec " + tok.EndPoint + " " + Encoding.UTF8.GetString(buffer));
-                s.Send(seg, tok.EndPoint);
+                byte[] buffer = new byte[seg.count];
+                Array.Copy(seg.buffer, seg.offset, buffer, 0, seg.count);
+                Log.L("SS Rec " + tok.endPoint + " " + Encoding.UTF8.GetString(buffer));
+                s.SendAsync(seg, tok.endPoint);
             };
 
             s.Start(8888);
@@ -97,8 +97,8 @@ namespace IFramework_Demo
             UdpClientToken c = new UdpClientToken(2048, 10);
             c.onReceive += (tok,seg) =>
             {
-                byte[] buffer = new byte[seg.Len];
-                Array.Copy(seg.Buffer, seg.Offset, buffer, 0, seg.Len);
+                byte[] buffer = new byte[seg.count];
+                Array.Copy(seg.buffer, seg.offset, buffer, 0, seg.count);
                 Log.L("CC Rec" + Encoding.UTF8.GetString(buffer));
                 c.Send(seg);
             };
@@ -123,10 +123,10 @@ namespace IFramework_Demo
         {
             WSServerToken wsService = new WSServerToken();
             wsService.onAccept = new OnAccept((SocketToken sToken) => {
-                Console.WriteLine("accepted:" + sToken.EndPoint);
+                Console.WriteLine("accepted:" + sToken.endPoint);
             });
             wsService.onDisConnect = new OnDisConnect((SocketToken sToken) => {
-                Console.WriteLine("disconnect:" + sToken.EndPoint.ToString());
+                Console.WriteLine("disconnect:" + sToken.endPoint.ToString());
             });
             wsService.onRecieveString = new OnReceivedString((SocketToken sToken, string content) => {
 
@@ -135,7 +135,7 @@ namespace IFramework_Demo
 
             });
             wsService.onReceieve = new OnReceieve((SocketToken token, BufferSegment session) => {
-                Console.WriteLine("receive bytes:" + session.Len);
+                Console.WriteLine("receive bytes:" + session.count);
             });
             bool isOk = wsService.Start(65531);
             if (isOk)
