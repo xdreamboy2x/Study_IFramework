@@ -15,7 +15,7 @@ namespace IFramework_Demo
     {
         private void Awake()
         {
-            Framework.InitEnv("App_RT", FrameworkEnvironment.EnvironmentType.Ev1).InitWithAttribute();
+            Framework.InitEnv("App_RT", EnvironmentType.Ev1).InitWithAttribute();
         }
         private void Update()
         {

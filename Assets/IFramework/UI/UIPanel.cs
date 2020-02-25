@@ -9,33 +9,8 @@
 using UnityEngine;
 namespace IFramework
 {
-    public enum UIPanelLayer
-    {
-        BGBG,               //非常BG
-        Background,         //BG
-        AnimationUnderPage, //背景动画
-        Common,             //普通
-        AnimationOnPage,    //上层动画
-        PopUp,              //弹框
-        Guide,              //引导
-        Toast,              //对话框
-        Top,                //Top
-        TopTop,             //非常Top
-    }
-    public class UIEventArgs : FrameworkArgs
-    {
-        public bool isInspectorBtn;
-        public UIPanel popPanel;
-        public UIPanel curPanel;
-        public UIPanel pressPanel;
-        protected override void OnDataReset()
-        {
-            popPanel = null;
-            curPanel = null;
-            pressPanel = null;
-        }
-       
-    }
+
+  
 
 
     public abstract class UIPanel : MonoBehaviour

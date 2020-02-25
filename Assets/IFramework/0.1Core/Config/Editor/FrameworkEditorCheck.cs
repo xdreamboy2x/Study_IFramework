@@ -16,7 +16,7 @@ namespace IFramework
         [InitializeOnLoadMethod]
         public static void Check()
         {
-            Framework.InitEnv("IFramework_Editor", FrameworkEnvironment.EnvironmentType.Ev0).InitWithAttribute();
+            Framework.InitEnv("IFramework_Editor", EnvironmentType.Ev0).InitWithAttribute(); 
 
             EditorApplication.quitting += Framework.env0.Dispose;
             EditorApplication.update += Framework.env0.Update;

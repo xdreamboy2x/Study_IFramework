@@ -4,6 +4,158 @@
         <name>IFramework</name>
     </assembly>
     <members>
+        <member name="T:IFramework.OnFrameworkInitClassAttribute">
+            <summary>
+            框架初始化时候调用被标记的静态类
+            </summary>
+        </member>
+        <member name="P:IFramework.OnFrameworkInitClassAttribute.type">
+            <summary>
+            配合初始化的版本 0，
+            默认初始化，其他自行规定，用于区分环境，
+            一般某个环境特有的静态类和环境编号一致
+            </summary>
+        </member>
+        <member name="M:IFramework.OnFrameworkInitClassAttribute.#ctor(IFramework.EnvironmentType)">
+            <summary>
+            Ctor
+            </summary>
+            <param name="type"></param>
+        </member>
+        <member name="T:IFramework.EnvironmentType">
+            <summary>
+            环境类型
+            </summary>
+        </member>
+        <member name="F:IFramework.EnvironmentType.None">
+            <summary>
+            所有，配合环境初始化
+            </summary>
+        </member>
+        <member name="F:IFramework.EnvironmentType.Ev0">
+            <summary>
+            环境0
+            </summary>
+        </member>
+        <member name="F:IFramework.EnvironmentType.Ev1">
+            <summary>
+            环境1
+            </summary>
+        </member>
+        <member name="F:IFramework.EnvironmentType.Ev2">
+            <summary>
+            环境2
+            </summary>
+        </member>
+        <member name="F:IFramework.EnvironmentType.Ev3">
+            <summary>
+            环境3
+            </summary>
+        </member>
+        <member name="F:IFramework.EnvironmentType.Ev4">
+            <summary>
+            环境4
+            </summary>
+        </member>
+        <member name="T:IFramework.FrameworkEnvironment">
+            <summary>
+            框架运行环境
+            </summary>
+        </member>
+        <member name="E:IFramework.FrameworkEnvironment.update">
+            <summary>
+            Update 方法的回调
+            </summary>
+        </member>
+        <member name="E:IFramework.FrameworkEnvironment.onInit">
+            <summary>
+            环境初始化回调
+            </summary>
+        </member>
+        <member name="E:IFramework.FrameworkEnvironment.onDispose">
+            <summary>
+            环境释放的回调
+            </summary>
+        </member>
+        <member name="P:IFramework.FrameworkEnvironment.haveInit">
+            <summary>
+            环境是否已经初始化
+            </summary>
+        </member>
+        <member name="P:IFramework.FrameworkEnvironment.disposed">
+            <summary>
+            环境是否被释放
+            </summary>
+        </member>
+        <member name="P:IFramework.FrameworkEnvironment.cyclePool">
+            <summary>
+            IRecyclable 实例的环境容器
+            </summary>
+        </member>
+        <member name="P:IFramework.FrameworkEnvironment.container">
+            <summary>
+            IOC容器
+            </summary>
+        </member>
+        <member name="P:IFramework.FrameworkEnvironment.modules">
+            <summary>
+            环境下自带的模块容器
+            </summary>
+        </member>
+        <member name="P:IFramework.FrameworkEnvironment.envType">
+            <summary>
+            环境类型
+            </summary>
+        </member>
+        <member name="P:IFramework.FrameworkEnvironment.envName">
+            <summary>
+            环境名称
+            </summary>
+        </member>
+        <member name="P:IFramework.FrameworkEnvironment.deltaTime">
+            <summary>
+            最近一次 Update 方法用时
+            </summary>
+        </member>
+        <member name="P:IFramework.FrameworkEnvironment.timeSinceInit">
+            <summary>
+            初始化之后的时间
+            </summary>
+        </member>
+        <member name="M:IFramework.FrameworkEnvironment.CreateInstance(System.String,IFramework.EnvironmentType)">
+            <summary>
+            创建一个 环境
+            </summary>
+            <param name="envName">环境名称</param>
+            <param name="envType">环境类型</param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.FrameworkEnvironment.Init(System.Collections.Generic.IEnumerable{System.Type})">
+            <summary>
+            初始化环境，3.5 使用
+            </summary>
+            <param name="types">需要初始化调用的静态类</param>
+        </member>
+        <member name="M:IFramework.FrameworkEnvironment.InitWithAttribute">
+            <summary>
+            初始化环境，4.X 使用
+            </summary>
+        </member>
+        <member name="M:IFramework.FrameworkEnvironment.Dispose">
+            <summary>
+            释放
+            </summary>
+        </member>
+        <member name="M:IFramework.FrameworkEnvironment.Update">
+            <summary>
+            刷新环境
+            </summary>
+        </member>
+        <member name="T:IFramework.FrameworkModules">
+            <summary>
+            框架提供的模块
+            </summary>
+        </member>
         <member name="T:IFramework.Modules.APP.FrameworkAppModule">
             <summary>
             一个app的总管理，需要自己写
@@ -67,7 +219,7 @@
             <param name="routine"></param>
             <returns></returns>
         </member>
-        <member name="M:IFramework.Modules.Coroutine.CoroutineModuleExtension.StartCoroutine(System.Object,IFramework.FrameworkEnvironment.EnvironmentType,System.Collections.IEnumerator)">
+        <member name="M:IFramework.Modules.Coroutine.CoroutineModuleExtension.StartCoroutine(System.Object,IFramework.EnvironmentType,System.Collections.IEnumerator)">
             <summary>
             开启一个携程
             </summary>
@@ -76,22 +228,76 @@
             <param name="routine">迭代器</param>
             <returns></returns>
         </member>
-        <member name="T:IFramework.Modules.Coroutine.WaitForTimeSpan">
+        <member name="T:IFramework.Modules.Coroutine.WaitForDays">
             <summary>
-            等待时间
+            等待日子
             </summary>
         </member>
-        <member name="M:IFramework.Modules.Coroutine.WaitForTimeSpan.#ctor(System.TimeSpan)">
+        <member name="M:IFramework.Modules.Coroutine.WaitForDays.#ctor(System.Double)">
             <summary>
             Ctor
             </summary>
-            <param name="span"> 等待时间</param>
+            <param name="days">天数</param>
         </member>
-        <member name="M:IFramework.Modules.Coroutine.WaitForTimeSpan.InnerLogoc">
+        <member name="T:IFramework.Modules.Coroutine.WaitForFrame">
+            <summary>
+            等一帧
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.Coroutine.WaitForFrame.#ctor">
+            <summary>
+            Ctor
+            </summary>
+        </member>
+        <member name="T:IFramework.Modules.Coroutine.WaitForFrames">
+            <summary>
+            等待帧数
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.Coroutine.WaitForFrames.#ctor(System.Int32)">
+            <summary>
+            Ctor
+            </summary>
+            <param name="count">帧数 </param>
+        </member>
+        <member name="M:IFramework.Modules.Coroutine.WaitForFrames.InnerLogoc">
             <summary>
             override
             </summary>
             <returns></returns>
+        </member>
+        <member name="T:IFramework.Modules.Coroutine.WaitForHours">
+            <summary>
+            等待小时
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.Coroutine.WaitForHours.#ctor(System.Double)">
+            <summary>
+            Ctor
+            </summary>
+            <param name="hours">小时</param>
+        </member>
+        <member name="T:IFramework.Modules.Coroutine.WaitForMilliseconds">
+            <summary>
+            等待毫秒
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.Coroutine.WaitForMilliseconds.#ctor(System.Double)">
+            <summary>
+            Ctor
+            </summary>
+            <param name="milliseconds">毫秒</param>
+        </member>
+        <member name="T:IFramework.Modules.Coroutine.WaitForMinutes">
+            <summary>
+            等待分钟
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.Coroutine.WaitForMinutes.#ctor(System.Double)">
+            <summary>
+            Ctor
+            </summary>
+            <param name="minutes">等待分钟数</param>
         </member>
         <member name="T:IFramework.Modules.Coroutine.WaitForSeconds">
             <summary>
@@ -115,49 +321,22 @@
             </summary>
             <param name="ticks">等待帧数</param>
         </member>
-        <member name="T:IFramework.Modules.Coroutine.WaitForMinutes">
+        <member name="T:IFramework.Modules.Coroutine.WaitForTimeSpan">
             <summary>
-            等待分钟
+            等待时间
             </summary>
         </member>
-        <member name="M:IFramework.Modules.Coroutine.WaitForMinutes.#ctor(System.Double)">
+        <member name="M:IFramework.Modules.Coroutine.WaitForTimeSpan.#ctor(System.TimeSpan)">
             <summary>
             Ctor
             </summary>
-            <param name="minutes">等待分钟数</param>
+            <param name="span"> 等待时间</param>
         </member>
-        <member name="T:IFramework.Modules.Coroutine.WaitForMilliseconds">
+        <member name="M:IFramework.Modules.Coroutine.WaitForTimeSpan.InnerLogoc">
             <summary>
-            等待毫秒
+            override
             </summary>
-        </member>
-        <member name="M:IFramework.Modules.Coroutine.WaitForMilliseconds.#ctor(System.Double)">
-            <summary>
-            Ctor
-            </summary>
-            <param name="milliseconds">毫秒</param>
-        </member>
-        <member name="T:IFramework.Modules.Coroutine.WaitForHours">
-            <summary>
-            等待小时
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.Coroutine.WaitForHours.#ctor(System.Double)">
-            <summary>
-            Ctor
-            </summary>
-            <param name="hours">小时</param>
-        </member>
-        <member name="T:IFramework.Modules.Coroutine.WaitForDays">
-            <summary>
-            等待日子
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.Coroutine.WaitForDays.#ctor(System.Double)">
-            <summary>
-            Ctor
-            </summary>
-            <param name="days">天数</param>
+            <returns></returns>
         </member>
         <member name="T:IFramework.Modules.Coroutine.WaitUtil">
             <summary>
@@ -192,33 +371,6 @@
             override
             </summary>
             <returns></returns>
-        </member>
-        <member name="T:IFramework.Modules.Coroutine.WaitForFrames">
-            <summary>
-            等待帧数
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.Coroutine.WaitForFrames.#ctor(System.Int32)">
-            <summary>
-            Ctor
-            </summary>
-            <param name="count">帧数 </param>
-        </member>
-        <member name="M:IFramework.Modules.Coroutine.WaitForFrames.InnerLogoc">
-            <summary>
-            override
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="T:IFramework.Modules.Coroutine.WaitForFrame">
-            <summary>
-            等一帧
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.Coroutine.WaitForFrame.#ctor">
-            <summary>
-            Ctor
-            </summary>
         </member>
         <member name="T:IFramework.Modules.ECS.ECSModule">
             <summary>
@@ -847,35 +999,91 @@
             MVP结构的实体
             </summary>
         </member>
+        <member name="T:IFramework.Modules.MVP.MVPGroup">
+            <summary>
+            MVp组
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.MVP.MVPGroup.#ctor(IFramework.Modules.MVP.MVPEnity,IFramework.Modules.MVP.SensorSystem,IFramework.Modules.MVP.PolicySystem,IFramework.Modules.MVP.PolicyExecutorSystem,IFramework.Modules.MVP.ViewSystem,System.String)">
+            <summary>
+            ctor
+            </summary>
+            <param name="enity"></param>
+            <param name="sensor"></param>
+            <param name="policy"></param>
+            <param name="executor"></param>
+            <param name="view"></param>
+            <param name="name"></param>
+        </member>
+        <member name="P:IFramework.Modules.MVP.MVPGroup.name">
+            <summary>
+            名字
+            </summary>
+        </member>
+        <member name="P:IFramework.Modules.MVP.MVPGroup.enity">
+            <summary>
+            实体
+            </summary>
+        </member>
+        <member name="P:IFramework.Modules.MVP.MVPGroup.sensor">
+            <summary>
+            消息监听系统
+            </summary>
+        </member>
+        <member name="P:IFramework.Modules.MVP.MVPGroup.policy">
+            <summary>
+            消息决策系统
+            </summary>
+        </member>
+        <member name="P:IFramework.Modules.MVP.MVPGroup.executor">
+            <summary>
+            决策执行系统
+            </summary>
+        </member>
+        <member name="P:IFramework.Modules.MVP.MVPGroup.view">
+            <summary>
+            试图系统
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.MVP.MVPGroup.Dispose">
+            <summary>
+            释放,并且从模块中移除
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.MVP.MVPGroup.OnDispose">
+            <summary>
+            释放时
+            </summary>
+        </member>
         <member name="T:IFramework.Modules.MVP.MVPModule">
             <summary>
             MVP
             </summary>
         </member>
-        <member name="P:IFramework.Modules.MVP.MVPModule.enity">
+        <member name="M:IFramework.Modules.MVP.MVPModule.AddGroup(IFramework.Modules.MVP.MVPGroup)">
             <summary>
-            实体
+            添加组
             </summary>
+            <param name="group"></param>
         </member>
-        <member name="P:IFramework.Modules.MVP.MVPModule.sensor">
+        <member name="M:IFramework.Modules.MVP.MVPModule.RemoveGroup(System.String)">
             <summary>
-            消息监听系统
+            移除组
             </summary>
+            <param name="name"></param>
         </member>
-        <member name="P:IFramework.Modules.MVP.MVPModule.policy">
+        <member name="M:IFramework.Modules.MVP.MVPModule.RemoveGroup(IFramework.Modules.MVP.MVPGroup)">
             <summary>
-            消息决策系统
+            移除组
             </summary>
+            <param name="group"></param>
         </member>
-        <member name="P:IFramework.Modules.MVP.MVPModule.policyExecutor">
+        <member name="M:IFramework.Modules.MVP.MVPModule.FindGroup(System.String)">
             <summary>
-            决策执行系统
+            查找组
             </summary>
-        </member>
-        <member name="P:IFramework.Modules.MVP.MVPModule.view">
-            <summary>
-            试图系统
-            </summary>
+            <param name="name"></param>
+            <returns></returns>
         </member>
         <member name="T:IFramework.Modules.MVP.MVPSystem">
             <summary>
@@ -890,6 +1098,11 @@
         <member name="P:IFramework.Modules.MVP.MVPSystem.enity">
             <summary>
             实体
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.MVP.MVPSystem.OnGroupDispose">
+            <summary>
+            组释放时
             </summary>
         </member>
         <member name="M:IFramework.Modules.MVP.MVPSystem.OnSetEnity(IFramework.Modules.MVP.MVPEnity)">
@@ -909,7 +1122,7 @@
             刷新
             </summary>
         </member>
-        <member name="M:IFramework.Modules.MVP.MVPSystem.OnModuleDispose">
+        <member name="M:IFramework.Modules.MVP.MVPSystem.SendMessage(System.Type,System.Int32,IFramework.IEventArgs,System.Object[])">
             <summary>
             当模块释放
             </summary>
@@ -1044,6 +1257,197 @@
         <member name="M:IFramework.Modules.MVP.ViewSystem.Excute">
             <summary>
             Update
+            </summary>
+        </member>
+        <member name="T:IFramework.Modules.MVVM.IDataModel">
+            <summary>
+            数据
+            </summary>
+        </member>
+        <member name="T:IFramework.Modules.MVVM.MVVMGroup">
+            <summary>
+            MVVM 组结构
+            </summary>
+        </member>
+        <member name="P:IFramework.Modules.MVVM.MVVMGroup.name">
+            <summary>
+            组名
+            </summary>
+        </member>
+        <member name="P:IFramework.Modules.MVVM.MVVMGroup.view">
+            <summary>
+            界面
+            </summary>
+        </member>
+        <member name="P:IFramework.Modules.MVVM.MVVMGroup.model">
+            <summary>
+            数据
+            </summary>
+        </member>
+        <member name="P:IFramework.Modules.MVVM.MVVMGroup.message">
+            <summary>
+            消息转发
+            </summary>
+        </member>
+        <member name="P:IFramework.Modules.MVVM.MVVMGroup.viewModel">
+            <summary>
+            VM
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.MVVM.MVVMGroup.#ctor(System.String,IFramework.Modules.MVVM.View,IFramework.Modules.MVVM.ViewModel,IFramework.Modules.MVVM.IDataModel)">
+            <summary>
+            Ctor
+            </summary>
+            <param name="name"></param>
+            <param name="view"></param>
+            <param name="viewModel"></param>
+            <param name="model"></param>
+        </member>
+        <member name="M:IFramework.Modules.MVVM.MVVMGroup.OnRemoveMessage(IFramework.Modules.Message.MessageModule)">
+            <summary>
+            移除消息转发时
+            </summary>
+            <param name="message"></param>
+        </member>
+        <member name="M:IFramework.Modules.MVVM.MVVMGroup.OnSetMessage(IFramework.Modules.Message.MessageModule)">
+            <summary>
+            设置消息转发时
+            </summary>
+            <param name="message"></param>
+        </member>
+        <member name="M:IFramework.Modules.MVVM.MVVMGroup.PublishModelDirty">
+            <summary>
+            发布model数据发生变化
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.MVVM.MVVMGroup.Dispose">
+            <summary>
+            释放时
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.MVVM.MVVMGroup.OnDispose">
+            <summary>
+            释放时
+            </summary>
+        </member>
+        <member name="T:IFramework.Modules.MVVM.MVVMModule">
+            <summary>
+            MVVM 模块
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.MVVM.MVVMModule.FindGroup(System.String)">
+            <summary>
+            查找组
+            </summary>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Modules.MVVM.MVVMModule.AddGroup(IFramework.Modules.MVVM.MVVMGroup)">
+            <summary>
+            注册一个 MVVM
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.MVVM.MVVMModule.RemoveGroup(System.String)">
+            <summary>
+            移除组
+            </summary>
+            <param name="name"></param>
+        </member>
+        <member name="M:IFramework.Modules.MVVM.MVVMModule.RemoveGroup(IFramework.Modules.MVVM.MVVMGroup)">
+            <summary>
+            移除组
+            </summary>
+            <param name="group"></param>
+        </member>
+        <member name="T:IFramework.Modules.MVVM.View">
+            <summary>
+            界面
+            </summary>
+        </member>
+        <member name="P:IFramework.Modules.MVVM.View.message">
+            <summary>
+            消息转发
+            </summary>
+        </member>
+        <member name="F:IFramework.Modules.MVVM.View.handler">
+            <summary>
+            数据绑定
+            </summary>
+        </member>
+        <member name="P:IFramework.Modules.MVVM.View.context">
+            <summary>
+            VM
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.MVVM.View.BindProperty">
+            <summary>
+            绑定数据
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.MVVM.View.Dispose">
+            <summary>
+            释放
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.MVVM.View.OnDispose">
+            <summary>
+            释放时
+            </summary>
+        </member>
+        <member name="T:IFramework.Modules.MVVM.TView`1">
+            <summary>
+            方便书写
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:IFramework.Modules.MVVM.TView`1.Tcontext">
+            <summary>
+            方便书写
+            </summary>
+        </member>
+        <member name="T:IFramework.Modules.MVVM.ViewModel">
+            <summary>
+            VM
+            </summary>
+        </member>
+        <member name="P:IFramework.Modules.MVVM.ViewModel.message">
+            <summary>
+            消息转发
+            </summary>
+        </member>
+        <member name="P:IFramework.Modules.MVVM.ViewModel.model">
+            <summary>
+            数据
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.MVVM.ViewModel.SyncModelValue">
+            <summary>
+            同步model数据
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.MVVM.ViewModel.SubscribeMessage">
+            <summary>
+            注册消息监听
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.MVVM.ViewModel.UnSubscribeMessage">
+            <summary>
+            取消消息监听
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.MVVM.ViewModel.OnDispose">
+            <summary>
+            释放时
+            </summary>
+        </member>
+        <member name="T:IFramework.Modules.MVVM.TViewModel`1">
+            <summary>
+            方便书写
+            </summary>
+        </member>
+        <member name="P:IFramework.Modules.MVVM.TViewModel`1.Tmodel">
+            <summary>
+            方便书写
             </summary>
         </member>
         <member name="T:IFramework.Modules.Threads.ThreadModule">
@@ -1396,6 +1800,11 @@
             </summary>
             <typeparam name="T"></typeparam>
         </member>
+        <member name="F:IFramework.ObservableValue`1.ValuePropertyName">
+            <summary>
+            默认的名字
+            </summary>
+        </member>
         <member name="P:IFramework.ObservableValue`1.value">
             <summary>
             具体的数值
@@ -1406,6 +1815,18 @@
             Ctor
             </summary>
             <param name="value"></param>
+        </member>
+        <member name="M:IFramework.ObservableValue`1.Subscribe(System.Action)">
+            <summary>
+            注册 value 变化监听
+            </summary>
+            <param name="listener"></param>
+        </member>
+        <member name="M:IFramework.ObservableValue`1.UnSubscribe(System.Action)">
+            <summary>
+            取消注册 value 变化监听
+            </summary>
+            <param name="listener"></param>
         </member>
         <member name="M:IFramework.ObservableValue`1.op_Implicit(IFramework.ObservableValue{`0})~`0">
             <summary>
@@ -1418,36 +1839,23 @@
             可观测 Object
             </summary>
         </member>
-        <member name="T:IFramework.ObservableObject.PropertyChangedArg">
-            <summary>
-            属性发生变化消息
-            </summary>
-        </member>
-        <member name="F:IFramework.ObservableObject.PropertyChangedArg.observableObject">
-            <summary>
-            对应的 Object
-            </summary>
-        </member>
-        <member name="F:IFramework.ObservableObject.PropertyChangedArg.propertyName">
-            <summary>
-            发生改变的 属性名称
-            </summary>
-        </member>
         <member name="M:IFramework.ObservableObject.#ctor">
             <summary>
             Ctor
             </summary>
         </member>
-        <member name="M:IFramework.ObservableObject.Subscribe(System.Action{IFramework.ObservableObject.PropertyChangedArg})">
+        <member name="M:IFramework.ObservableObject.Subscribe(System.String,System.Action)">
             <summary>
             注册数值变化监听
             </summary>
+            <param name="propertyName"></param>
             <param name="listener"></param>
         </member>
-        <member name="M:IFramework.ObservableObject.UnSubscribe(System.Action{IFramework.ObservableObject.PropertyChangedArg})">
+        <member name="M:IFramework.ObservableObject.UnSubscribe(System.String,System.Action)">
             <summary>
             取消注册数值变化监听
             </summary>
+            <param name="propertyName"></param>
             <param name="listener"></param>
         </member>
         <member name="M:IFramework.ObservableObject.GetProperty``1(``0@,System.String)">
@@ -1457,14 +1865,6 @@
             <typeparam name="T"></typeparam>
             <param name="property">获取的属性</param>
             <param name="propertyName">属性名称</param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.ObservableObject.GetPropertyName``1(System.Linq.Expressions.Expression{System.Func{``0}})">
-            <summary>
-            获取属性名称
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="property">属性表达式</param>
             <returns></returns>
         </member>
         <member name="M:IFramework.ObservableObject.SetProperty``1(``0@,``0,System.String)">
@@ -1497,13 +1897,13 @@
             ObservableObject 注册监听Helper
             </summary>
         </member>
-        <member name="M:IFramework.ObservableObjectHandler.Subscribe(IFramework.ObservableObject,System.String,System.Action{IFramework.ObservableObject.PropertyChangedArg})">
+        <member name="M:IFramework.ObservableObjectHandler.Subscribe(IFramework.ObservableObject,System.String,System.Action)">
             <summary>
             对一个 ObservableObject 注册一个监听
             </summary>
             <param name="_object"> ObservableObject </param>
             <param name="propertyName">属性名称</param>
-            <param name="callback">回调</param>
+            <param name="listenner">回调</param>
             <returns></returns>
         </member>
         <member name="M:IFramework.ObservableObjectHandler.BindProperty(System.Action)">
@@ -1728,6 +2128,7 @@
             </summary>
             <param name="mapPosX"></param>
             <param name="mapPosY"></param>
+            <param name="mapPosZ"></param>
             <param name="nodeType"></param>
         </member>
         <member name="M:IFramework.Utility.Astar.AStarNode3X.SetDefaultParent(IFramework.Utility.Astar.IAStarNode)">
@@ -1975,165 +2376,12 @@
             </summary>
             <param name="version"></param>
         </member>
-        <member name="T:IFramework.OnFrameworkInitClassAttribute">
-            <summary>
-            框架初始化时候调用被标记的静态类
-            </summary>
-        </member>
-        <member name="P:IFramework.OnFrameworkInitClassAttribute.type">
-            <summary>
-            配合初始化的版本 0，
-            默认初始化，其他自行规定，用于区分环境，
-            一般某个环境特有的静态类和环境编号一致
-            </summary>
-        </member>
-        <member name="M:IFramework.OnFrameworkInitClassAttribute.#ctor(IFramework.FrameworkEnvironment.EnvironmentType)">
-            <summary>
-            Ctor
-            </summary>
-            <param name="type"></param>
-        </member>
-        <member name="T:IFramework.FrameworkModules">
-            <summary>
-            框架提供的模块
-            </summary>
-        </member>
-        <member name="T:IFramework.FrameworkEnvironment">
-            <summary>
-            框架运行环境
-            </summary>
-        </member>
-        <member name="T:IFramework.FrameworkEnvironment.EnvironmentType">
-            <summary>
-            环境类型
-            </summary>
-        </member>
-        <member name="F:IFramework.FrameworkEnvironment.EnvironmentType.None">
-            <summary>
-            所有，配合环境初始化
-            </summary>
-        </member>
-        <member name="F:IFramework.FrameworkEnvironment.EnvironmentType.Ev0">
-            <summary>
-            环境0
-            </summary>
-        </member>
-        <member name="F:IFramework.FrameworkEnvironment.EnvironmentType.Ev1">
-            <summary>
-            环境1
-            </summary>
-        </member>
-        <member name="F:IFramework.FrameworkEnvironment.EnvironmentType.Ev2">
-            <summary>
-            环境2
-            </summary>
-        </member>
-        <member name="F:IFramework.FrameworkEnvironment.EnvironmentType.Ev3">
-            <summary>
-            环境3
-            </summary>
-        </member>
-        <member name="F:IFramework.FrameworkEnvironment.EnvironmentType.Ev4">
-            <summary>
-            环境4
-            </summary>
-        </member>
-        <member name="E:IFramework.FrameworkEnvironment.update">
-            <summary>
-            Update 方法的回调
-            </summary>
-        </member>
-        <member name="E:IFramework.FrameworkEnvironment.onInit">
-            <summary>
-            环境初始化回调
-            </summary>
-        </member>
-        <member name="E:IFramework.FrameworkEnvironment.onDispose">
-            <summary>
-            环境释放的回调
-            </summary>
-        </member>
-        <member name="P:IFramework.FrameworkEnvironment.haveInit">
-            <summary>
-            环境是否已经初始化
-            </summary>
-        </member>
-        <member name="P:IFramework.FrameworkEnvironment.disposed">
-            <summary>
-            环境是否被释放
-            </summary>
-        </member>
-        <member name="P:IFramework.FrameworkEnvironment.cyclePool">
-            <summary>
-            IRecyclable 实例的环境容器
-            </summary>
-        </member>
-        <member name="P:IFramework.FrameworkEnvironment.container">
-            <summary>
-            IOC容器
-            </summary>
-        </member>
-        <member name="P:IFramework.FrameworkEnvironment.modules">
-            <summary>
-            环境下自带的模块容器
-            </summary>
-        </member>
-        <member name="P:IFramework.FrameworkEnvironment.envType">
-            <summary>
-            环境类型
-            </summary>
-        </member>
-        <member name="P:IFramework.FrameworkEnvironment.envName">
-            <summary>
-            环境名称
-            </summary>
-        </member>
-        <member name="P:IFramework.FrameworkEnvironment.deltaTime">
-            <summary>
-            最近一次 Update 方法用时
-            </summary>
-        </member>
-        <member name="P:IFramework.FrameworkEnvironment.timeSinceInit">
-            <summary>
-            初始化之后的时间
-            </summary>
-        </member>
-        <member name="M:IFramework.FrameworkEnvironment.CreateInstance(System.String,IFramework.FrameworkEnvironment.EnvironmentType)">
-            <summary>
-            创建一个 环境
-            </summary>
-            <param name="envName">环境名称</param>
-            <param name="envType">环境类型</param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.FrameworkEnvironment.Init(System.Collections.Generic.IEnumerable{System.Type})">
-            <summary>
-            初始化环境，3.5 使用
-            </summary>
-            <param name="types">需要初始化调用的静态类</param>
-        </member>
-        <member name="M:IFramework.FrameworkEnvironment.InitWithAttribute">
-            <summary>
-            初始化环境，4.X 使用
-            </summary>
-            <param name="includeTypes">被标记 OnFrameworkInitClassAttribute  静态类 的版本，默认有 0 </param>
-        </member>
-        <member name="M:IFramework.FrameworkEnvironment.Dispose">
-            <summary>
-            释放
-            </summary>
-        </member>
-        <member name="M:IFramework.FrameworkEnvironment.Update">
-            <summary>
-            刷新环境
-            </summary>
-        </member>
         <member name="T:IFramework.Framework">
             <summary>
             框架入口
             </summary>
         </member>
-        <member name="M:IFramework.Framework.CreateEnv(System.String,IFramework.FrameworkEnvironment.EnvironmentType)">
+        <member name="M:IFramework.Framework.CreateEnv(System.String,IFramework.EnvironmentType)">
             <summary>
             创建一个环境
             </summary>
@@ -2141,7 +2389,7 @@
             <param name=" envType">环境类型</param>
             <returns>环境</returns>
         </member>
-        <member name="M:IFramework.Framework.InitEnv(System.String,IFramework.FrameworkEnvironment.EnvironmentType)">
+        <member name="M:IFramework.Framework.InitEnv(System.String,IFramework.EnvironmentType)">
             <summary>
             实例化环境
             </summary>
@@ -2149,7 +2397,7 @@
             <param name=" envType">环境类型</param>
             <returns>环境</returns>
         </member>
-        <member name="M:IFramework.Framework.GetEnv(IFramework.FrameworkEnvironment.EnvironmentType)">
+        <member name="M:IFramework.Framework.GetEnv(IFramework.EnvironmentType)">
             <summary>
             根据序号获取环境
             </summary>
@@ -2184,28 +2432,28 @@
             <param name="action">方法</param>
             <param name="env">环境</param>
         </member>
-        <member name="M:IFramework.Framework.BindEnvUpdate(System.Action,IFramework.FrameworkEnvironment.EnvironmentType)">
+        <member name="M:IFramework.Framework.BindEnvUpdate(System.Action,IFramework.EnvironmentType)">
             <summary>
             绑顶 方法 到一个环境的 Update
             </summary>
             <param name="action">方法</param>
             <param name=" envType"></param>
         </member>
-        <member name="M:IFramework.Framework.UnBindEnvUpdate(System.Action,IFramework.FrameworkEnvironment.EnvironmentType)">
+        <member name="M:IFramework.Framework.UnBindEnvUpdate(System.Action,IFramework.EnvironmentType)">
             <summary>
             解除绑顶 方法 到一个环境的 Update
             </summary>
             <param name="action">方法</param>
             <param name=" envType"></param>
         </member>
-        <member name="M:IFramework.Framework.BindEnvDispose(System.Action,IFramework.FrameworkEnvironment.EnvironmentType)">
+        <member name="M:IFramework.Framework.BindEnvDispose(System.Action,IFramework.EnvironmentType)">
             <summary>
             绑顶 方法 到一个环境的 Dispose
             </summary>
             <param name="action">方法</param>
             <param name=" envType"></param>
         </member>
-        <member name="M:IFramework.Framework.UnBindEnvDispose(System.Action,IFramework.FrameworkEnvironment.EnvironmentType)">
+        <member name="M:IFramework.Framework.UnBindEnvDispose(System.Action,IFramework.EnvironmentType)">
             <summary>
             解除绑顶 方法 到一个环境的 Dispose
             </summary>
@@ -2214,6 +2462,197 @@
         </member>
         <member name="T:IFramework.FrameworkContainer.Tuple`2">
             http://stackoverflow.com/questions/1171812/multi-key-dictionary-in-c
+        </member>
+        <member name="T:IFramework.Pool.IPoolObjectOwner">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:IFramework.Pool.ListPool`1">
+            <summary>
+            list对象池
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:IFramework.Pool.ListPool`1.#ctor">
+            <summary>
+            ctor
+            </summary>
+        </member>
+        <member name="M:IFramework.Pool.ListPool`1.Get(System.Predicate{`0},IFramework.IEventArgs)">
+            <summary>
+            获取
+            </summary>
+            <param name="p"></param>
+            <param name="arg"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Pool.ListPool`1.Clear(`0,IFramework.IEventArgs)">
+            <summary>
+            清除
+            </summary>
+            <param name="t"></param>
+            <param name="arg"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Pool.ListPool`1.Contains(`0)">
+            <summary>
+            是否包含
+            </summary>
+            <param name="t"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Pool.ListPool`1.ForEach(System.Action{`0})">
+            <summary>
+            遍历
+            </summary>
+            <param name="action"></param>
+        </member>
+        <member name="M:IFramework.Pool.ListPool`1.Contains(System.Predicate{`0})">
+            <summary>
+            是否包含
+            </summary>
+            <param name="p"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Pool.ListPool`1.Peek">
+            <summary>
+            获取第一个元素
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:IFramework.Pool.CapicityPool`1">
+            <summary>
+            有容量的对象池
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:IFramework.Pool.CapicityPool`1.capcity">
+            <summary>
+            存储容量
+            </summary>
+        </member>
+        <member name="M:IFramework.Pool.CapicityPool`1.#ctor(System.Int32)">
+            <summary>
+            Ctor
+            </summary>
+            <param name="capcity"></param>
+        </member>
+        <member name="M:IFramework.Pool.CapicityPool`1.OnSet(`0,IFramework.IEventArgs)">
+            <summary>
+            回收，当数量超过回收失败
+            </summary>
+            <param name="t"></param>
+            <param name="arg"></param>
+            <returns></returns>
+        </member>
+        <member name="T:IFramework.Pool.BaseTypePool`1">
+            <summary>
+            统一类型的对象池
+            </summary>
+            <typeparam name="T">基础类型</typeparam>
+        </member>
+        <member name="T:IFramework.Pool.BaseTypePool`1.BaseTypeInnerPool`1">
+            <summary>
+            内部池子
+            </summary>
+            <typeparam name="Object"></typeparam>
+        </member>
+        <member name="M:IFramework.Pool.BaseTypePool`1.BaseTypeInnerPool`1.#ctor(System.Type)">
+            <summary>
+            ctor
+            </summary>
+            <param name="objType"></param>
+        </member>
+        <member name="P:IFramework.Pool.BaseTypePool`1.BaseTypeInnerPool`1.type">
+            <summary>
+            池子内部实际对象类型
+            </summary>
+        </member>
+        <member name="M:IFramework.Pool.BaseTypePool`1.BaseTypeInnerPool`1.CreatNew(IFramework.IEventArgs)">
+            <summary>
+            创建实例
+            </summary>
+            <param name="arg"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Pool.BaseTypePool`1.BaseTypeInnerPool`1.OnDispose">
+            <summary>
+            释放时
+            </summary>
+        </member>
+        <member name="F:IFramework.Pool.BaseTypePool`1.para">
+            <summary>
+            自旋锁
+            </summary>
+        </member>
+        <member name="P:IFramework.Pool.BaseTypePool`1.Item(System.Type)">
+            <summary>
+            索引
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Pool.BaseTypePool`1.#ctor">
+            <summary>
+            Ctor
+            </summary>
+        </member>
+        <member name="M:IFramework.Pool.BaseTypePool`1.SetPool(System.Type,IFramework.Pool.BaseTypePool{`0}.BaseTypeInnerPool{`0})">
+            <summary>
+            设置内部对象池
+            </summary>
+            <param name="type"></param>
+            <param name="pool"></param>
+        </member>
+        <member name="M:IFramework.Pool.BaseTypePool`1.GetPool(System.Type)">
+            <summary>
+            获取内部对象池
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Pool.BaseTypePool`1.Get(System.Type,IFramework.IEventArgs)">
+            <summary>
+            获取数据
+            </summary>
+            <param name="type"></param>
+            <param name="arg"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Pool.BaseTypePool`1.Get``1(IFramework.IEventArgs)">
+            <summary>
+            获取数据
+            </summary>
+            <typeparam name="Object"></typeparam>
+            <param name="arg"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Pool.BaseTypePool`1.Set(System.Type,`0,IFramework.IEventArgs)">
+            <summary>
+            回收数据
+            </summary>
+            <param name="type"></param>
+            <param name="t"></param>
+            <param name="arg"></param>
+        </member>
+        <member name="M:IFramework.Pool.BaseTypePool`1.Set``1(``0,IFramework.IEventArgs)">
+            <summary>
+            回收数据
+            </summary>
+            <typeparam name="Object"></typeparam>
+            <param name="t"></param>
+            <param name="arg"></param>
+        </member>
+        <member name="M:IFramework.Pool.BaseTypePool`1.Dispose">
+            <summary>
+            释放
+            </summary>
+        </member>
+        <member name="M:IFramework.Pool.BaseTypePool`1.OnDispose">
+            <summary>
+            释放时
+            </summary>
         </member>
         <member name="F:IFramework.Net.FileDownLoader_Http.tempSaveFilePath">
             临时文件全路径
@@ -2420,11 +2859,6 @@
             </summary>
             <param name="wsUrl"></param>
             <returns></returns>
-        </member>
-        <member name="T:IFramework.IPoolObjectOwner">
-            <summary>
-            
-            </summary>
         </member>
         <member name="T:IFramework.Serialization.DataTable.DataColumn">
             <summary>
@@ -3013,7 +3447,7 @@
             当前所处环境
             </summary>
         </member>
-        <member name="M:IFramework.RecyclableObject.Allocate(System.Type,IFramework.FrameworkEnvironment.EnvironmentType)">
+        <member name="M:IFramework.RecyclableObject.Allocate(System.Type,IFramework.EnvironmentType)">
             <summary>
             分配一个实例
             </summary>
@@ -3029,7 +3463,7 @@
             <param name="env"></param>
             <returns></returns>
         </member>
-        <member name="M:IFramework.RecyclableObject.Allocate``1(IFramework.FrameworkEnvironment.EnvironmentType)">
+        <member name="M:IFramework.RecyclableObject.Allocate``1(IFramework.EnvironmentType)">
             <summary>
             分配一个实例
             </summary>
@@ -3127,82 +3561,13 @@
             <param name="name"></param>
             <returns></returns>
         </member>
-        <member name="T:IFramework.ListPool`1">
+        <member name="M:IFramework.ObjectExtension.GetPropertyName``1(System.Object,System.Linq.Expressions.Expression{System.Func{``0}})">
             <summary>
-            list对象池
+            获取属性名称
             </summary>
             <typeparam name="T"></typeparam>
-        </member>
-        <member name="M:IFramework.ListPool`1.#ctor">
-            <summary>
-            ctor
-            </summary>
-        </member>
-        <member name="M:IFramework.ListPool`1.Get(System.Predicate{`0},IFramework.IEventArgs)">
-            <summary>
-            获取
-            </summary>
-            <param name="p"></param>
-            <param name="arg"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.ListPool`1.Clear(`0,IFramework.IEventArgs)">
-            <summary>
-            清除
-            </summary>
-            <param name="t"></param>
-            <param name="arg"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.ListPool`1.Contains(`0)">
-            <summary>
-            是否包含
-            </summary>
-            <param name="t"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.ListPool`1.ForEach(System.Action{`0})">
-            <summary>
-            遍历
-            </summary>
-            <param name="action"></param>
-        </member>
-        <member name="M:IFramework.ListPool`1.Contains(System.Predicate{`0})">
-            <summary>
-            是否包含
-            </summary>
-            <param name="p"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.ListPool`1.Peek">
-            <summary>
-            获取第一个元素
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="T:IFramework.CapicityPool`1">
-            <summary>
-            有容量的对象池
-            </summary>
-            <typeparam name="T"></typeparam>
-        </member>
-        <member name="P:IFramework.CapicityPool`1.capcity">
-            <summary>
-            存储容量
-            </summary>
-        </member>
-        <member name="M:IFramework.CapicityPool`1.#ctor(System.Int32)">
-            <summary>
-            Ctor
-            </summary>
-            <param name="capcity"></param>
-        </member>
-        <member name="M:IFramework.CapicityPool`1.OnSet(`0,IFramework.IEventArgs)">
-            <summary>
-            回收，当数量超过回收失败
-            </summary>
-            <param name="t"></param>
-            <param name="arg"></param>
+            <param name="obj"></param>
+            <param name="property">属性表达式</param>
             <returns></returns>
         </member>
         <member name="T:IFramework.ObjectPool`1">
@@ -3271,7 +3636,6 @@
             获取
             </summary>
             <param name="arg"></param>
-            <param name="param"></param>
             <returns></returns>
         </member>
         <member name="M:IFramework.ObjectPool`1.Set(`0,IFramework.IEventArgs)">
@@ -3330,114 +3694,6 @@
             </summary>
             <param name="t"></param>
             <param name="arg"></param>
-        </member>
-        <member name="T:IFramework.BaseTypePool`1">
-            <summary>
-            统一类型的对象池
-            </summary>
-            <typeparam name="T">基础类型</typeparam>
-        </member>
-        <member name="T:IFramework.BaseTypePool`1.BaseTypeInnerPool`1">
-            <summary>
-            内部池子
-            </summary>
-            <typeparam name="Object"></typeparam>
-        </member>
-        <member name="M:IFramework.BaseTypePool`1.BaseTypeInnerPool`1.#ctor(System.Type)">
-            <summary>
-            ctor
-            </summary>
-            <param name="objType"></param>
-        </member>
-        <member name="P:IFramework.BaseTypePool`1.BaseTypeInnerPool`1.type">
-            <summary>
-            池子内部实际对象类型
-            </summary>
-        </member>
-        <member name="M:IFramework.BaseTypePool`1.BaseTypeInnerPool`1.CreatNew(IFramework.IEventArgs)">
-            <summary>
-            创建实例
-            </summary>
-            <param name="arg"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.BaseTypePool`1.BaseTypeInnerPool`1.OnDispose">
-            <summary>
-            释放时
-            </summary>
-        </member>
-        <member name="F:IFramework.BaseTypePool`1.para">
-            <summary>
-            自旋锁
-            </summary>
-        </member>
-        <member name="P:IFramework.BaseTypePool`1.Item(System.Type)">
-            <summary>
-            索引
-            </summary>
-            <param name="type"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.BaseTypePool`1.#ctor">
-            <summary>
-            Ctor
-            </summary>
-        </member>
-        <member name="M:IFramework.BaseTypePool`1.SetPool(System.Type,IFramework.BaseTypePool{`0}.BaseTypeInnerPool{`0})">
-            <summary>
-            设置内部对象池
-            </summary>
-            <param name="type"></param>
-            <param name="pool"></param>
-        </member>
-        <member name="M:IFramework.BaseTypePool`1.GetPool(System.Type)">
-            <summary>
-            获取内部对象池
-            </summary>
-            <param name="type"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.BaseTypePool`1.Get(System.Type,IFramework.IEventArgs)">
-            <summary>
-            获取数据
-            </summary>
-            <param name="type"></param>
-            <param name="arg"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.BaseTypePool`1.Get``1(IFramework.IEventArgs)">
-            <summary>
-            获取数据
-            </summary>
-            <typeparam name="Object"></typeparam>
-            <param name="arg"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.BaseTypePool`1.Set(System.Type,`0,IFramework.IEventArgs)">
-            <summary>
-            回收数据
-            </summary>
-            <param name="type"></param>
-            <param name="t"></param>
-            <param name="arg"></param>
-        </member>
-        <member name="M:IFramework.BaseTypePool`1.Set``1(``0,IFramework.IEventArgs)">
-            <summary>
-            回收数据
-            </summary>
-            <typeparam name="Object"></typeparam>
-            <param name="t"></param>
-            <param name="arg"></param>
-        </member>
-        <member name="M:IFramework.BaseTypePool`1.Dispose">
-            <summary>
-            释放
-            </summary>
-        </member>
-        <member name="M:IFramework.BaseTypePool`1.OnDispose">
-            <summary>
-            释放时
-            </summary>
         </member>
         <member name="T:IFramework.StringExtension">
             <summary>

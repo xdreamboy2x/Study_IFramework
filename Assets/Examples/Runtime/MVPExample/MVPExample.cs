@@ -85,13 +85,14 @@ namespace IFramework_Demo
         private void Awake()
         {
             mod = MVPModule.CreatInstance<MVPModule>("Test");
-            mod.enity = new MyMVPEnity() { slider = slider, txt = txt };
-            mod.policy = new MyPolicySystem();
-            mod.policyExecutor = new MyPolicyExecutorSystem();
-            mod.sensor = new MySensorSystem();
-            mod.view = new MyViewSystem();
-            mod.enity.AddComponent<DataComponent>();
+           MVPGroup group = new MVPGroup(new MyMVPEnity() { slider = slider, txt = txt },
+                                         new MySensorSystem(), 
+                                         new MyPolicySystem(), 
+                                         new MyPolicyExecutorSystem(), 
+                                         new MyViewSystem(),"my");
+            group.enity.AddComponent<DataComponent>();
 
+            mod.AddGroup(group);
         }
         private void Update()
         {
