@@ -35,11 +35,11 @@ namespace IFramework_Demo
         {
             if (Input.GetKeyDown(KeyCode.Q))
             {
-                module.Get<Panel01>("Panel01",UIEventArgs.Allocate<UIEventArgs>(  EnvironmentType.Ev1), "Panel01");
+                module.Get<Panel01>("Panel01", "Panel01");
             }
             if (Input.GetKeyDown(KeyCode.W))
             {
-                module.Get<Panel02>("Panel02", UIEventArgs.Allocate<UIEventArgs>(EnvironmentType.Ev1), "Panel02");
+                module.Get<Panel02>("Panel02",  "Panel02");
             }
         }
     }

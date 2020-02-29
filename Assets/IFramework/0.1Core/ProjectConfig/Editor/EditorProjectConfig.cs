@@ -27,7 +27,7 @@ namespace IFramework
                 return info;
             }
         }
-        public static string ProjectConfigInfoPath = FrameworkConfig.CorePath.CombinePath("Config/Resources/" + ProjectConfig.infoName + ".asset").ToRegularPath();
+        public static string ProjectConfigInfoPath = EditorEnv.CorePath.CombinePath("ProjectConfig/Resources/" + ProjectConfig.infoName + ".asset").ToRegularPath();
         private static void LoadProjectInfo()
         {
             string[] guids = AssetDatabase.FindAssets(string.Format("t:{0}",typeof(ProjectConfigInfo)), new string[] { @"Assets" });

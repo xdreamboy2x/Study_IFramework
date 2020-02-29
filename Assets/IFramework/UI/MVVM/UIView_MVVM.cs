@@ -37,6 +37,8 @@ namespace IFramework
         {
             handler.BindProperty(() => { toggle.isOn = getter(); });
         }
+
+
         void IUIModuleEventListenner.OnLoad()
         {
             OnLoad();
