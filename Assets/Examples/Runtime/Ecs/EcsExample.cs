@@ -17,9 +17,9 @@ namespace IFramework_Demo
     public class EcsExample:UnityEngine.MonoBehaviour
 	{
 
+         
 
-
-        private class SimpleEnity : Enity { }
+        private class SimpleEntity : Entity { }
         private class PlayerComponent : IComponent { }
         private class PCComponent : IComponent { }
 
@@ -31,33 +31,33 @@ namespace IFramework_Demo
         {
             public float speed;
         }
-        private class PlayerSystem : ExcuteSystem<SimpleEnity>
+        private class PlayerSystem : ExcuteSystem<SimpleEntity>
         {
             public PlayerSystem(ECSModule module) : base(module) { }
-            protected override bool Fitter(SimpleEnity enity)
+            protected override bool Fitter(SimpleEntity entity)
             {
-                return enity.ContainsComponent<PlayerComponent>() && enity.ContainsComponent<RotaComponet>();
+                return entity.ContainsComponent<PlayerComponent>() && entity.ContainsComponent<RotaComponet>();
             }
-            protected override void Excute(SimpleEnity enity)
+            protected override void Excute(SimpleEntity entity)
             {
-                RotaComponet rc = enity.GetComponent<RotaComponet>();
+                RotaComponet rc = entity.GetComponent<RotaComponet>();
                 rc.go.transform.Rotate(UnityEngine.Vector3.up, 1);
             }
         }
-        private class PCSystem : ExcuteSystem<SimpleEnity>
+        private class PCSystem : ExcuteSystem<SimpleEntity>
         {
             public PCSystem(ECSModule module) : base(module) { }
-            protected override bool Fitter(SimpleEnity enity)
+            protected override bool Fitter(SimpleEntity entity)
             {
-                return enity.ContainsComponent<PCComponent>() && enity.ContainsComponent<RotaComponet>()&& enity.ContainsComponent<SpeedComponent>();
+                return entity.ContainsComponent<PCComponent>() && entity.ContainsComponent<RotaComponet>()&& entity.ContainsComponent<SpeedComponent>();
             }
-            protected override void Excute(SimpleEnity enity)
+            protected override void Excute(SimpleEntity entity)
             {
-                SpeedComponent sp = enity.GetComponent<SpeedComponent>();
-                RotaComponet rc = enity.GetComponent<RotaComponet>();
+                SpeedComponent sp = entity.GetComponent<SpeedComponent>();
+                RotaComponet rc = entity.GetComponent<RotaComponet>();
                 rc.go.transform.Rotate(UnityEngine.Vector3.forward,sp.speed);
                 sp.speed += 0.01f;
-                enity.ReFreshComponent(sp);
+                entity.ReFreshComponent(sp);
             }
         }
 
@@ -68,14 +68,14 @@ namespace IFramework_Demo
             module.SubscribeSystem(new PlayerSystem(module));
             module.SubscribeSystem(new PCSystem(module));
 
-            var player = module.CreateEnity<SimpleEnity>();
+            var player = module.CreateEntity<SimpleEntity>();
             player.AddComponent<PlayerComponent>();
             var playerRO = player.AddComponent<RotaComponet>();
             playerRO.go = UnityEngine.GameObject.CreatePrimitive(UnityEngine.PrimitiveType.Cube);
             playerRO.go.name = "Player";
             playerRO.go.transform.position = new UnityEngine.Vector3(0, -2,0);
 
-            var pc = module.CreateEnity<SimpleEnity>();
+            var pc = module.CreateEntity<SimpleEntity>();
             pc.AddComponent<SpeedComponent>();
             pc.AddComponent<PCComponent>();
             var pcRO = pc.AddComponent<RotaComponet>();

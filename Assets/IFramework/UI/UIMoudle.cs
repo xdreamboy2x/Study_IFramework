@@ -159,15 +159,15 @@ namespace IFramework
                 Tuple<Type, Type, Type, Type, Type> tuple;
                 _mvpMap.TryGetValue(panel.GetType(), out tuple);
                 if (tuple == null) throw new Exception(string.Format("Could Not Find map with Type: {0}", panel.GetType()));
-                var enity = Activator.CreateInstance(tuple.Item1) as UIEnity;
-                enity.panel = panel;
+                var entity = Activator.CreateInstance(tuple.Item1) as UIEntity;
+                entity.panel = panel;
 
                 var sensor = Activator.CreateInstance(tuple.Item2) as UISensor_MVP;
                 var policy = Activator.CreateInstance(tuple.Item3) as UIPolicy_MVP;
                 var executor = Activator.CreateInstance(tuple.Item4) as UIExecutor_MVP;
                 var view = Activator.CreateInstance(tuple.Item5) as UIView_MVP;
 
-                MVPGroup group = new MVPGroup(enity, sensor, policy, executor, view, panel.PanelName);
+                MVPGroup group = new MVPGroup(entity, sensor, policy, executor, view, panel.PanelName);
                 _mvpModule.AddGroup(group);
                 return group;
             }
@@ -274,7 +274,7 @@ namespace IFramework
             if (Canvas != null)
                 GameObject.Destroy(Canvas.gameObject);
         }
-
+      
         protected override void OnUpdate()
         {
             if (_uiGroups != null)
@@ -323,12 +323,12 @@ namespace IFramework
                 switch (_moduleType)
                 {
                     case ModuleType.MVP:
-                        var enity = _uiGroups.MVPSubscribe(ui);
-                        (enity.sensor as IUIModuleEventListenner).OnLoad();
+                        var entity = _uiGroups.MVPSubscribe(ui);
+                        (entity.sensor as IUIModuleEventListenner).OnLoad();
                         break;
                     case ModuleType.MVVM:
-                        var enity2 = _uiGroups.MVVMSubscribe(ui);
-                        (enity2.view as IUIModuleEventListenner).OnLoad();
+                        var entity2 = _uiGroups.MVVMSubscribe(ui);
+                        (entity2.view as IUIModuleEventListenner).OnLoad();
                         break;
                 }
 
@@ -478,8 +478,8 @@ namespace IFramework
             switch (_moduleType)
             {
                 case ModuleType.MVP:
-                    var enity = _uiGroups.FindMVPGroup(name);
-                    if (enity == null)
+                    var entity = _uiGroups.FindMVPGroup(name);
+                    if (entity == null)
                     {
                         UIPanel ui = Load(type, path, layer, name);
                         Push(ui);
@@ -487,8 +487,8 @@ namespace IFramework
                     }
                     else
                     {
-                        Push((enity.enity as UIEnity).panel);
-                        return (enity.enity as UIEnity).panel;
+                        Push((entity.entity as UIEntity).panel);
+                        return (entity.entity as UIEntity).panel;
                     }
                 case ModuleType.MVVM:
                     var group = _uiGroups.FindMVVMGroup(name);

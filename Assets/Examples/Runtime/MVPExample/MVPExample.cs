@@ -24,7 +24,7 @@ namespace IFramework_Demo
         }
         private class FreshViewArg : IEventArgs { }
 
-        private class MyMVPEnity : MVPEnity   
+        private class MyMVPEntity : MVPEntity   
         {
             public Slider slider;
             public Text txt; 
@@ -37,9 +37,9 @@ namespace IFramework_Demo
         {
             public MySensorSystem() : base() { }
 
-            protected override void OnSetEnity(MVPEnity value)
+            protected override void OnSetEntity(MVPEntity value)
             {
-                (value as MyMVPEnity).slider.onValueChanged.AddListener((val) =>
+                (value as MyMVPEntity).slider.onValueChanged.AddListener((val) =>
                 {
                     SendSensor(0, new SliderValueChangeArg() { value = val });
                 });
@@ -63,9 +63,9 @@ namespace IFramework_Demo
             protected override void OnPolicy(int code, IEventArgs args, object[] param)
             {
                 SliderValueChangeArg change = args as SliderValueChangeArg;
-                var data = enity.GetComponent<DataComponent>();
+                var data = entity.GetComponent<DataComponent>();
                 data.sliderVal = change.value;
-                enity.ReFreshComponent<DataComponent>(data);
+                entity.ReFreshComponent<DataComponent>(data);
                 SendPolicyExecutor(0, new FreshViewArg());
             }
         }
@@ -75,8 +75,8 @@ namespace IFramework_Demo
 
             protected override void OnPolicyPolicyExecutor(int code, IEventArgs args, object[] param)
             {
-                var data = enity.GetComponent<DataComponent>();
-                (enity as MyMVPEnity).FreshText(data.sliderVal);
+                var data = entity.GetComponent<DataComponent>();
+                (entity as MyMVPEntity).FreshText(data.sliderVal);
             }
         }
 
@@ -85,12 +85,12 @@ namespace IFramework_Demo
         private void Awake()
         {
             mod = MVPModule.CreatInstance<MVPModule>("Test");
-           MVPGroup group = new MVPGroup(new MyMVPEnity() { slider = slider, txt = txt },
+           MVPGroup group = new MVPGroup(new MyMVPEntity() { slider = slider, txt = txt },
                                          new MySensorSystem(), 
                                          new MyPolicySystem(), 
                                          new MyPolicyExecutorSystem(), 
                                          new MyViewSystem(),"my");
-            group.enity.AddComponent<DataComponent>();
+            group.entity.AddComponent<DataComponent>();
 
             mod.AddGroup(group);
         }

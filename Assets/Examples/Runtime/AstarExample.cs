@@ -39,10 +39,10 @@ namespace IFramework_Demo
             sear.LoadMap(map);
             try
             {
-                AStarNode2X[] result = sear.Search(map[0, 0], map[9, 9]);
+                AStarNode2X[] result = sear.Search(map[new Point2(0,0)], map[new Point2(9,9)]);
                 foreach (var item in result)
                 {
-                    Log.L(item.X + " " + item.Y);
+                    Log.L(item.mapPos);
                 }
             }
             catch (System.Exception)

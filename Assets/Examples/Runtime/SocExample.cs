@@ -8,6 +8,7 @@
 *********************************************************************************/
 using IFramework;
 using IFramework.Net;
+using IFramework.Packets;
 using System;
 using System.Collections.Generic;
 using System.Text;

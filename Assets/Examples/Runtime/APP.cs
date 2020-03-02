@@ -23,7 +23,6 @@ namespace IFramework_Demo
         }
         private void OnDisable()
         {
-            Framework.env1.Update();
             Framework.env1.Dispose();
         }
     }
