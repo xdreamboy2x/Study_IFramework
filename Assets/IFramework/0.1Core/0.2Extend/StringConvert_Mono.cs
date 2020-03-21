@@ -27,21 +27,24 @@ namespace IFramework.Serialization
         {
             public override string ConvertToString(Vector2 t)
             {
-                return string.Format("{0}X:{1},Y:{2}{3}",
+                return string.Format("{0}X{5}{1}{4}Y{5}{2}{3}",
                  leftBound,
                  t.x,
                  t.y,
-                 rightBound);
+                 rightBound,
+                 dot,
+                 colon
+                 
+                 );
             }
-
             public override bool TryConvert(string self, out Vector2 result)
             {
-                string[] temp = self.Split(',');
-                if (temp.Length != 2 || !temp[0].Contains(leftBound) || !temp[1].Contains(rightBound))
-                    throw new System.Exception("Parse Err Rect");
+                string[] temp = self.Split(dot);
+                if (temp.Length != 2 || !temp[0].Contains(leftBound.ToString()) || !temp[1].Contains(rightBound.ToString()))
+                    throw new Exception("Parse Err Rect");
                 float x, y;
                 if (temp[0].Split(colon)[1].TryConvert<float>(out x) &&
-                     temp[1].Split(colon)[1].Replace(rightBound, "").TryConvert<float>(out y))
+                     temp[1].Split(colon)[1].Replace(rightBound.ToString(),"").TryConvert<float>(out y))
                 {
                     result = new Vector2(x, y);
                     return true;
@@ -55,23 +58,25 @@ namespace IFramework.Serialization
         {
             public override string ConvertToString(Vector3 t)
             {
-                return string.Format("{0}X:{1},Y:{2},Z:{3}{4}",
+                return string.Format("{0}X{6}{1}{5}Y{6}{2}{5}Z{6}{3}{4}",
                  leftBound,
                  t.x,
                  t.y,
                  t.z,
-                 rightBound);
+                 rightBound,
+                 dot,colon
+                 );
             }
 
             public override bool TryConvert(string self, out Vector3 result)
             {
                 string[] temp = self.Split(',');
-                if (temp.Length != 3 || !temp[0].Contains(leftBound) || !temp[2].Contains(rightBound))
+                if (temp.Length != 3 || !temp[0].Contains(leftBound.ToString()) || !temp[2].Contains(rightBound.ToString()))
                     throw new System.Exception("Parse Err Rect");
                 float x, y, z;
                 if (temp[0].Split(colon)[1].TryConvert<float>(out x) &&
                      temp[1].Split(colon)[1].TryConvert<float>(out y) &&
-                     temp[2].Split(colon)[1].Replace(rightBound, "").TryConvert<float>(out z))
+                     temp[2].Split(colon)[1].Replace(rightBound.ToString(), "").TryConvert<float>(out z))
                 {
                     result = new Vector3(x, y, z);
                     return true;
@@ -85,25 +90,27 @@ namespace IFramework.Serialization
         {
             public override string ConvertToString(Vector4 self)
             {
-                return string.Format("{0}X:{1},Y:{2},Z:{3},W:{4}{5}",
+                return string.Format("{0}X{7}{1}{6}Y{7}{2}{6}Z{7}{3}{6}W{7}{4}{5}",
                 leftBound,
                 self.x,
                 self.y,
                 self.z,
                 self.w,
-                rightBound);
+                rightBound
+                ,dot,colon
+                );
             }
 
             public override bool TryConvert(string self, out Vector4 result)
             {
                 string[] temp = self.Split(',');
-                if (temp.Length != 4 || !temp[0].Contains(leftBound) || !temp[3].Contains(rightBound))
+                if (temp.Length != 4 || !temp[0].Contains(leftBound.ToString()) || !temp[3].Contains(rightBound.ToString()))
                     throw new System.Exception("Parse Err Rect");
                 float x, y, z, w;
                 if (temp[0].Split(colon)[1].TryConvert<float>(out x) &&
                      temp[1].Split(colon)[1].TryConvert<float>(out y) &&
                      temp[2].Split(colon)[1].TryConvert<float>(out z) &&
-                     temp[3].Split(colon)[1].Replace(rightBound, "").TryConvert<float>(out w))
+                     temp[3].Split(colon)[1].Replace(rightBound.ToString(), "").TryConvert<float>(out w))
                 {
                     result = new Vector4(x, y, z, w);
                     return true;
@@ -117,25 +124,26 @@ namespace IFramework.Serialization
         {
             public override string ConvertToString(Rect self)
             {
-                return string.Format("{0}X:{1},Y:{2},W:{3},H:{4}{5}",
+                return string.Format("{0}X{7}{1}{6}Y{7}{2}{6}W{7}{3}{6}H{7}{4}{5}",
                 leftBound,
                 self.x,
                 self.y,
                 self.width,
                 self.height,
-                rightBound);
+                rightBound
+                ,dot,colon);
             }
 
             public override bool TryConvert(string self, out Rect result)
             {
                 string[] temp = self.Split(',');
-                if (temp.Length != 4 || !temp[0].Contains(leftBound) || !temp[3].Contains(rightBound))
+                if (temp.Length != 4 || !temp[0].Contains(leftBound.ToString()) || !temp[3].Contains(rightBound.ToString()))
                     throw new System.Exception("Parse Err Rect");
                 float x, y, w, h;
                 if (temp[0].Split(colon)[1].TryConvert<float>(out x) &&
                      temp[1].Split(colon)[1].TryConvert<float>(out y) &&
                      temp[2].Split(colon)[1].TryConvert<float>(out w) &&
-                     temp[3].Split(colon)[1].Replace(rightBound, "").TryConvert<float>(out h))
+                     temp[3].Split(colon)[1].Replace(rightBound.ToString(), "").TryConvert<float>(out h))
                 {
                     result = new Rect(x, y, w, h);
                     return true;
@@ -149,25 +157,26 @@ namespace IFramework.Serialization
         {
             public override string ConvertToString(RectOffset self)
             {
-                return string.Format("{0}L:{1},R:{2},T:{3},B:{4}{5}",
+                return string.Format("{0}L{7}{1}{6}R{7}{2}{6}T{7}{3}{6}B{7}{4}{5}",
                       leftBound,
                       self.left,
                       self.right,
                       self.top,
                       self.bottom,
-                      rightBound);
+                      rightBound
+                      ,dot,colon);
             }
 
             public override bool TryConvert(string self, out RectOffset result)
             {
                 string[] temp = self.Split(',');
-                if (temp.Length != 4 || !temp[0].Contains(leftBound) || !temp[3].Contains(rightBound))
+                if (temp.Length != 4 || !temp[0].Contains(leftBound.ToString()) || !temp[3].Contains(rightBound.ToString()))
                     throw new System.Exception("Parse Err RectOffset");
                 int L, R, T, B;
                 if (temp[0].Split(colon)[1].TryConvert<int>(out L) &&
                      temp[1].Split(colon)[1].TryConvert<int>(out R) &&
                      temp[2].Split(colon)[1].TryConvert<int>(out T) &&
-                     temp[3].Split(colon)[1].Replace(rightBound, "").TryConvert<int>(out B))
+                     temp[3].Split(colon)[1].Replace(rightBound.ToString(), "").TryConvert<int>(out B))
                 {
                     result = new RectOffset(L, R, T, B);
                     return true;

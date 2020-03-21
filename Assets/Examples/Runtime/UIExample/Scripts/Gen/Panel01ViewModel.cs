@@ -32,7 +32,7 @@ namespace IFramework_Demo
         protected override void UnSubscribeMessage()
         {
             base.UnSubscribeMessage();
-            this.message.Unsubscribe<Panel01View>(Listen);
+            this.message.UnSubscribe<Panel01View>(Listen);
         }
         private void Listen(Type publishType, int code, IEventArgs args, object[] param)
         {

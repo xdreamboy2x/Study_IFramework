@@ -24,7 +24,7 @@ namespace IFramework_Demo
             public Listenner()
             {
                 Framework.env1.modules.Message.Subscribe<IPub>(Listen);
-                Framework.env1.modules.Message.Unsubscribe<IPub>(Listen);
+                Framework.env1.modules.Message.UnSubscribe<IPub>(Listen);
 
                 // Framework.env1.modules.Message.Subscribe<MessageExample>(this);
             }

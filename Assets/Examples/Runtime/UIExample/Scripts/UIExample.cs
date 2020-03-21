@@ -22,7 +22,7 @@ namespace IFramework_Demo
         {
             module = Framework.env1.modules.CreateModule<UIModule>();
             module.AddLoader(Load);
-            module.SetUseMVVM(UIMap_MVVM.map);
+            module.SetMap(UIMap_MVVM.map);
         }
 
         private UIPanel Load(Type type, string path, string name, UIPanelLayer layer)
