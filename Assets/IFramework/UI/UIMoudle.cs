@@ -117,9 +117,21 @@ namespace IFramework
         public bool IsInStack(UIPanel panel) { return UIStack.Contains(panel); }
         public bool IsInCache(UIPanel panel) { return UICache.Contains(panel); }
         public bool IsInUse(UIPanel panel) { return IsInCache(panel) || IsInStack(panel); }
-        public UIPanel Current { get { return Peek(); } }
-        public UIPanel Peek() { return UIStack.Peek(); }
-        public UIPanel CachePeek() { return UICache.Peek(); }
+        public UIPanel Current
+        {
+            get
+            {
+                if (UIStack.Count == 0)
+                    return null;
+                return UIStack.Peek();
+            }
+        }
+        public UIPanel CachePeek()
+        {
+            if (UICache.Count == 0)
+                return null;
+            return UICache.Peek();
+        }
     }
     public partial class UIModule : FrameworkModule
     {
@@ -473,7 +485,8 @@ namespace IFramework
         public UIPanel Get(Type type, string name, string path = "", UIPanelLayer layer = UIPanelLayer.Common)
         {
             //if (UICache.Count > 0) ClearCache(arg);
-            if (Current.PanelName == name && Current.GetType() == type)
+
+            if (Current!=null && Current.PanelName == name && Current.GetType() == type)
                 return Current;
             switch (_moduleType)
             {
