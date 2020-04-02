@@ -3969,5 +3969,25 @@
              0，0 -- 1，1 s形状
             </summary>
         </member>
+        <member name="P:IFramework.ValueCurve.linecurve">
+            <summary>
+             0，0 -- 1，1 直线
+            </summary>
+        </member>
+        <member name="P:IFramework.ValueCurve.ccurve_rough">
+            <summary>
+            0，0 -- 1，1 对称往上拱起(粗糙)
+            </summary>
+        </member>
+        <member name="P:IFramework.ValueCurve.scurve_rough">
+            <summary>
+             0，0 -- 1，1 s形状(粗糙)
+            </summary>
+        </member>
+        <member name="P:IFramework.ValueCurve.linecurve_rough">
+            <summary>
+             0，0 -- 1，1 直线(粗糙)
+            </summary>
+        </member>
     </members>
 </doc>
