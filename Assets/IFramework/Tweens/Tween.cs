@@ -18,7 +18,8 @@ namespace IFramework.Tweens
         ReStart,
         PingPong
     }
-    public class Tween<T> : RecyclableObject where T : struct
+    [FrameworkVersion(12)]
+    public class Tween<T> : RecyclableObject/* where T : struct*/
     {
         private TweenValue<T> _tv;
         private RepeatNode _repeat;
@@ -32,7 +33,8 @@ namespace IFramework.Tweens
         private bool _autoRecyle = true;
         private ValueCurve _curve = ValueCurve.linecurve;
         public event Action onCompelete;
-        private Action<T> getter;
+        private Action<T> setter;
+        private Func<T> getter;
         private int _loop = 1;
 
 
@@ -49,9 +51,9 @@ namespace IFramework.Tweens
             set
             {
                 _cur = value;
-                if (getter != null)
+                if (setter != null)
                 {
-                    getter(value);
+                    setter(value);
                 }
             }
         }
@@ -86,14 +88,19 @@ namespace IFramework.Tweens
         }
 
 
-        public virtual void Config(T start, T end, float dur, Action<T> getter)
+        public virtual void Config(T start, T end, float dur, Func<T> getter, Action<T> setter)
         {
             this._start = this.cur = start;
             this._end = end;
             this._dur = dur;
             this.getter = getter;
+            this.setter = setter;
             SetDataDirty();
         }
+
+
+
+        private bool _startToEnd = true;
         public void Run()
         {
             if (recyled) return;
@@ -122,15 +129,28 @@ namespace IFramework.Tweens
                             switch (loopType)
                             {
                                 case LoopType.ReStart:
-                                    _tv.Config(start, end, dur, (value) => { cur = value; }, null);
+                                    _tv.Config(start, end, dur, getter,(value) => { cur = value; }, null);
                                     break;
                                 case LoopType.PingPong:
-                                    if (cur.Equals(start))
-                                        _tv.Config(start, end, dur, (value) => { cur = value; }, null);
-                                    else if(cur .Equals(end))
-                                        _tv.Config(end, start, dur, (value) => { cur = value; }, null);
+                                    if (_startToEnd)
+                                    {
+                                        _tv.Config(start, end, dur, getter, (value) => { cur = value; }, null);
+
+                                        _startToEnd = false;
+                                    }
                                     else
-                                        _tv.Config(start, end, dur, (value) => { cur = value; }, null);
+                                    {
+
+                                        _tv.Config(end, start, dur, getter, (value) => { cur = value; }, null);
+
+                                        _startToEnd = true;
+                                    }
+                                    //if (cur.Equals(start))
+                                       
+                                    //else if(cur .Equals(end))
+                                    //    _tv.Config(end, start, dur, getter, (value) => { cur = value; }, null);
+                                    //else
+                                    //    _tv.Config(start, end, dur, getter, (value) => { cur = value; }, null);
 
                                     break;
                                 default:
@@ -152,19 +172,20 @@ namespace IFramework.Tweens
         public void ReStart()
         {
             if (recyled) return;
-
+            _startToEnd = true;
             RecycleInner();
             Run();
         }
         public void Rewind(float dur)
         {
             if (recyled) return;
+            _startToEnd = true;
 
             RecycleInner();
 
             _tv = TweenValue.Get<T>(env.envType);
             _tv.curve = curve;
-            _tv.Config(cur, start, dur,
+            _tv.Config(cur, start, dur, getter,
                 (value) => { cur = value; },
                 () => {
                     TryRecyleSelf();
@@ -174,6 +195,7 @@ namespace IFramework.Tweens
         public void Complete(bool invoke)
         {
             if (recyled) return;
+            _startToEnd = true;
 
             if (invoke && onCompelete != null)
             {
@@ -185,6 +207,7 @@ namespace IFramework.Tweens
 
         protected override void OnDataReset()
         {
+            _startToEnd = true;
             RecycleInner();
             _cur = _start = _end = default(T);
             _dur = 0;
@@ -192,6 +215,7 @@ namespace IFramework.Tweens
             _autoRecyle = true;
             _curve = ValueCurve.linecurve;
             _loopType = LoopType.ReStart;
+            setter = null;
             getter = null;
             onCompelete = null;
 

@@ -15,7 +15,9 @@ namespace IFramework.Tweens
         protected override void MoveNext()
         {
             float f = curve.GetYWithX(percent);
-            cur = Quaternion.Lerp(start, end, f);
+            //cur = Quaternion.Lerp(start, end, f);
+            Quaternion _cur = Quaternion.Lerp(start, end, f);
+            cur = Quaternion.Lerp( _cur, targetValue, targetValuePecent);
         }
     }
 

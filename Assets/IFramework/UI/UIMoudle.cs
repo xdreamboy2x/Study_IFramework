@@ -185,12 +185,6 @@ namespace IFramework
 
             }
 
-
-
-            public void Update()
-            {
-                _mvvmModule.Update();
-            }
             public void Dispose()
             {
                 _mvvmModule.Dispose();
@@ -220,11 +214,7 @@ namespace IFramework
                 GameObject.Destroy(Canvas.gameObject);
         }
 
-        protected override void OnUpdate()
-        {
-            if (_uiGroups != null)
-                _uiGroups.Update();
-        }
+
 
 
         public delegate UIPanel LoadDel(Type type, string path, string name, UIPanelLayer layer);

@@ -13,16 +13,10 @@ namespace IFramework.Tweens
     {
         protected override void MoveNext()
         {
-            if (start < end)
-            {
-                float f = curve.GetYWithX(percent);
-                cur = (end - start) * f + start;
-            }
-            else
-            {
-                float f = curve.GetYWithX(percent);
-                cur = (start - end) * f + end;
-            }
+            float f = curve.GetYWithX(percent);
+            float _cur = (end - start) * f + start;
+            _cur = _cur * (1 - targetValuePecent) + targetValue * targetValuePecent;
+            cur = _cur;
         }
     }
 

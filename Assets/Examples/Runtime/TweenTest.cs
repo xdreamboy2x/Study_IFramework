@@ -14,7 +14,7 @@ using IFramework;
 using IFramework.Modules.Coroutine;
 using IFramework.Tweens;
 using IFramework.Modules.NodeAction;
-//using DG.Tweening;
+using UnityEngine.UI;
 
 namespace IFramework_Demo
 {
@@ -23,15 +23,23 @@ namespace IFramework_Demo
 	{
         FloatTweenValue tv;
         public Transform cube;
+      public  Text text;
         Tween<Vector3> tc;
         private void Start()
         { 
           Framework.env1.modules.Coroutine = Framework.env1.modules.CreateModule<CoroutineModule>();
-          tc=  cube.DoMove(cube.transform.position+Vector3.one*5, 2, EnvironmentType.Ev1)
-                .SetLoop(-1, LoopType.PingPong)
-                .SetCurve(ValueCurve.scurve)
-                .SetRecyle(false);
-            cube.DoScale(Vector3.one * 2, 0.2f)
+            tc = cube.DoMove(cube.transform.position + Vector3.right *5, 2, EnvironmentType.Ev1)
+                  .SetLoop(-1, LoopType.PingPong)
+                  .SetCurve(ValueCurve.scurve)
+                  .SetRecyle(false);
+             cube.DoMove(cube.transform.position + Vector3.up * 2, 2, EnvironmentType.Ev1)
+                      .SetLoop(-1, LoopType.PingPong)
+                      .SetCurve(ValueCurve.scurve)
+                      .SetRecyle(false);
+
+
+
+            cube.DoScale(Vector3.one * 2, 2f)
                 .SetLoop(-1, LoopType.PingPong)
                 .SetRecyle(false);
             cube.DoRota(Vector3.one * 2, 0.5f)
@@ -40,7 +48,9 @@ namespace IFramework_Demo
             cube.GetComponent<Renderer>().material.DoColor(Color.cyan, 0.6f)
                  .SetLoop(-1, LoopType.PingPong)
                  .SetRecyle(false);
-        
+            text.DoText("444", "0123456789", 3)
+                    .SetLoop(-1, LoopType.PingPong);
+                    //.SetCurve(ValueCurve.scurve);
         }
 
         private void Update()
@@ -57,6 +67,7 @@ namespace IFramework_Demo
             {
                 tc.Complete(false);
             }
+          //  Debug.Log(Framework.env1.deltaTime.TotalSeconds);
         }
 
     }

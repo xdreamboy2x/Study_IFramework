@@ -699,11 +699,6 @@
             </summary>
             <param name="dispose"></param>
         </member>
-        <member name="P:IFramework.Modules.FrameworkModule.needUpdate">
-            <summary>
-            是否需要不断刷新
-            </summary>
-        </member>
         <member name="P:IFramework.Modules.FrameworkModule.moudeType">
             <summary>
             模块类型
@@ -724,23 +719,33 @@
             模块所处的容器
             </summary>
         </member>
-        <member name="P:IFramework.Modules.FrameworkModule.enable">
-            <summary>
-            开启关闭 Update
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.FrameworkModule.SetActive(System.Boolean)">
-            <summary>
-            改变 enable
-            </summary>
-            <param name="enable"></param>
-        </member>
         <member name="M:IFramework.Modules.FrameworkModule.Dispose">
             <summary>
             释放
             </summary>
         </member>
-        <member name="M:IFramework.Modules.FrameworkModule.Update">
+        <member name="T:IFramework.Modules.UpdateFrameworkModule">
+            <summary>
+            OnUpdate OnEnable OnDisable
+            </summary>
+        </member>
+        <member name="P:IFramework.Modules.UpdateFrameworkModule.enable">
+            <summary>
+            开启关闭 Update
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.UpdateFrameworkModule.SetActive(System.Boolean)">
+            <summary>
+            改变 enable
+            </summary>
+            <param name="enable"></param>
+        </member>
+        <member name="M:IFramework.Modules.UpdateFrameworkModule.Dispose">
+            <summary>
+            释放
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.UpdateFrameworkModule.Update">
             <summary>
             刷新
             </summary>
