@@ -18,7 +18,7 @@ namespace IFramework.Tweens
             //cur = (end - start) * f + start;
      
             Vector2  _cur = Vector2.Lerp(start, end, f);
-            cur = Vector2.Lerp( _cur, targetValue, targetValuePecent);
+            cur = Vector2.Lerp( targetValue, _cur, delta);
 
         }
     }

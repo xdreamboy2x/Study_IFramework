@@ -11,17 +11,17 @@ using UnityEngine;
 
 namespace IFramework.GUITool.LayoutDesign
 {
-    [CustomGUIElement(typeof(Label))]
-    public class LabelEditor : TextElementEditor
+    [CustomGUINodeAttribute(typeof(Label))]
+    public class LabelEditor : TextNodeEditor
     {
-        private Label textElement { get { return element as Label; } }
+        private Label textElement { get { return node as Label; } }
 
         private GUIStyleDesign textStyleDrawer;
         public override void OnSceneGUI(Action children)
         {
             base.OnSceneGUI(children);
 
-            if (!element.active) return;
+            if (!node.active) return;
 
             BeginGUI();
             GUILayout.Label(new GUIContent(textElement.text, textElement.tooltip), textElement.textStyle, CalcGUILayOutOptions());

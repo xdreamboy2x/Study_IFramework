@@ -11,10 +11,10 @@ using UnityEngine;
 
 namespace IFramework.GUITool.LayoutDesign
 {
-    [CustomGUIElement(typeof(ImageHorizontal))]
-    public class ImageHorizontalEditor : ParentImageElementEditor
+    [CustomGUINodeAttribute(typeof(ImageHorizontal))]
+    public class ImageHorizontalEditor : ParentImageNodeEditor
     {
-        private ImageHorizontal ele { get { return element as ImageHorizontal; } }
+        private ImageHorizontal ele { get { return node as ImageHorizontal; } }
         public override void OnSceneGUI(Action child)
         {
             if (!ele.active) return;

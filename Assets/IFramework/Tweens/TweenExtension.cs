@@ -216,7 +216,22 @@ namespace IFramework.Tweens
 
         public static Tween<int> DoText(this Text target, int start, int end, float dur, EnvironmentType env = EnvironmentType.Ev1)
         {
-            return AllocateTween<int>(env).ConfigAndRun(start, end, dur, () => { return int.Parse(target.text); }, (value) => {
+            return AllocateTween<int>(env).ConfigAndRun(start, end, dur, () => {
+                int value;
+                if (int.TryParse(target.text, out value))
+                    return value;
+                return 0; }, (value) => {
+                target.text = value.ToString();
+            });
+        }
+        public static Tween<float> DoText(this Text target, float start, float end, float dur, EnvironmentType env = EnvironmentType.Ev1)
+        {
+            return AllocateTween<float>(env).ConfigAndRun(start, end, dur, () => {
+                float value;
+                if (float.TryParse(target.text, out value))
+                    return value;
+                return 0;
+            }, (value) => {
                 target.text = value.ToString();
             });
         }
@@ -226,6 +241,16 @@ namespace IFramework.Tweens
                 target.text = value;
             });
         }
+
+        public static Tween<float> DoFillAmount(this Image target, float start, float end, float dur, EnvironmentType env = EnvironmentType.Ev1)
+        {
+            return AllocateTween<float>(env).ConfigAndRun(start, end, dur, () => {
+                return target.fillAmount;
+            }, (value) => {
+                target.fillAmount = value;
+            });
+        }
+
     }
 
 }

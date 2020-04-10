@@ -11,10 +11,10 @@ using UnityEngine;
 
 namespace IFramework.GUITool.LayoutDesign
 {
-    [CustomGUIElement(typeof(Space))]
-    public class SpaceEditor : GUIElementEditor
+    [CustomGUINodeAttribute(typeof(Space))]
+    public class SpaceEditor : GUINodeEditor
     {
-        private Space ele { get { return element as Space; } }
+        private Space ele { get { return node as Space; } }
         private bool insFold = true;
         public override void OnInspectorGUI()
         {

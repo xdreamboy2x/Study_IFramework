@@ -14,10 +14,10 @@ using UnityEngine;
 namespace IFramework.GUITool.LayoutDesign
 {
 
-    [CustomGUIElement(typeof(TextToolBar))]
-    public class TextToolBarEditor : ToolBarElementEditor
+    [CustomGUINodeAttribute(typeof(TextToolBar))]
+    public class TextToolBarEditor : ToolBarNodeEditor
     {
-        private TextToolBar toolbar { get { return element as TextToolBar; } }
+        private TextToolBar toolbar { get { return node as TextToolBar; } }
         private bool insFold = true;
         public override void OnInspectorGUI()
         {

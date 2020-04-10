@@ -11,17 +11,17 @@ using UnityEngine;
 
 namespace IFramework.GUITool.LayoutDesign
 {
-    [CustomGUIElement(typeof(TextArea))]
-    public class TextAreaEditor : TextElementEditor
+    [CustomGUINodeAttribute(typeof(TextArea))]
+    public class TextAreaEditor : TextNodeEditor
     {
-        private TextArea textElement { get { return element as TextArea; } }
+        private TextArea textElement { get { return node as TextArea; } }
 
         private GUIStyleDesign textStyleDrawer;
         public override void OnSceneGUI(Action children)
         {
             base.OnSceneGUI(children);
 
-            if (!element.active) return;
+            if (!node.active) return;
 
             BeginGUI();
             textElement.text = GUILayout.TextArea(textElement.text, textElement.textStyle, CalcGUILayOutOptions());

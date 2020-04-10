@@ -11,8 +11,8 @@ using UnityEngine;
 
 namespace IFramework.GUITool.RectDesign
 {
-    [CustomGUIElement(typeof(TextArea))]
-    public class TextAreaEditor : TextElementEditor
+    [CustomGUINode(typeof(TextArea))]
+    public class TextAreaEditor : TextNodeEditor
     {
         private TextArea textElement { get { return element as TextArea; } }
 

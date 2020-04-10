@@ -11,8 +11,8 @@ using UnityEngine;
 
 namespace IFramework.GUITool.RectDesign
 {
-    [CustomGUIElement(typeof(ImageBox))]
-    public class ImageBoxEditor : ImageElementEditor
+    [CustomGUINode(typeof(ImageBox))]
+    public class ImageBoxEditor : ImageNodeEditor
     {
         private ImageBox image { get { return element as ImageBox; } }
         public override void OnSceneGUI(Action children)

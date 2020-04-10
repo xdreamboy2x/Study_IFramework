@@ -17,7 +17,7 @@ namespace IFramework.Tweens
             float f = curve.GetYWithX(percent);
             //cur = (end - start) * f + start;
             Vector3 _cur = Vector3.Lerp(start, end, f);
-            cur = Vector3.Lerp(_cur, targetValue, targetValuePecent);
+            cur = Vector3.Lerp( targetValue, _cur, delta);
         }
 
     }

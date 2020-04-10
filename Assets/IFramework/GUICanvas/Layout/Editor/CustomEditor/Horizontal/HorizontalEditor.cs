@@ -11,10 +11,10 @@ using UnityEngine;
 
 namespace IFramework.GUITool.LayoutDesign
 {
-    [CustomGUIElement(typeof(Horizontal))]
-    public class HorizontalEditor : ParentImageElementEditor
+    [CustomGUINodeAttribute(typeof(Horizontal))]
+    public class HorizontalEditor : ParentImageNodeEditor
     {
-        private Horizontal ele { get { return element as Horizontal; } }
+        private Horizontal ele { get { return node as Horizontal; } }
         private bool insFold = true;
         public override void OnInspectorGUI()
         {

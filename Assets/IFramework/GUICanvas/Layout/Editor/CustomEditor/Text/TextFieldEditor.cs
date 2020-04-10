@@ -11,17 +11,17 @@ using UnityEngine;
 
 namespace IFramework.GUITool.LayoutDesign
 {
-    [CustomGUIElement(typeof(TextField))]
-    public class TextFieldEditor : TextElementEditor
+    [CustomGUINodeAttribute(typeof(TextField))]
+    public class TextFieldEditor : TextNodeEditor
     {
-        private TextField textElement { get { return element as TextField; } }
+        private TextField textElement { get { return node as TextField; } }
 
         private GUIStyleDesign textStyleDrawer;
         public override void OnSceneGUI(Action children)
         {
             base.OnSceneGUI(children);
 
-            if (!element.active) return;
+            if (!node.active) return;
 
             BeginGUI();
             textElement.text = GUILayout.TextField(textElement.text, textElement.textStyle, CalcGUILayOutOptions());

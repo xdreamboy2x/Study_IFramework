@@ -12,8 +12,8 @@ using UnityEngine;
 
 namespace IFramework.GUITool.RectDesign
 {
-    [CustomGUIElement(typeof(ShaderImage))]
-    public class ShaderImageEditor : GUIElementEditor
+    [CustomGUINode(typeof(ShaderImage))]
+    public class ShaderImageEditor : GUINodeEditor
     {
         private ShaderImage image { get { return element as ShaderImage; } }
         private bool insFold = true;

@@ -12,10 +12,10 @@ using UnityEngine;
 
 namespace IFramework.GUITool.LayoutDesign
 {
-    [CustomGUIElement(typeof(Image))]
-    public class ImageEditor : GUIElementEditor
+    [CustomGUINodeAttribute(typeof(Image))]
+    public class ImageEditor : GUINodeEditor
     {
-        private Image image { get { return element as Image; } }
+        private Image image { get { return node as Image; } }
         private bool insFold = true;
         public override void OnInspectorGUI()
         {

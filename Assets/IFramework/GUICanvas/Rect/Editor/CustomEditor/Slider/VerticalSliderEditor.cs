@@ -11,8 +11,8 @@ using UnityEngine;
 
 namespace IFramework.GUITool.RectDesign
 {
-    [CustomGUIElement(typeof(VerticalSlider))]
-    public class VerticalSliderEditor : SliderElementEditor
+    [CustomGUINode(typeof(VerticalSlider))]
+    public class VerticalSliderEditor : SliderNodeEditor
     {
         private VerticalSlider toolbar { get { return element as VerticalSlider; } }
 

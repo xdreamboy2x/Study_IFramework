@@ -12,8 +12,8 @@ using UnityEngine;
 
 namespace IFramework.GUITool.RectDesign
 {
-    [CustomGUIElement(typeof(ScrollView))]
-    public class ScrollViewEditor : GUIElementEditor
+    [CustomGUINode(typeof(ScrollView))]
+    public class ScrollViewEditor : GUINodeEditor
     {
         private ScrollView ele { get { return element as ScrollView; } }
         private bool insFold = true;

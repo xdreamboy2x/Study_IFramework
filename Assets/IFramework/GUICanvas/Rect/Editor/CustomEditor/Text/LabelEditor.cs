@@ -11,8 +11,8 @@ using UnityEngine;
 
 namespace IFramework.GUITool.RectDesign
 {
-    [CustomGUIElement(typeof(Label))]
-    public class LabelEditor : TextElementEditor
+    [CustomGUINode(typeof(Label))]
+    public class LabelEditor : TextNodeEditor
     {
         private Label textElement { get { return element as Label; } }
 

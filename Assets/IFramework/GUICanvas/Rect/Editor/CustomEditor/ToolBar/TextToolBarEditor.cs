@@ -13,8 +13,8 @@ using UnityEngine;
 
 namespace IFramework.GUITool.RectDesign
 {
-    [CustomGUIElement(typeof(TextToolBar))]
-    public class TextToolBarEditor : ToolBarElementEditor
+    [CustomGUINode(typeof(TextToolBar))]
+    public class TextToolBarEditor : ToolBarNodeEditor
     {
         private TextToolBar toolbar { get { return element as TextToolBar; } }
         private bool insFold = true;

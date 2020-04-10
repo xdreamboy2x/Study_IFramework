@@ -13,7 +13,7 @@ using UnityEngine;
 using IFramework;
 using IFramework.Modules.Coroutine;
 using IFramework.Tweens;
-using IFramework.Modules.NodeAction;
+using IFramework.NodeAction;
 using UnityEngine.UI;
 
 namespace IFramework_Demo
@@ -48,9 +48,12 @@ namespace IFramework_Demo
             cube.GetComponent<Renderer>().material.DoColor(Color.cyan, 0.6f)
                  .SetLoop(-1, LoopType.PingPong)
                  .SetRecyle(false);
-            text.DoText("444", "0123456789", 3)
+
+
+            text.DoText(0.1f, 10, 2f).SetLoop(-1, LoopType.PingPong);
+            text.DoText("", "123456789",100)
                     .SetLoop(-1, LoopType.PingPong);
-                    //.SetCurve(ValueCurve.scurve);
+                   // .SetCurve(ValueCurve.scurve);
         }
 
         private void Update()
@@ -67,7 +70,6 @@ namespace IFramework_Demo
             {
                 tc.Complete(false);
             }
-          //  Debug.Log(Framework.env1.deltaTime.TotalSeconds);
         }
 
     }

@@ -13,10 +13,10 @@ using UnityEngine;
 namespace IFramework.GUITool.LayoutDesign
 {
 
-    [CustomGUIElement(typeof(GUICanvas))]
+    [CustomGUINodeAttribute(typeof(GUICanvas))]
     public class GUICanvasEditor : AreaEditor
     {
-        private GUICanvas ele { get { return element as GUICanvas; } }
+        private GUICanvas ele { get { return node as GUICanvas; } }
         private bool insFold = true;
         public override void OnInspectorGUI()
         {

@@ -11,8 +11,8 @@ using UnityEngine;
 
 namespace IFramework.GUITool.RectDesign
 {
-    [CustomGUIElement(typeof(Box))]
-    public class BoxEditor : ImageElementEditor
+    [CustomGUINode(typeof(Box))]
+    public class BoxEditor : ImageNodeEditor
     {
         private Box ele { get { return element as Box; } }
         private bool insFold = true;

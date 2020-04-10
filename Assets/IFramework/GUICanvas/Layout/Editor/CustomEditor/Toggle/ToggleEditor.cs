@@ -11,10 +11,10 @@ using UnityEngine;
 
 namespace IFramework.GUITool.LayoutDesign
 {
-    [CustomGUIElement(typeof(Toggle))]
+    [CustomGUINodeAttribute(typeof(Toggle))]
     public class ToggleEditor : ImageToggleEditor
     {
-        private Toggle toggle { get { return element as Toggle; } }
+        private Toggle toggle { get { return node as Toggle; } }
         private bool insFold = true;
         public override void OnInspectorGUI()
         {

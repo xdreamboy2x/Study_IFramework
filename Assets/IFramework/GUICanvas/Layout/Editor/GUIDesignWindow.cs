@@ -26,8 +26,8 @@ namespace IFramework.GUITool.LayoutDesign
         private ToolBarTree titleToolBar;
         private EditType editType;
         private GUICanvasHierarchyTree HierarchyView = new GUICanvasHierarchyTree();
-        private GUIElementInspectorView InspectorView = new GUIElementInspectorView();
-        private GUIElementSceneView SceneView = new GUIElementSceneView();
+        private GUINodeInspectorView InspectorView = new GUINodeInspectorView();
+        private GUINodeSceneView SceneView = new GUINodeSceneView();
         private string XmlPath;
         [SerializeField]
         private string tmpDesign;
@@ -278,7 +278,7 @@ namespace IFramework.GUITool.LayoutDesign
             if (string.IsNullOrEmpty(tmpDesign))
             {
                 guiCanvas = new GUICanvas() { canvasRect = new Rect(0, 0, 500, 500) }
-                         .Element(new Button() { name = "Button", text = "123" });
+                         .Node(new Button() { name = "Button", text = "123" });
             }
             else
             {

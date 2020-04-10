@@ -14,8 +14,10 @@ namespace IFramework.Tweens
         protected override void MoveNext()
         {
             float f = curve.GetYWithX(percent);
-            float _cur = (end - start) * f + start;
-            _cur = _cur * (1 - targetValuePecent) + targetValue * targetValuePecent;
+          
+            float _cur = start.Lerp(end, f);
+            _cur = targetValue.Lerp(_cur,1- delta);
+
             cur = _cur;
         }
     }

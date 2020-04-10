@@ -12,8 +12,8 @@ using UnityEngine;
 
 namespace IFramework.GUITool.RectDesign
 {
-    [CustomGUIElement(typeof(Button))]
-    public class ButtonEditor : TextElementEditor
+    [CustomGUINode(typeof(Button))]
+    public class ButtonEditor : TextNodeEditor
     {
         private Button ele { get { return element as Button; } }
         private bool insFold = true;

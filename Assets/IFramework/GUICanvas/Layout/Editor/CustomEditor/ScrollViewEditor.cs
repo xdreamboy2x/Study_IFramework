@@ -11,10 +11,10 @@ using UnityEngine;
 
 namespace IFramework.GUITool.LayoutDesign
 {
-    [CustomGUIElement(typeof(ScrollView))]
-    public class ScrollViewEditor : ParentGUIElementEditor
+    [CustomGUINodeAttribute(typeof(ScrollView))]
+    public class ScrollViewEditor : ParentGUINodeEditor
     {
-        private ScrollView ele { get { return element as ScrollView; } }
+        private ScrollView ele { get { return node as ScrollView; } }
         private bool insFold = true;
         private GUIStyleDesign HstyleDrawer;
         private GUIStyleDesign VstyleDrawer;

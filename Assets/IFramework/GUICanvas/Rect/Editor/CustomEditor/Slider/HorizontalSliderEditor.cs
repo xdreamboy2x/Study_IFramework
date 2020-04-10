@@ -11,8 +11,8 @@ using UnityEngine;
 
 namespace IFramework.GUITool.RectDesign
 {
-    [CustomGUIElement(typeof(HorizontalSlider))]
-    public class HorizontalSliderEditor : SliderElementEditor
+    [CustomGUINode(typeof(HorizontalSlider))]
+    public class HorizontalSliderEditor : SliderNodeEditor
     {
         private HorizontalSlider toolbar { get { return element as HorizontalSlider; } }
 

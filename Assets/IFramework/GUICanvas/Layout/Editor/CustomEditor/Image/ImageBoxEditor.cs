@@ -11,10 +11,10 @@ using UnityEngine;
 
 namespace IFramework.GUITool.LayoutDesign
 {
-    [CustomGUIElement(typeof(ImageBox))]
-    public class ImageBoxEditor : ImageElementEditor
+    [CustomGUINodeAttribute(typeof(ImageBox))]
+    public class ImageBoxEditor : ImageNodeEditor
     {
-        private ImageBox image { get { return element as ImageBox; } }
+        private ImageBox image { get { return node as ImageBox; } }
         public override void OnSceneGUI(Action child)
         {
             if (!image.active) return;

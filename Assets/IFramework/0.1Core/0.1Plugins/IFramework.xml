@@ -2015,6 +2015,77 @@
             数据重置时
             </summary>
         </member>
+        <member name="T:IFramework.Serialization.DataTable.DataExplainer">
+            <summary>
+            string 解释器
+            </summary>
+        </member>
+        <member name="M:IFramework.Serialization.DataTable.DataExplainer.CreatInstance``1">
+            <summary>
+            创建实例
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Serialization.DataTable.DataExplainer.CreatInstance``1(System.Collections.Generic.List{IFramework.Serialization.DataTable.DataColumn},System.Collections.Generic.Dictionary{System.Reflection.MemberInfo,System.String})">
+            <summary>
+            根据格子反序列化一个实例
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="cols"></param>
+            <param name="membersDic">需要反序列化的成员</param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Serialization.DataTable.DataExplainer.GetColumns``1(``0,System.Collections.Generic.Dictionary{System.Reflection.MemberInfo,System.String})">
+            <summary>
+            根据 具体类型 获取单个数据格子数据
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="t"></param>
+            <param name="membersDic">需要序列化的成员</param>
+            <returns></returns>
+        </member>
+        <member name="T:IFramework.Serialization.DataTable.DataRow">
+            <summary>
+            数据行
+            </summary>
+        </member>
+        <member name="M:IFramework.Serialization.DataTable.DataRow.ReadLine(System.String,System.Collections.Generic.List{System.String})">
+            <summary>
+            读取一行
+            </summary>
+            <param name="val">行String</param>
+            <param name="headNames">标题行</param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Serialization.DataTable.DataRow.SpilitRow(System.String)">
+            <summary>
+            切割一行
+            </summary>
+            <param name="val"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Serialization.DataTable.DataRow.ReadHeadLine(System.String)">
+            <summary>
+            读取标题行
+            </summary>
+            <param name="val">行String</param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Serialization.DataTable.DataRow.WriteLine(System.Collections.Generic.List{IFramework.Serialization.DataTable.DataColumn})">
+            <summary>
+            写入一行
+            </summary>
+            <param name="cols">写入的信息</param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Serialization.DataTable.DataRow.WriteHeadLine(System.Collections.Generic.List{System.String})">
+            <summary>
+            写入标题行
+            </summary>
+            <param name="headNames">写入的标题</param>
+            <returns></returns>
+        </member>
         <member name="T:IFramework.Serialization.DataTable.DataColumn">
             <summary>
             每一个格子
@@ -2147,36 +2218,6 @@
             <param name="membersDic">需要序列化的成员</param>
             <returns></returns>
         </member>
-        <member name="T:IFramework.Serialization.DataTable.DataExplainer">
-            <summary>
-            string 解释器
-            </summary>
-        </member>
-        <member name="M:IFramework.Serialization.DataTable.DataExplainer.CreatInstance``1">
-            <summary>
-            创建实例
-            </summary>
-            <typeparam name="T"></typeparam>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Serialization.DataTable.DataExplainer.CreatInstance``1(System.Collections.Generic.List{IFramework.Serialization.DataTable.DataColumn},System.Collections.Generic.Dictionary{System.Reflection.MemberInfo,System.String})">
-            <summary>
-            根据格子反序列化一个实例
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="cols"></param>
-            <param name="membersDic">需要反序列化的成员</param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Serialization.DataTable.DataExplainer.GetColumns``1(``0,System.Collections.Generic.Dictionary{System.Reflection.MemberInfo,System.String})">
-            <summary>
-            根据 具体类型 获取单个数据格子数据
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="t"></param>
-            <param name="membersDic">需要序列化的成员</param>
-            <returns></returns>
-        </member>
         <member name="T:IFramework.Serialization.DataTable.IDataRow">
             <summary>
             数据行
@@ -2205,47 +2246,6 @@
             <returns></returns>
         </member>
         <member name="M:IFramework.Serialization.DataTable.IDataRow.WriteHeadLine(System.Collections.Generic.List{System.String})">
-            <summary>
-            写入标题行
-            </summary>
-            <param name="headNames">写入的标题</param>
-            <returns></returns>
-        </member>
-        <member name="T:IFramework.Serialization.DataTable.DataRow">
-            <summary>
-            数据行
-            </summary>
-        </member>
-        <member name="M:IFramework.Serialization.DataTable.DataRow.ReadLine(System.String,System.Collections.Generic.List{System.String})">
-            <summary>
-            读取一行
-            </summary>
-            <param name="val">行String</param>
-            <param name="headNames">标题行</param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Serialization.DataTable.DataRow.SpilitRow(System.String)">
-            <summary>
-            切割一行
-            </summary>
-            <param name="val"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Serialization.DataTable.DataRow.ReadHeadLine(System.String)">
-            <summary>
-            读取标题行
-            </summary>
-            <param name="val">行String</param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Serialization.DataTable.DataRow.WriteLine(System.Collections.Generic.List{IFramework.Serialization.DataTable.DataColumn})">
-            <summary>
-            写入一行
-            </summary>
-            <param name="cols">写入的信息</param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Serialization.DataTable.DataRow.WriteHeadLine(System.Collections.Generic.List{System.String})">
             <summary>
             写入标题行
             </summary>
@@ -2655,7 +2655,7 @@
         </member>
         <member name="T:IFramework.FrameworkVersionAttribute">
             <summary>
-            框架代码版本默认有 1
+             框架代码版本默认有 1
             </summary>
         </member>
         <member name="P:IFramework.FrameworkVersionAttribute.version">
@@ -2668,6 +2668,61 @@
             Ctor
             </summary>
             <param name="version"></param>
+        </member>
+        <member name="T:IFramework.DescriptionAttribute">
+            <summary>
+            描述
+            </summary>
+        </member>
+        <member name="F:IFramework.DescriptionAttribute.description">
+            <summary>
+            描述
+            </summary>
+        </member>
+        <member name="M:IFramework.DescriptionAttribute.#ctor(System.String)">
+            <summary>
+            ctor
+            </summary>
+        </member>
+        <member name="T:IFramework.DependenceAttribute">
+            <summary>
+            依赖描述
+            </summary>
+        </member>
+        <member name="F:IFramework.DependenceAttribute.type">
+            <summary>
+            types
+            </summary>
+        </member>
+        <member name="M:IFramework.DependenceAttribute.#ctor(System.Type)">
+            <summary>
+            ctor
+            </summary>
+            <param name="type"></param>
+        </member>
+        <member name="M:IFramework.DependenceAttribute.#ctor(System.Type,System.String)">
+            <summary>
+            ctor
+            </summary>
+            <param name="type"></param>
+            <param name="description"></param>
+        </member>
+        <member name="T:IFramework.ScriptVersionUpdateAttribute">
+            <summary>
+            代码升级说明
+            </summary>
+        </member>
+        <member name="F:IFramework.ScriptVersionUpdateAttribute.description">
+            <summary>
+            描述
+            </summary>
+        </member>
+        <member name="M:IFramework.ScriptVersionUpdateAttribute.#ctor(System.Int32,System.String)">
+            <summary>
+            ctor
+            </summary>
+            <param name="version"></param>
+            <param name="description"></param>
         </member>
         <member name="T:IFramework.Framework">
             <summary>
@@ -3316,6 +3371,15 @@
             <param name="self"></param>
             <param name="max"></param>
             <param name="min"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.IntExtension.Lerp(System.Int32,System.Single,System.Single)">
+            <summary>
+            线性插值  self  +（end-self）* percent
+            </summary>
+            <param name="self"></param>
+            <param name="end"></param>
+            <param name="pecent"></param>
             <returns></returns>
         </member>
         <member name="T:IFramework.IO">

@@ -11,10 +11,10 @@ using UnityEngine;
 
 namespace IFramework.GUITool.LayoutDesign
 {
-    [CustomGUIElement(typeof(ImageVertical))]
-    public class ImageVerticalEditor : ParentImageElementEditor
+    [CustomGUINodeAttribute(typeof(ImageVertical))]
+    public class ImageVerticalEditor : ParentImageNodeEditor
     {
-        private ImageVertical ele { get { return element as ImageVertical; } }
+        private ImageVertical ele { get { return node as ImageVertical; } }
         public override void OnSceneGUI(Action child)
         {
             if (!ele.active) return;

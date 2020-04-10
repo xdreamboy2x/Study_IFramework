@@ -12,8 +12,8 @@ using UnityEngine;
 
 namespace IFramework.GUITool.RectDesign
 {
-    [CustomGUIElement(typeof(Image))]
-    public class ImageEditor : GUIElementEditor
+    [CustomGUINode(typeof(Image))]
+    public class ImageEditor : GUINodeEditor
     {
         private Image image { get { return element as Image; } }
         private bool insFold = true;

@@ -11,10 +11,10 @@ using UnityEngine;
 
 namespace IFramework.GUITool.LayoutDesign
 {
-    [CustomGUIElement(typeof(FlexibleSpace))]
-    public class FlexibleSpaceEditor : GUIElementEditor
+    [CustomGUINodeAttribute(typeof(FlexibleSpace))]
+    public class FlexibleSpaceEditor : GUINodeEditor
     {
-        private FlexibleSpace ele { get { return element as FlexibleSpace; } }
+        private FlexibleSpace ele { get { return node as FlexibleSpace; } }
 
         public override void OnSceneGUI(Action child)
         {

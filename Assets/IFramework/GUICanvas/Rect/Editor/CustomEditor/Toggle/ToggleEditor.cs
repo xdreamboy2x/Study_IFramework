@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace IFramework.GUITool.RectDesign
 {
-    [CustomGUIElement(typeof(Toggle))]
+    [CustomGUINode(typeof(Toggle))]
     public class ToggleEditor : ImageToggleEditor
     {
         private Toggle toggle { get { return element as Toggle; } }

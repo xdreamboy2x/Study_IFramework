@@ -8,7 +8,7 @@
 *********************************************************************************/
 using IFramework;
 using IFramework.Modules.Coroutine;
-using IFramework.Modules.NodeAction;
+using IFramework.NodeAction;
 using System;
 using UnityEngine;
 

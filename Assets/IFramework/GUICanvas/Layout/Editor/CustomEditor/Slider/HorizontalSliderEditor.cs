@@ -12,10 +12,10 @@ using UnityEngine;
 namespace IFramework.GUITool.LayoutDesign
 {
 
-    [CustomGUIElement(typeof(HorizontalSlider))]
-    public class HorizontalSliderEditor : SliderElementEditor
+    [CustomGUINodeAttribute(typeof(HorizontalSlider))]
+    public class HorizontalSliderEditor : SliderNodeEditor
     {
-        private HorizontalSlider slider { get { return element as HorizontalSlider; } }
+        private HorizontalSlider slider { get { return node as HorizontalSlider; } }
 
         public override void OnSceneGUI(Action child)
         {

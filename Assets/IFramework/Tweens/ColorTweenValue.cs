@@ -17,7 +17,7 @@ namespace IFramework.Tweens
             float f = curve.GetYWithX(percent);
 
             Color _cur = Color.Lerp(start, end, f);
-            cur = Color.Lerp( _cur, targetValue, targetValuePecent);
+            cur = Color.Lerp(  targetValue, _cur, delta);
         }
     }
 

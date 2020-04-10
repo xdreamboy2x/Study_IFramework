@@ -6,13 +6,13 @@
  *Description:    IFramework
  *History:        2018.11--
 *********************************************************************************/
+using IFramework.NodeAction;
 using System;
-using IFramework.Modules.NodeAction;
 using UnityEngine;
+
 
 namespace IFramework.Tweens
 {
-
     public enum LoopType
     {
         ReStart,
@@ -248,11 +248,7 @@ namespace IFramework.Tweens
             }
         }
 
-        protected override void OnRecyle()
-        {
-            base.OnRecyle();
-            Debug.Log("rec");
-        }
+      
     }
 
 }

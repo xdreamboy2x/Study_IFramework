@@ -7,7 +7,7 @@
  *History:        2020-02-16--
 *********************************************************************************/
 using IFramework;
-using IFramework.Modules.NodeAction;
+using IFramework.NodeAction;
 using UnityEditor;
 using UnityEngine;
 namespace IFramework_Demo

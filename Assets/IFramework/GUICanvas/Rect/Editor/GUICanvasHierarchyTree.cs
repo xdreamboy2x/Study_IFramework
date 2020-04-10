@@ -34,11 +34,11 @@ namespace IFramework.GUITool.RectDesign
                 }
             }
             private int siblingIndex { get { return element.siblingIndex; } }
-            private GUIElement element;
+            private GUINode element;
             public Trunk parent;
             private List<Trunk> children;
             private RenameLabelDrawer nameLabel;
-            public Trunk(Trunk parent, GUIElement element)
+            public Trunk(Trunk parent, GUINode element)
             {
                 this.element = element;
                 this.parent = parent;
@@ -49,7 +49,7 @@ namespace IFramework.GUITool.RectDesign
                 children = new List<Trunk>();
                 if (element.Children.Count > 0)
                     for (int i = 0; i < element.Children.Count; i++)
-                        children.Add(new Trunk(this, element.Children[i] as GUIElement));
+                        children.Add(new Trunk(this, element.Children[i] as GUINode));
             }
 
             public void OnTreeChange()
@@ -61,7 +61,7 @@ namespace IFramework.GUITool.RectDesign
                 {
                     var trunk = tmp.Find((t) => { return t.element == element.Children[i]; });
                     if (trunk == null)
-                        children.Add(new Trunk(this, element.Children[i] as GUIElement));
+                        children.Add(new Trunk(this, element.Children[i] as GUINode));
                     else
                     {
                         tmp.Remove(trunk);
@@ -99,7 +99,7 @@ namespace IFramework.GUITool.RectDesign
                 bool active = element.active;
                 if (active)
                 {
-                    IGUIElement ele = element;
+                    GUINode ele = element;
                     while (ele.parent != null)
                     {
                         ele = ele.parent;
@@ -112,7 +112,7 @@ namespace IFramework.GUITool.RectDesign
 
                 var rs = rect.HorizontalSplit(LineHeight);
                 Rect selfRect = rs[0];
-                if (GUIElementSelection.element == this.element && e.type == EventType.Repaint)
+                if (GUINodeSelection.node == this.element && e.type == EventType.Repaint)
                     new GUIStyle("SelectionRect").Draw(selfRect, false, false, false, false);
                 selfRect.xMin += 20 * element.depth;
                 Rect childrenRect = rs[1];
@@ -156,8 +156,8 @@ namespace IFramework.GUITool.RectDesign
             private void Eve(Rect r, Rect sf,/*Rect tr,*/Rect br, Event e)
             {
                 MouseDragEve(r, sf,/*tr,*/ br, e);
-                if (r.Contains(e.mousePosition) /*&& e.type == EventType.MouseDown */&& e.clickCount == 1 && e.button == 0) GUIElementSelection.element = this.element;
-                if (r.Contains(e.mousePosition) && GUIElementSelection.element == this.element)
+                if (r.Contains(e.mousePosition) /*&& e.type == EventType.MouseDown */&& e.clickCount == 1 && e.button == 0) GUINodeSelection.node = this.element;
+                if (r.Contains(e.mousePosition) && GUINodeSelection.node == this.element)
                 {
                     if (e.type == EventType.KeyUp)
                     {
@@ -166,7 +166,7 @@ namespace IFramework.GUITool.RectDesign
                             OnCtrlC();
                             e.Use();
                         }
-                        if (e.modifiers == EventModifiers.Control && e.keyCode == KeyCode.V && GUIElementSelection.copyElement != null)
+                        if (e.modifiers == EventModifiers.Control && e.keyCode == KeyCode.V && GUINodeSelection.copyNode != null)
                         {
                             OnCtrlV();
                             e.Use();
@@ -196,12 +196,12 @@ namespace IFramework.GUITool.RectDesign
             }
             private void MouseDragEve(Rect r, Rect sf, /*Rect tr,*/ Rect br, Event e)
             {
-                bool CouldPutdown = r.Contains(e.mousePosition) && GUIElementSelection.dragElement != null && GUIElementSelection.dragElement != this.element;
-                IGUIElement tmp = this.element;
+                bool CouldPutdown = r.Contains(e.mousePosition) && GUINodeSelection.dragNode != null && GUINodeSelection.dragNode != this.element;
+                GUINode tmp = this.element;
                 while (tmp.parent != null)
                 {
                     tmp = tmp.parent;
-                    if (tmp == GUIElementSelection.dragElement)
+                    if (tmp == GUINodeSelection.dragNode)
                     {
                         CouldPutdown = false;
                         break;
@@ -226,7 +226,7 @@ namespace IFramework.GUITool.RectDesign
                 {
                     if (sf.Contains(e.mousePosition))
                     {
-                        this.element.Element(GUIElementSelection.dragElement);
+                        this.element.Node(GUINodeSelection.dragNode);
 
                     }
                     //else if (tr.Contains(e.mousePosition))
@@ -246,34 +246,34 @@ namespace IFramework.GUITool.RectDesign
                     {
                         if (!(element is GUICanvas))
                         {
-                            (this.element.parent as GUIElement).Element(GUIElementSelection.dragElement);
-                            GUIElementSelection.dragElement.siblingIndex = element.siblingIndex + 1;
+                            (this.element.parent as GUINode).Node(GUINodeSelection.dragNode);
+                            GUINodeSelection.dragNode.siblingIndex = element.siblingIndex + 1;
                         }
 
                     }
 
-                    GUIElementSelection.dragElement = null;
+                    GUINodeSelection.dragNode = null;
                 }
-                else if (GUIElementSelection.element == this.element)
+                else if (GUINodeSelection.node == this.element)
                 {
                     if (e.type == EventType.MouseDrag)
-                        GUIElementSelection.dragElement = GUIElementSelection.element;
+                        GUINodeSelection.dragNode = GUINodeSelection.node;
                     else if (e.type == EventType.MouseUp)
-                        GUIElementSelection.dragElement = null;
+                        GUINodeSelection.dragNode = null;
                 }
 
 
             }
             private void OnMenu(GenericMenu menu)
             {
-                var types = GUIElements.elementTypes
-                .FindAll((type) => { return !type.IsAbstract && type.IsDefined(typeof(GUIElementAttribute), false); });
+                var types = GUINodes.nodeTypes
+                .FindAll((type) => { return !type.IsAbstract && type.IsDefined(typeof(GUINodeAttribute), false); });
                 types.ForEach((type) =>
                 {
-                    string createPath = (type.GetCustomAttributes(typeof(GUIElementAttribute), false).First() as GUIElementAttribute).CreatPath;
+                    string createPath = (type.GetCustomAttributes(typeof(GUINodeAttribute), false).First() as GUINodeAttribute).CreatPath;
                     menu.AddItem(new GUIContent("Create/" + createPath), false, () => { OnCeateElement(type); });
                 });
-                if (GUIElementSelection.copyElement == null)
+                if (GUINodeSelection.copyNode == null)
                     menu.AddDisabledItem(new GUIContent("Paste"));
                 else
                     menu.AddItem(new GUIContent("Paste"), false, OnCtrlV);
@@ -317,8 +317,8 @@ namespace IFramework.GUITool.RectDesign
 
             private void OnCeateElement(Type type)
             {
-                GUIElement copy = Activator.CreateInstance(type) as GUIElement;
-                this.element.Element(copy);
+                GUINode copy = Activator.CreateInstance(type) as GUINode;
+                this.element.Node(copy);
                 //copy.parent = this.element;
                 //tree.OnTreeChange();
             }
@@ -338,30 +338,30 @@ namespace IFramework.GUITool.RectDesign
             {
                 if (this.element.GetType() != typeof(GUICanvas))
                 {
-                    GUIElementSelection.copyElement = this.element;
+                    GUINodeSelection.copyNode = this.element;
                 }
             }
             protected virtual void OnCtrlV()
             {
-                if (GUIElementSelection.copyElement == null) return;
-                GUIElement copy = Activator.CreateInstance(GUIElementSelection.copyElement.GetType(), GUIElementSelection.copyElement) as GUIElement;
+                if (GUINodeSelection.copyNode == null) return;
+                GUINode copy = Activator.CreateInstance(GUINodeSelection.copyNode.GetType(), GUINodeSelection.copyNode) as GUINode;
                 if (this.element.GetType() != typeof(GUICanvas))
-                    (this.element.parent as GUIElement).Element(copy);
+                    (this.element.parent as GUINode).Node(copy);
                 else
-                    (this.element as GUIElement).Element(copy);
-                GUIElementSelection.copyElement = null;
+                    (this.element as GUINode).Node(copy);
+                GUINodeSelection.copyNode = null;
             }
             protected virtual void OnCtrlD()
             {
                 if (this.element.GetType() == typeof(GUICanvas)) return;
-                GUIElement copy = Activator.CreateInstance(this.element.GetType(), this.element) as GUIElement;
-                (this.element.parent as GUIElement).Element(copy);
+                GUINode copy = Activator.CreateInstance(this.element.GetType(), this.element) as GUINode;
+                (this.element.parent as GUINode).Node(copy);
             }
             protected virtual void OnDelete()
             {
                 if (this.element.GetType() == typeof(GUICanvas)) return;
                 element.Destoty();
-                GUIElementSelection.element = null;
+                GUINodeSelection.node = null;
             }
         }
 
@@ -387,7 +387,7 @@ namespace IFramework.GUITool.RectDesign
             if (root == null) return;
             Event e = Event.current;
             if (!rect.Contains(Event.current.mousePosition))
-                GUIElementSelection.dragElement = null;
+                GUINodeSelection.dragNode = null;
             root.CalcHeight();
             var rs = rect.HorizontalSplit(root.Height);
             scroll = GUI.BeginScrollView(rect, scroll, rs[0]);
@@ -402,8 +402,8 @@ namespace IFramework.GUITool.RectDesign
         {
             if (r.height > 0 && r.Contains(e.mousePosition) && e.type == EventType.MouseUp)
             {
-                GUIElementSelection.element = null;
-                GUIElementSelection.dragElement = null;
+                GUINodeSelection.node = null;
+                GUINodeSelection.dragNode = null;
             }
         }
 

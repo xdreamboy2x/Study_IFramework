@@ -17,7 +17,7 @@ namespace IFramework.Tweens
             float f = curve.GetYWithX(percent);
             //cur = Quaternion.Lerp(start, end, f);
             Quaternion _cur = Quaternion.Lerp(start, end, f);
-            cur = Quaternion.Lerp( _cur, targetValue, targetValuePecent);
+            cur = Quaternion.Lerp(  targetValue, _cur, delta);
         }
     }
 

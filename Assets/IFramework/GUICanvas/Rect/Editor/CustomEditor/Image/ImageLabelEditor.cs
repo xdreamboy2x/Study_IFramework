@@ -11,8 +11,8 @@ using UnityEngine;
 
 namespace IFramework.GUITool.RectDesign
 {
-    [CustomGUIElement(typeof(ImageLabel))]
-    public class ImageLabelEditor : ImageElementEditor
+    [CustomGUINode(typeof(ImageLabel))]
+    public class ImageLabelEditor : ImageNodeEditor
     {
         private ImageLabel image { get { return element as ImageLabel; } }
 

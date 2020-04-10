@@ -11,10 +11,10 @@ using UnityEngine;
 
 namespace IFramework.GUITool.LayoutDesign
 {
-    [CustomGUIElement(typeof(Vertical))]
-    public class VerticalEditor : ParentImageElementEditor
+    [CustomGUINodeAttribute(typeof(Vertical))]
+    public class VerticalEditor : ParentImageNodeEditor
     {
-        private Vertical ele { get { return element as Vertical; } }
+        private Vertical ele { get { return node as Vertical; } }
         private bool insFold = true;
         public override void OnInspectorGUI()
         {

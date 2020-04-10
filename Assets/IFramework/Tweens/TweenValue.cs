@@ -8,7 +8,7 @@
 *********************************************************************************/
 using System;
 using System.Collections.Generic;
-using IFramework.Modules.NodeAction;
+using IFramework.NodeAction;
 using UnityEngine;
 
 namespace IFramework.Tweens
@@ -20,7 +20,7 @@ namespace IFramework.Tweens
         private float _dur;
         private SequenceNode _node;
         private float _curdur;
-        protected float targetValuePecent { get { return 1- Time.deltaTime*9; } }
+        protected float delta { get { return Time.deltaTime*10; } }
 
         protected event Action onCompelete;
 
@@ -162,9 +162,8 @@ namespace IFramework.Tweens
         protected override void MoveNext()
         {
             float f = curve.GetYWithX(percent);
-            float _cur = end*f +(1-f) *start;
-
-            _cur = _cur * (1 - targetValuePecent) + targetValue * targetValuePecent;
+            int _cur = start.Lerp(end, f);
+            _cur = targetValue.Lerp(_cur,1- delta);
             
             cur = (int)_cur;
         }
@@ -175,9 +174,12 @@ namespace IFramework.Tweens
         protected override void MoveNext()
         {
             float f = curve.GetYWithX(percent);
-            float _cur = end.Length * f + (1 - f) * start.Length;
-           _cur = _cur * (1 - targetValuePecent/3) + targetValue.Length * targetValuePecent/3;
-            int len = Mathf.RoundToInt( _cur).Clamp(0,Mathf.Max(end.Length,start.Length));
+
+            int _cur = start.Length.Lerp(end.Length, f);
+            _cur = targetValue.Length.Lerp(_cur,1- delta);
+
+
+            int len = _cur.Clamp(0,Mathf.Max(end.Length,start.Length));
             if (len<=0)
             {
                 cur= string.Empty;

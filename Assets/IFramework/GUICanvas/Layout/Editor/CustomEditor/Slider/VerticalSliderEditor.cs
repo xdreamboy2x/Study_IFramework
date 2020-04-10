@@ -12,10 +12,10 @@ using UnityEngine;
 namespace IFramework.GUITool.LayoutDesign
 {
 
-    [CustomGUIElement(typeof(VerticalSlider))]
-    public class VerticalSliderEditor : SliderElementEditor
+    [CustomGUINodeAttribute(typeof(VerticalSlider))]
+    public class VerticalSliderEditor : SliderNodeEditor
     {
-        private VerticalSlider slider { get { return element as VerticalSlider; } }
+        private VerticalSlider slider { get { return node as VerticalSlider; } }
 
         public override void OnSceneGUI(Action child)
         {

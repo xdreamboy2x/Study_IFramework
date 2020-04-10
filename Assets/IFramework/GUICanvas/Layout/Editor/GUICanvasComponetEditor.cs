@@ -15,7 +15,7 @@ namespace IFramework.GUITool.LayoutDesign
 	public class GUICanvasComponetEditor:Editor
 	{
         private GUICanvasHierarchyTree HierarchyView = new GUICanvasHierarchyTree();
-        private GUIElementInspectorView InspectorView = new GUIElementInspectorView();
+        private GUINodeInspectorView InspectorView = new GUINodeInspectorView();
         private GUICanvasComponet componet { get { return (target as GUICanvasComponet); } }
         private TextAsset textAsset { get { return componet.textAsset; }set { componet.textAsset = value; } }
         private string assetPath

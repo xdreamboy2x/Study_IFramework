@@ -11,8 +11,8 @@ using UnityEngine;
 
 namespace IFramework.GUITool.RectDesign
 {
-    [CustomGUIElement(typeof(TextField))]
-    public class TextFieldEditor : TextElementEditor
+    [CustomGUINode(typeof(TextField))]
+    public class TextFieldEditor : TextNodeEditor
     {
         private TextField textElement { get { return element as TextField; } }
 

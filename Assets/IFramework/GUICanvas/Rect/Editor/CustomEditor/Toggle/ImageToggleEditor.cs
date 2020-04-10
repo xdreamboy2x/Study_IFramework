@@ -11,8 +11,8 @@ using UnityEngine;
 
 namespace IFramework.GUITool.RectDesign
 {
-    [CustomGUIElement(typeof(ImageToggle))]
-    public class ImageToggleEditor : ImageElementEditor
+    [CustomGUINode(typeof(ImageToggle))]
+    public class ImageToggleEditor : ImageNodeEditor
     {
         private ImageToggle toggle { get { return element as ImageToggle; } }
         private bool insFold = true;

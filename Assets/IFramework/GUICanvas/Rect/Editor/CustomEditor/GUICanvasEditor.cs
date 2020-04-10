@@ -12,8 +12,8 @@ using UnityEngine;
 
 namespace IFramework.GUITool.RectDesign
 {
-    [CustomGUIElement(typeof(GUICanvas))]
-    public class GUICanvasEditor : GUIElementEditor
+    [CustomGUINode(typeof(GUICanvas))]
+    public class GUICanvasEditor : GUINodeEditor
     {
         private GUICanvas ele { get { return element as GUICanvas; } }
         private bool insFold = true;

@@ -11,10 +11,10 @@ using UnityEngine;
 
 namespace IFramework.GUITool.LayoutDesign
 {
-    [CustomGUIElement(typeof(Area))]
+    [CustomGUINodeAttribute(typeof(Area))]
     public class AreaEditor : ImageAreaEditor
     {
-        private Area ele { get { return element as Area; } }
+        private Area ele { get { return node as Area; } }
         private bool insFold = true;
         public override void OnInspectorGUI()
         {

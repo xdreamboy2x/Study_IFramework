@@ -12,10 +12,10 @@ using UnityEngine;
 
 namespace IFramework.GUITool.LayoutDesign
 {
-    [CustomGUIElement(typeof(Button))]
-    public class ButtonEditor : TextElementEditor
+    [CustomGUINodeAttribute(typeof(Button))]
+    public class ButtonEditor : TextNodeEditor
     {
-        private Button ele { get { return element as Button; } }
+        private Button ele { get { return node as Button; } }
         private bool insFold = true;
         private GUIStyleDesign btnStyleDrawer;
 
