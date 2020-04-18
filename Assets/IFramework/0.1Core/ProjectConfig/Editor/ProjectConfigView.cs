@@ -12,7 +12,7 @@ using UnityEditor.Callbacks;
 namespace IFramework
 {
     [CustomEditor(typeof(ProjectConfigInfo))]
-    class EditorProjectConfigView : Editor, ILayoutGUIDrawer
+    class ProjectConfigView : Editor, ILayoutGUIDrawer
     {
         private static bool isEnable;
         private void OnEnable()

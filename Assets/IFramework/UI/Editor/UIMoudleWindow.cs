@@ -975,11 +975,11 @@ namespace IFramework
             private static void WriteTxt(string writePath, string sourcePath,Func<string ,string> func)
             {
                 var txt = File.ReadAllText(sourcePath);
-                txt = txt.Replace("#User#", EditorProjectConfig.UserName)
+                txt = txt.Replace("#User#", ProjectConfig.UserName)
                          .Replace("#UserSCRIPTNAME#", Path.GetFileNameWithoutExtension(writePath))
-                           .Replace("#UserNameSpace#", EditorProjectConfig.NameSpace)
-                           .Replace("#UserVERSION#", EditorProjectConfig.Version)
-                           .Replace("#UserDescription#", EditorProjectConfig.Description)
+                           .Replace("#UserNameSpace#", ProjectConfig.NameSpace)
+                           .Replace("#UserVERSION#", ProjectConfig.Version)
+                           .Replace("#UserDescription#", ProjectConfig.Description)
                            .Replace("#UserUNITYVERSION#", Application.unityVersion)
                            .Replace("#UserDATE#", DateTime.Now.ToString("yyyy-MM-dd"));
                 if (func!=null)

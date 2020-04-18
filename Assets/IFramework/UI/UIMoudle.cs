@@ -11,7 +11,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using IFramework.Modules;
-using IFramework.Modules.MVP;
 using IFramework.Modules.MVVM;
 
 namespace IFramework
@@ -138,7 +137,6 @@ namespace IFramework
 
         private class UIGroups : IDisposable
         {
-            private MVPModule _mvpModule;
             private Dictionary<Type, Tuple<Type, Type, Type, Type, Type>> _mvpMap;
 
             private MVVMModule _mvvmModule;

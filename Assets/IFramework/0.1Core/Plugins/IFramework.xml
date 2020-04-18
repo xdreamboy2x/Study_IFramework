@@ -724,32 +724,6 @@
             释放
             </summary>
         </member>
-        <member name="T:IFramework.Modules.UpdateFrameworkModule">
-            <summary>
-            OnUpdate OnEnable OnDisable
-            </summary>
-        </member>
-        <member name="P:IFramework.Modules.UpdateFrameworkModule.enable">
-            <summary>
-            开启关闭 Update
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.UpdateFrameworkModule.SetActive(System.Boolean)">
-            <summary>
-            改变 enable
-            </summary>
-            <param name="enable"></param>
-        </member>
-        <member name="M:IFramework.Modules.UpdateFrameworkModule.Dispose">
-            <summary>
-            释放
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.UpdateFrameworkModule.Update">
-            <summary>
-            刷新
-            </summary>
-        </member>
         <member name="T:IFramework.Modules.FrameworkModuleContainer">
             <summary>
             模块容器
@@ -988,271 +962,6 @@
             <param name="param"></param>
             <returns></returns>
         </member>
-        <member name="T:IFramework.Modules.MVP.MVPEntity">
-            <summary>
-            MVP结构的实体
-            </summary>
-        </member>
-        <member name="T:IFramework.Modules.MVP.MVPGroup">
-            <summary>
-            MVp组
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.MVP.MVPGroup.#ctor(IFramework.Modules.MVP.MVPEntity,IFramework.Modules.MVP.SensorSystem,IFramework.Modules.MVP.PolicySystem,IFramework.Modules.MVP.PolicyExecutorSystem,IFramework.Modules.MVP.ViewSystem,System.String)">
-            <summary>
-            ctor
-            </summary>
-            <param name="entity"></param>
-            <param name="sensor"></param>
-            <param name="policy"></param>
-            <param name="executor"></param>
-            <param name="view"></param>
-            <param name="name"></param>
-        </member>
-        <member name="P:IFramework.Modules.MVP.MVPGroup.name">
-            <summary>
-            名字
-            </summary>
-        </member>
-        <member name="P:IFramework.Modules.MVP.MVPGroup.entity">
-            <summary>
-            实体
-            </summary>
-        </member>
-        <member name="P:IFramework.Modules.MVP.MVPGroup.sensor">
-            <summary>
-            消息监听系统
-            </summary>
-        </member>
-        <member name="P:IFramework.Modules.MVP.MVPGroup.policy">
-            <summary>
-            消息决策系统
-            </summary>
-        </member>
-        <member name="P:IFramework.Modules.MVP.MVPGroup.executor">
-            <summary>
-            决策执行系统
-            </summary>
-        </member>
-        <member name="P:IFramework.Modules.MVP.MVPGroup.view">
-            <summary>
-            试图系统
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.MVP.MVPGroup.Dispose">
-            <summary>
-            释放,并且从模块中移除
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.MVP.MVPGroup.OnDispose">
-            <summary>
-            释放时
-            </summary>
-        </member>
-        <member name="T:IFramework.Modules.MVP.MVPModule">
-            <summary>
-            MVP
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.MVP.MVPModule.AddGroup(IFramework.Modules.MVP.MVPGroup)">
-            <summary>
-            添加组
-            </summary>
-            <param name="group"></param>
-        </member>
-        <member name="M:IFramework.Modules.MVP.MVPModule.RemoveGroup(System.String)">
-            <summary>
-            移除组
-            </summary>
-            <param name="name"></param>
-        </member>
-        <member name="M:IFramework.Modules.MVP.MVPModule.RemoveGroup(IFramework.Modules.MVP.MVPGroup)">
-            <summary>
-            移除组
-            </summary>
-            <param name="group"></param>
-        </member>
-        <member name="M:IFramework.Modules.MVP.MVPModule.FindGroup(System.String)">
-            <summary>
-            查找组
-            </summary>
-            <param name="name"></param>
-            <returns></returns>
-        </member>
-        <member name="T:IFramework.Modules.MVP.MVPSystem">
-            <summary>
-            MVP系统
-            </summary>
-        </member>
-        <member name="P:IFramework.Modules.MVP.MVPSystem.message">
-            <summary>
-            消息转发
-            </summary>
-        </member>
-        <member name="P:IFramework.Modules.MVP.MVPSystem.entity">
-            <summary>
-            实体
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.MVP.MVPSystem.OnGroupDispose">
-            <summary>
-            组释放时
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.MVP.MVPSystem.OnSetEntity(IFramework.Modules.MVP.MVPEntity)">
-            <summary>
-            被设置实体
-            </summary>
-            <param name="value"></param>
-        </member>
-        <member name="M:IFramework.Modules.MVP.MVPSystem.OnSetMessage(IFramework.Modules.Message.MessageModule)">
-            <summary>
-            被设置消息
-            </summary>
-            <param name="message"></param>
-        </member>
-        <member name="M:IFramework.Modules.MVP.MVPSystem.Excute">
-            <summary>
-            刷新
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.MVP.MVPSystem.SendMessage(System.Type,System.Int32,IFramework.IEventArgs,System.Object[])">
-            <summary>
-            当模块释放
-            </summary>
-        </member>
-        <member name="T:IFramework.Modules.MVP.PolicyExecutorSystem">
-            <summary>
-            做事情的
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.MVP.PolicyExecutorSystem.#ctor">
-            <summary>
-            Ctor
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.MVP.PolicyExecutorSystem.OnSetMessage(IFramework.Modules.Message.MessageModule)">
-            <summary>
-            设置好message模块时
-            </summary>
-            <param name="message"></param>
-        </member>
-        <member name="M:IFramework.Modules.MVP.PolicyExecutorSystem.SendPolicyExecutor(System.Int32,IFramework.IEventArgs,System.Object[])">
-            <summary>
-            发送处理信息
-            </summary>
-            <param name="code"></param>
-            <param name="args"></param>
-            <param name="param"></param>
-        </member>
-        <member name="M:IFramework.Modules.MVP.PolicyExecutorSystem.OnPolicy(System.Int32,IFramework.IEventArgs,System.Object[])">
-            <summary>
-            收到需要处理命令
-            </summary>
-            <param name="code"></param>
-            <param name="args"></param>
-            <param name="param"></param>
-        </member>
-        <member name="M:IFramework.Modules.MVP.PolicyExecutorSystem.Excute">
-            <summary>
-            相当于Update
-            </summary>
-        </member>
-        <member name="T:IFramework.Modules.MVP.PolicySystem">
-            <summary>
-            消息决断
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.MVP.PolicySystem.#ctor">
-            <summary>
-            ctor
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.MVP.PolicySystem.OnSetMessage(IFramework.Modules.Message.MessageModule)">
-            <summary>
-            设置好message模块时
-            </summary>
-            <param name="message"></param>
-        </member>
-        <member name="M:IFramework.Modules.MVP.PolicySystem.SendPolicy(System.Int32,IFramework.IEventArgs,System.Object[])">
-            <summary>
-            发送处理命令
-            </summary>
-            <param name="code"></param>
-            <param name="args"></param>
-            <param name="param"></param>
-        </member>
-        <member name="M:IFramework.Modules.MVP.PolicySystem.OnSensor(System.Int32,IFramework.IEventArgs,System.Object[])">
-            <summary>
-            收到探测器消息
-            </summary>
-            <param name="code"></param>
-            <param name="args"></param>
-            <param name="param"></param>
-        </member>
-        <member name="M:IFramework.Modules.MVP.PolicySystem.Excute">
-            <summary>
-            相当于Update
-            </summary>
-        </member>
-        <member name="T:IFramework.Modules.MVP.SensorSystem">
-            <summary>
-            消息探头
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.MVP.SensorSystem.#ctor">
-            <summary>
-            Ctor
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.MVP.SensorSystem.OnSetMessage(IFramework.Modules.Message.MessageModule)">
-            <summary>
-            设置好message模块时 
-            </summary>
-            <param name="message"></param>
-        </member>
-        <member name="M:IFramework.Modules.MVP.SensorSystem.SendSensor(System.Int32,IFramework.IEventArgs,System.Object[])">
-            <summary>
-            发送探测到消息
-            </summary>
-            <param name="code"></param>
-            <param name="args"></param>
-            <param name="param"></param>
-        </member>
-        <member name="M:IFramework.Modules.MVP.SensorSystem.Excute">
-            <summary>
-            Update
-            </summary>
-        </member>
-        <member name="T:IFramework.Modules.MVP.ViewSystem">
-            <summary>
-            刷新视野
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.MVP.ViewSystem.#ctor">
-            <summary>
-            Ctor
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.MVP.ViewSystem.OnPolicyPolicyExecutor(System.Int32,IFramework.IEventArgs,System.Object[])">
-            <summary>
-            接收到处理消息
-            </summary>
-            <param name="code"></param>
-            <param name="args"></param>
-            <param name="param"></param>
-        </member>
-        <member name="M:IFramework.Modules.MVP.ViewSystem.OnSetMessage(IFramework.Modules.Message.MessageModule)">
-            <summary>
-            设置好message模块时
-            </summary>
-            <param name="message"></param>
-        </member>
-        <member name="M:IFramework.Modules.MVP.ViewSystem.Excute">
-            <summary>
-            Update
-            </summary>
-        </member>
         <member name="T:IFramework.Modules.MVVM.IDataModel">
             <summary>
             数据
@@ -1393,13 +1102,13 @@
             释放时
             </summary>
         </member>
-        <member name="T:IFramework.Modules.MVVM.TView`1">
+        <member name="T:IFramework.Modules.MVVM.View`1">
             <summary>
             方便书写
             </summary>
             <typeparam name="T"></typeparam>
         </member>
-        <member name="P:IFramework.Modules.MVVM.TView`1.Tcontext">
+        <member name="P:IFramework.Modules.MVVM.View`1.Tcontext">
             <summary>
             方便书写
             </summary>
@@ -1444,14 +1153,431 @@
             释放时
             </summary>
         </member>
-        <member name="T:IFramework.Modules.MVVM.TViewModel`1">
+        <member name="T:IFramework.Modules.MVVM.ViewModel`1">
             <summary>
             方便书写
             </summary>
         </member>
-        <member name="P:IFramework.Modules.MVVM.TViewModel`1.Tmodel">
+        <member name="P:IFramework.Modules.MVVM.ViewModel`1.Tmodel">
             <summary>
             方便书写
+            </summary>
+        </member>
+        <member name="T:IFramework.Modules.Resources.AsyncFileByteArrayLoader">
+            <summary>
+            异步文件流加载器
+            </summary>
+        </member>
+        <member name="P:IFramework.Modules.Resources.AsyncFileByteArrayLoader._progress">
+            <summary>
+            进度
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.Resources.AsyncFileByteArrayLoader.OnLoad">
+            <summary>
+            加载
+            </summary>
+        </member>
+        <member name="T:IFramework.Modules.Resources.AsyncFileTextLoader`1">
+            <summary>
+            异步文本加载器
+            </summary>
+            <typeparam name="Encod"></typeparam>
+        </member>
+        <member name="P:IFramework.Modules.Resources.AsyncFileTextLoader`1._progress">
+            <summary>
+            进度
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.Resources.AsyncFileTextLoader`1.OnLoad">
+            <summary>
+            加载
+            </summary>
+        </member>
+        <member name="T:IFramework.Modules.Resources.AsyncResourceLoader">
+            <summary>
+            异步资源加载器
+            </summary>
+        </member>
+        <member name="T:IFramework.Modules.Resources.AsyncResourceLoader`2">
+            <summary>
+            泛型异步资源加载器
+            </summary>
+            <typeparam name="T"></typeparam>
+            <typeparam name="V"></typeparam>
+        </member>
+        <member name="P:IFramework.Modules.Resources.AsyncResourceLoader`2.Tresource">
+            <summary>
+            泛型资源
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.Resources.AsyncResourceLoader`2.CreateResource">
+            <summary>
+            创建泛型资源实例
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Modules.Resources.AsyncResourceLoader`2.OnUnLoad">
+            <summary>
+            卸载
+            </summary>
+        </member>
+        <member name="T:IFramework.Modules.Resources.AsyncHttpByteArrayLoader">
+            <summary>
+            异步Http加载器
+            </summary>
+        </member>
+        <member name="P:IFramework.Modules.Resources.AsyncHttpByteArrayLoader._progress">
+            <summary>
+            进度
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.Resources.AsyncHttpByteArrayLoader.OnLoad">
+            <summary>
+            加载
+            </summary>
+        </member>
+        <member name="T:IFramework.Modules.Resources.AsyncHttpTextLoader">
+            <summary>
+            异步Http文本加载
+            </summary>
+        </member>
+        <member name="P:IFramework.Modules.Resources.AsyncHttpTextLoader._progress">
+            <summary>
+            进度
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.Resources.AsyncHttpTextLoader.OnLoad">
+            <summary>
+            加载
+            </summary>
+        </member>
+        <member name="T:IFramework.Modules.Resources.HttpByteArrayLoader">
+            <summary>
+            http流加载器
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.Resources.HttpByteArrayLoader.OnLoad">
+            <summary>
+            加载
+            </summary>
+        </member>
+        <member name="T:IFramework.Modules.Resources.HttpTextLoader">
+            <summary>
+            http流加载器
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.Resources.HttpTextLoader.OnLoad">
+            <summary>
+            加载
+            </summary>
+        </member>
+        <member name="T:IFramework.Modules.Resources.ByteArryResource">
+            <summary>
+            byte数组资源
+            </summary>
+        </member>
+        <member name="T:IFramework.Modules.Resources.Dependence">
+            <summary>
+            依赖
+            </summary>
+        </member>
+        <member name="F:IFramework.Modules.Resources.Dependence.name">
+            <summary>
+            名字
+            </summary>
+        </member>
+        <member name="F:IFramework.Modules.Resources.Dependence.path">
+            <summary>
+            路径
+            </summary>
+        </member>
+        <member name="T:IFramework.Modules.Resources.FileByteArrayLoader">
+            <summary>
+            文件流加载器
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.Resources.FileByteArrayLoader.OnLoad">
+            <summary>
+            加载
+            </summary>
+        </member>
+        <member name="T:IFramework.Modules.Resources.FileTextLoader`1">
+            <summary>
+            文本加载器
+            </summary>
+            <typeparam name="Encod"></typeparam>
+        </member>
+        <member name="M:IFramework.Modules.Resources.FileTextLoader`1.OnLoad">
+            <summary>
+            加载
+            </summary>
+        </member>
+        <member name="T:IFramework.Modules.Resources.Resource">
+            <summary>
+            资源
+            </summary>
+        </member>
+        <member name="P:IFramework.Modules.Resources.Resource.progress">
+            <summary>
+            进度
+            </summary>
+        </member>
+        <member name="P:IFramework.Modules.Resources.Resource.name">
+            <summary>
+            名字
+            </summary>
+        </member>
+        <member name="P:IFramework.Modules.Resources.Resource.isdone">
+            <summary>
+            是否完成
+            </summary>
+        </member>
+        <member name="P:IFramework.Modules.Resources.Resource.path">
+            <summary>
+            路径
+            </summary>
+        </member>
+        <member name="P:IFramework.Modules.Resources.Resource.groupName">
+            <summary>
+            资源组
+            </summary>
+        </member>
+        <member name="P:IFramework.Modules.Resources.Resource.moudule">
+            <summary>
+            模块
+            </summary>
+        </member>
+        <member name="P:IFramework.Modules.Resources.Resource.dependences">
+            <summary>
+            依赖资源
+            </summary>
+        </member>
+        <member name="P:IFramework.Modules.Resources.Resource.error">
+            <summary>
+            错误
+            </summary>
+        </member>
+        <member name="T:IFramework.Modules.Resources.Resource`1">
+            <summary>
+            泛型资源
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:IFramework.Modules.Resources.Resource`1.value">
+            <summary>
+            资源值
+            </summary>
+        </member>
+        <member name="T:IFramework.Modules.Resources.ResourceLoader">
+            <summary>
+            资源加载器
+            </summary>
+        </member>
+        <member name="P:IFramework.Modules.Resources.ResourceLoader._isdone">
+            <summary>
+            自生是否完成
+            </summary>
+        </member>
+        <member name="P:IFramework.Modules.Resources.ResourceLoader._progress">
+            <summary>
+            自身进度
+            </summary>
+        </member>
+        <member name="P:IFramework.Modules.Resources.ResourceLoader.name">
+            <summary>
+            名字
+            </summary>
+        </member>
+        <member name="P:IFramework.Modules.Resources.ResourceLoader.path">
+            <summary>
+            路径
+            </summary>
+        </member>
+        <member name="P:IFramework.Modules.Resources.ResourceLoader.isdone">
+            <summary>
+            是否完成
+            </summary>
+        </member>
+        <member name="P:IFramework.Modules.Resources.ResourceLoader.progress">
+            <summary>
+            进度
+            </summary>
+        </member>
+        <member name="P:IFramework.Modules.Resources.ResourceLoader.resource">
+            <summary>
+            资源
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.Resources.ResourceLoader.#ctor">
+            <summary>
+            ctor
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.Resources.ResourceLoader.Dispose">
+            <summary>
+            最终释放
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.Resources.ResourceLoader.CreateResource">
+            <summary>
+            创建泛型资源实例
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Modules.Resources.ResourceLoader.OnLoad">
+            <summary>
+            加载资源
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.Resources.ResourceLoader.OnUnLoad">
+            <summary>
+            卸载资源
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.Resources.ResourceLoader.OnReset">
+            <summary>
+            重置数据
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.Resources.ResourceLoader.OnDispose">
+            <summary>
+            释放时
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.Resources.ResourceLoader.ThrowErr(System.String)">
+            <summary>
+            抛出错误
+            </summary>
+            <param name="err"></param>
+        </member>
+        <member name="T:IFramework.Modules.Resources.ResourceLoader`2">
+            <summary>
+             泛型资源加载器
+            </summary>
+            <typeparam name="T"></typeparam>
+            <typeparam name="V"></typeparam>
+        </member>
+        <member name="P:IFramework.Modules.Resources.ResourceLoader`2.Tresource">
+            <summary>
+            泛型资源
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.Resources.ResourceLoader`2.CreateResource">
+            <summary>
+            创建泛型资源实例
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Modules.Resources.ResourceLoader`2.OnUnLoad">
+            <summary>
+            卸载时
+            </summary>
+        </member>
+        <member name="T:IFramework.Modules.Resources.ResourceModule">
+            <summary>
+            资源模块
+            </summary>
+        </member>
+        <member name="P:IFramework.Modules.Resources.ResourceModule.trick">
+            <summary>
+            gc
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.Resources.ResourceModule.Load``1(System.String,System.String,System.String,IFramework.Modules.Resources.Dependence[],System.Func{IFramework.Modules.Resources.Dependence,IFramework.Modules.Resources.Resource})">
+            <summary>
+            加载资源
+            </summary>
+            <typeparam name="LoaderType"></typeparam>
+            <param name="groupName"></param>
+            <param name="name"></param>
+            <param name="path"></param>
+            <param name="dependences"></param>
+            <param name="dependenceLoader"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Modules.Resources.ResourceModule.LoadAsync``1(System.String,System.String,System.String,IFramework.Modules.Resources.Dependence[],System.Func{IFramework.Modules.Resources.Dependence,IFramework.Modules.Resources.Resource})">
+            <summary>
+            异步加载资源
+            </summary>
+            <typeparam name="LoaderType"></typeparam>
+            <param name="groupName"></param>
+            <param name="name"></param>
+            <param name="path"></param>
+            <param name="dependences"></param>
+            <param name="dependenceLoader"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Modules.Resources.ResourceModule.Load``2(System.String,System.String,System.String,IFramework.Modules.Resources.Dependence[],System.Func{IFramework.Modules.Resources.Dependence,IFramework.Modules.Resources.Resource})">
+            <summary>
+            加载资源(泛型)
+            </summary>
+            <typeparam name="T"></typeparam>
+            <typeparam name="LoaderType"></typeparam>
+            <param name="groupName"></param>
+            <param name="name"></param>
+            <param name="path"></param>
+            <param name="dependences"></param>
+            <param name="dependenceLoader"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Modules.Resources.ResourceModule.LoadAsync``2(System.String,System.String,System.String,IFramework.Modules.Resources.Dependence[],System.Func{IFramework.Modules.Resources.Dependence,IFramework.Modules.Resources.Resource})">
+            <summary>
+            异步加载资源(泛型)
+            </summary>
+            <typeparam name="T"></typeparam>
+            <typeparam name="LoaderType"></typeparam>
+            <param name="groupName"></param>
+            <param name="name"></param>
+            <param name="path"></param>
+            <param name="dependences"></param>
+            <param name="dependenceLoader"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Modules.Resources.ResourceModule.LoadDependence(IFramework.Modules.Resources.Resource,IFramework.Modules.Resources.Dependence[],System.Func{IFramework.Modules.Resources.Dependence,IFramework.Modules.Resources.Resource})">
+            <summary>
+            加载资源依赖（第一次没法加载依赖时候）
+            </summary>
+            <param name="resource"></param>
+            <param name="dependences"></param>
+            <param name="dependenceLoader"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Modules.Resources.ResourceModule.UnLoad(IFramework.Modules.Resources.Resource)">
+            <summary>
+            卸载资源
+            </summary>
+            <param name="resource"></param>
+        </member>
+        <member name="T:IFramework.Modules.Resources.TextResource">
+            <summary>
+            string资源
+            </summary>
+        </member>
+        <member name="T:IFramework.Modules.UpdateFrameworkModule">
+            <summary>
+            OnUpdate OnEnable OnDisable
+            </summary>
+        </member>
+        <member name="P:IFramework.Modules.UpdateFrameworkModule.enable">
+            <summary>
+            开启关闭 Update
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.UpdateFrameworkModule.SetActive(System.Boolean)">
+            <summary>
+            改变 enable
+            </summary>
+            <param name="enable"></param>
+        </member>
+        <member name="M:IFramework.Modules.UpdateFrameworkModule.Dispose">
+            <summary>
+            释放
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.UpdateFrameworkModule.Update">
+            <summary>
+            刷新
             </summary>
         </member>
         <member name="T:IFramework.Modules.ThreadModule">
@@ -1465,52 +1591,6 @@
             </summary>
             <param name="task"></param>
             <param name="callback"></param>
-        </member>
-        <member name="T:IFramework.Modules.TaskState">
-            <summary>
-            时间任务状态
-            </summary>
-        </member>
-        <member name="T:IFramework.Modules.TimerModule">
-            <summary>
-            计时器模块
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.TimerModule.RunTask(System.Double,System.Action,System.Action,System.Double,System.Int32)">
-            <summary>
-            运行一个时间任务
-            </summary>
-            <param name="space"></param>
-            <param name="action"></param>
-            <param name="onCompeleted"></param>
-            <param name="delay"></param>
-            <param name="count"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Modules.TimerModule.StopTask(System.String)">
-            <summary>
-            结束一个时间任务
-            </summary>
-            <param name="id"></param>
-        </member>
-        <member name="M:IFramework.Modules.TimerModule.PauseTask(System.String)">
-            <summary>
-            暂停一个时间任务
-            </summary>
-            <param name="id"></param>
-        </member>
-        <member name="M:IFramework.Modules.TimerModule.UnPauseTask(System.String)">
-            <summary>
-            重启一个任务
-            </summary>
-            <param name="id"></param>
-        </member>
-        <member name="M:IFramework.Modules.TimerModule.GetTaskState(System.String)">
-            <summary>
-            获取任务的状态
-            </summary>
-            <param name="id"></param>
-            <returns></returns>
         </member>
         <member name="T:IFramework.Modules.Fsm.FsmModule">
             <summary>

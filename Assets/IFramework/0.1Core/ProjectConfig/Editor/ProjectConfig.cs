@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 namespace IFramework
 {
-    public partial class EditorProjectConfig
+    public partial class ProjectConfig
     {
         public static string NameSpace { get { return Info.NameSpace; } }
         public static string UserName { get { return Info.UserName; } }
@@ -27,7 +27,7 @@ namespace IFramework
                 return info;
             }
         }
-        public static string ProjectConfigInfoPath = EditorEnv.CorePath.CombinePath("ProjectConfig/Resources/" + ProjectConfig.infoName + ".asset").ToRegularPath();
+        public static string ProjectConfigInfoPath = EditorEnv.CorePath.CombinePath("ProjectConfig/Editor/ProjectConfig.asset").ToRegularPath();
         private static void LoadProjectInfo()
         {
             string[] guids = AssetDatabase.FindAssets(string.Format("t:{0}",typeof(ProjectConfigInfo)), new string[] { @"Assets" });

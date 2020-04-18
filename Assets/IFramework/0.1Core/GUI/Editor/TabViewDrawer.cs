@@ -14,7 +14,7 @@ using UnityEngine;
 namespace IFramework.GUITool
 {
     [Serializable]
-    public class TabViewDrawer : IDisposable
+    public class TabViewDrawer : GUIDrawer
     {
         [Serializable]
         private class TabNode
@@ -74,9 +74,10 @@ namespace IFramework.GUITool
         }
 
 
-        public void OnGUI(Rect rect)
+        public override void OnGUI(Rect position)
         {
-            var rs = rect.Split(SplitType.Horizontal, 17);
+            base.OnGUI(position);
+            var rs = position.Split(SplitType.Horizontal, 17);
             TiTle(rs[0]);
             Content(rs[1]);
         }
@@ -127,7 +128,7 @@ namespace IFramework.GUITool
             }
         }
 
-        public void Dispose()
+        public override void Dispose()
         {
             _nodes.Clear();
             _pool.Dispose();

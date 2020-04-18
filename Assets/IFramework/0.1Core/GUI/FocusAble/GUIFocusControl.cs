@@ -6,7 +6,7 @@
  *Description:    IFramework
  *History:        2018.11--
 *********************************************************************************/
-using System;
+using IFramework.Singleton;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,7 +15,7 @@ namespace IFramework.GUITool
     public class GUIFocusControl : SingletonPropertyClass<GUIFocusControl>
     {
         private GUIFocusControl() { }
-        private List<IFocusAbleGUIDrawer> drawers;
+        private List<FocusAbleGUIDrawer> drawers;
         private List<string> UUIDs;
         public static string CurFocusID
         {
@@ -26,9 +26,9 @@ namespace IFramework.GUITool
                 return CurFocusDrawer.FocusID;
             }
         }
-        public static IFocusAbleGUIDrawer CurFocusDrawer { get; private set; }
+        public static FocusAbleGUIDrawer CurFocusDrawer { get; private set; }
 
-        public static string Subscribe(IFocusAbleGUIDrawer drawer)
+        public static string Subscribe(FocusAbleGUIDrawer drawer)
         {
             if (!Instance.drawers.Contains(drawer)) Instance.drawers.Add(drawer);
             string uuid = drawer.GetHashCode().ToString();
@@ -37,7 +37,7 @@ namespace IFramework.GUITool
             Instance.UUIDs.Add(uuid);
             return uuid;
         }
-        public static void UnSubscribe(IFocusAbleGUIDrawer drawer)
+        public static void UnSubscribe(FocusAbleGUIDrawer drawer)
         {
             if (Instance.drawers.Contains(drawer))
             {
@@ -49,12 +49,12 @@ namespace IFramework.GUITool
             }
         }
 
-        public static bool Contans(IFocusAbleGUIDrawer drawer)
+        public static bool Contans(FocusAbleGUIDrawer drawer)
         {
             return Instance.drawers.Contains(drawer);
         }
 
-        public static void Focus(IFocusAbleGUIDrawer drawer)
+        public static void Focus(FocusAbleGUIDrawer drawer)
         {
             if (CurFocusDrawer == drawer)
                 GUI.FocusControl(null);
@@ -68,7 +68,7 @@ namespace IFramework.GUITool
             GUI.FocusControl(null);
             GUI.FocusControl(drawer.FocusID);
         }
-        public static void Diffuse(IFocusAbleGUIDrawer drawer)
+        public static void Diffuse(FocusAbleGUIDrawer drawer)
         {
             if (CurFocusDrawer == drawer)
             {
@@ -84,7 +84,7 @@ namespace IFramework.GUITool
 
         protected override void OnSingletonInit()
         {
-            drawers = new List<IFocusAbleGUIDrawer>();
+            drawers = new List<FocusAbleGUIDrawer>();
             UUIDs = new List<string>();
         }
 
@@ -92,67 +92,6 @@ namespace IFramework.GUITool
         {
             drawers.Clear();
             UUIDs.Clear();
-        }
-    }
-
-    public interface IFocusAbleGUIDrawer
-    {
-        string FocusID { get; }
-        bool Focused { get; set; }
-        void Focus();
-        void Difuse();
-    }
-    public abstract class FocusAbleGUIDrawer : IFocusAbleGUIDrawer,IDisposable
-    {
-        public string FocusID { get; private set; }
-        protected bool focused;
-        public bool Focused
-        {
-            get
-            {
-                return focused;
-            }
-            set
-            {
-                if (value)
-                    OnFcous();
-                else
-                {
-                    OnFocusOther();
-                    if (!focused)
-                        OnLostFous();
-                }
-                focused = value;
-            }
-        }
-        public FocusAbleGUIDrawer()
-        {
-            FocusID = GUIFocusControl.Subscribe(this);
-        }
-        public Rect position { get; private set; }
-        protected virtual void OnFcous() { }
-        protected virtual void OnFocusOther() { }
-        protected virtual void OnLostFous() { }
-
-
-        public virtual void OnGUI(Rect position)
-        {
-            this.position = position;
-        }
-
-        public virtual void Dispose()
-        {
-            GUIFocusControl.UnSubscribe(this);
-        }
-
-        public virtual void Focus()
-        {
-            GUIFocusControl.Focus(this);
-        }
-
-        public virtual void Difuse()
-        {
-            GUIFocusControl.Diffuse(this);
         }
     }
 

@@ -7,6 +7,8 @@
  *History:        2018.11--
 *********************************************************************************/
 using IFramework;
+using IFramework.Singleton;
+
 namespace IFramework_Demo
 {
 	public class SingletonExample

@@ -11,9 +11,9 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace IFramework
+namespace IFramework.GUITool
 {
-    public class MenuTree
+    public class MenuTree:GUIDrawer
     {
         public class MenuTrunk
         {
@@ -201,11 +201,12 @@ namespace IFramework
 
 
 
-        public void OnGUI(Rect rect)
+        public override void OnGUI(Rect position)
         {
+            base.OnGUI(position);
             Event e = Event.current;
-            var rs = rect.HorizontalSplit(root.totalHeight);
-            scroll = GUI.BeginScrollView(rect, scroll, rs[0]);
+            var rs = position.HorizontalSplit(root.totalHeight);
+            scroll = GUI.BeginScrollView(position, scroll, rs[0]);
             root.OnGUI(rs[0]);
             EmptyEve(e, rs[1]);
             GUI.EndScrollView();
@@ -217,6 +218,11 @@ namespace IFramework
             {
                 current = null;
             }
+        }
+
+        public override void Dispose()
+        {
+           
         }
     }
 

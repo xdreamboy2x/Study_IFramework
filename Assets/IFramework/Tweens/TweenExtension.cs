@@ -14,11 +14,11 @@ namespace IFramework.Tweens
     [FrameworkVersion(8)]
     public static class TweenExtension
     {
-        private static Tween<T> AllocateTween<T>(EnvironmentType env) /*where T : struct*/
+        public static Tween<T> AllocateTween<T>(EnvironmentType env) /*where T : struct*/
         {
             return Tween<T>.Allocate<Tween<T>>(env);
         }
-        private static Tween<T> ConfigAndRun<T>(this Tween<T> tween, T start, T end, float dur, Func<T> getter, Action<T> setter)/* where T:struct*/
+        public static Tween<T> ConfigAndRun<T>(this Tween<T> tween, T start, T end, float dur, Func<T> getter, Action<T> setter)/* where T:struct*/
         {
             tween.Config(start, end, dur, getter, setter);
             tween.Run();
