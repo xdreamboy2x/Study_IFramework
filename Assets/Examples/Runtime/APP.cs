@@ -11,8 +11,10 @@ using IFramework;
 using UnityEngine;
 namespace IFramework_Demo
 {
-    public partial class APP :MonoBehaviour
+    public partial class APP : MonoBehaviour
     {
+        public const EnvironmentType envType = EnvironmentType.Ev1;
+        public static FrameworkEnvironment env{ get { return Framework.GetEnv(envType); } }
         private void Awake()
         {
             Framework.InitEnv("App_RT", EnvironmentType.Ev1).InitWithAttribute();

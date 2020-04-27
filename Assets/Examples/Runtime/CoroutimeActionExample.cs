@@ -16,13 +16,13 @@ namespace IFramework_Demo
 {
     [RequireComponent(typeof(APP))]
 
-    public class CoroutimeActionExample:UnityEngine.MonoBehaviour
-	{
+    public class CoroutimeActionExample: MonoBehaviour
+    {
         private void Start()
         {
-            Framework.env1.modules.Coroutine = Framework.env1.modules.CreateModule<CoroutineModule>();
+            APP.env.modules.Coroutine = APP.env.modules.CreateModule<CoroutineModule>();
 
-           this.Sequence( EnvironmentType.Ev1)
+           this.Sequence( APP.envType)
                 .Repeat((r) => {
                     r.Sequence((s) =>
                     {

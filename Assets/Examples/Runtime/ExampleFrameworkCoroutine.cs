@@ -19,15 +19,12 @@ namespace IFramework_Demo
     {
         void Start()
         {
-            Framework.env1.modules.Coroutine = Framework.env1.modules.CreateModule<CoroutineModule>();
-            Framework.env1.modules.Coroutine.StartCoroutine(wait2());
+            APP.env.modules.Coroutine = APP.env.modules.CreateModule<CoroutineModule>();
+            APP.env.modules.Coroutine.StartCoroutine(wait2());
         }
         IEnumerator wait()
         {
-            //Log.L(Framework.DeltaTime);
-            //Log.L(Framework.TimeSinceInit);
             yield return new IFramework.Modules.Coroutine.WaitForSeconds(2);
-
         }
         IEnumerator wait1()
         {

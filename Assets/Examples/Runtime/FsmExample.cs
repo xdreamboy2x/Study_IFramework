@@ -11,7 +11,7 @@ using IFramework.Modules.Fsm;
 using UnityEngine;
 namespace IFramework_Demo
 {
-    public class State:IFsmState
+    public class State:IState
     {
         public void OnEnter()
         {
@@ -52,8 +52,8 @@ namespace IFramework_Demo
             var t1= fsm.CreateTransition(s1, s2);
             var t2 = fsm.CreateTransition(s2, s1);
 
-            t1.BindCondition(fsm.CreateCondition<bool>("bool", false, ConditionCompareType.EqualsWithCompare));
-            t2.BindCondition(fsm.CreateCondition<bool>(val, true, ConditionCompareType.EqualsWithCompare));
+            t1.BindCondition(fsm.CreateCondition<bool>("bool", false, CompareType.Equals));
+            t2.BindCondition(fsm.CreateCondition<bool>(val, true, CompareType.Equals));
 
             fsm.Start();
         }

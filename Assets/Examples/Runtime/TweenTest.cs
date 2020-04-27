@@ -28,14 +28,14 @@ namespace IFramework_Demo
         private void Start()
         { 
           Framework.env1.modules.Coroutine = Framework.env1.modules.CreateModule<CoroutineModule>();
-            tc = cube.DoMove(cube.transform.position + Vector3.right *5, 2, EnvironmentType.Ev1)
+            tc = cube.DoMove(cube.transform.position + Vector3.right * 5, 2, EnvironmentType.Ev1)
                   .SetLoop(-1, LoopType.PingPong)
                   .SetCurve(ValueCurve.scurve)
                   .SetRecyle(false);
-             cube.DoMove(cube.transform.position + Vector3.up * 2, 2, EnvironmentType.Ev1)
-                      .SetLoop(-1, LoopType.PingPong)
-                      .SetCurve(ValueCurve.scurve)
-                      .SetRecyle(false);
+            cube.DoMove(cube.transform.position + Vector3.up * 2, 2, EnvironmentType.Ev1)
+                     .SetLoop(-1, LoopType.PingPong)
+                     .SetCurve(ValueCurve.scurve)
+                     .SetRecyle(false);
 
 
 
@@ -51,9 +51,9 @@ namespace IFramework_Demo
 
 
             text.DoText(0.1f, 10, 2f).SetLoop(-1, LoopType.PingPong);
-            text.DoText("", "123456789",100)
-                    .SetLoop(-1, LoopType.PingPong);
-                   // .SetCurve(ValueCurve.scurve);
+            text.DoText("", "123456789", 100)
+                    .SetLoop(-1, LoopType.PingPong)
+                    .SetCurve(ValueCurve.scurve);
         }
 
         private void Update()
