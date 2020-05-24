@@ -14,7 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using IFramework.Modules.MVVM;
-namespace IFramework
+namespace IFramework.UI
 {
 
     [EditorWindowCache("IFramework.UIModule")]
@@ -877,11 +877,12 @@ namespace IFramework
                         sw.WriteLine("using System.Collections;");
                         sw.WriteLine("using System.Collections.Generic;");
                         sw.WriteLine("using IFramework;");
+                        sw.WriteLine("using IFramework.UI;");
 
                         sw.WriteLine("");
                         sw.WriteLine("namespace #UserNameSpace#");
                         sw.WriteLine("{");
-                        sw.WriteLine("\tpublic class #UserSCRIPTNAME# : TUIViewModel_MVVM<#ModelType#>");
+                        sw.WriteLine("\tpublic class #UserSCRIPTNAME# : UIViewModel<#ModelType#>");
                         sw.WriteLine("\t{");
 
                         sw.WriteLine("#FieldString#");
@@ -924,11 +925,13 @@ namespace IFramework
                         sw.WriteLine("using System.Collections;");
                         sw.WriteLine("using System.Collections.Generic;");
                         sw.WriteLine("using IFramework;");
+                        sw.WriteLine("using IFramework.UI;");
 
+                       
                         sw.WriteLine("");
                         sw.WriteLine("namespace #UserNameSpace#");
                         sw.WriteLine("{");
-                        sw.WriteLine("\tpublic class #UserSCRIPTNAME# : TUIView_MVVM<#VMType#, #PanelType#>");
+                        sw.WriteLine("\tpublic class #UserSCRIPTNAME# : UIView<#VMType#, #PanelType#>");
                         sw.WriteLine("\t{");
                         sw.WriteLine("\t\tprotected override void BindProperty()");
                         sw.WriteLine("\t\t{");
@@ -1007,6 +1010,8 @@ namespace IFramework
                         sw.WriteLine("using System.Collections;");
                         sw.WriteLine("using System.Collections.Generic;");
                         sw.WriteLine("using IFramework;");
+                        sw.WriteLine("using IFramework.UI;");
+
 
                         sw.WriteLine("");
                         sw.WriteLine("namespace #UserNameSpace#");

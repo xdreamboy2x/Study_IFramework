@@ -12,6 +12,8 @@ using IFramework;
 using UnityEngine.UI;
 using UnityEngine;
 using IFramework.Modules.MVVM;
+using IFramework.UI;
+
 namespace IFramework_Demo
 {
     public class Panel01Model:IDataModel

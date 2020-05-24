@@ -10,10 +10,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using IFramework;
+using IFramework.UI;
 
 namespace IFramework_Demo
 {
-	public class Panel01ViewModel : TUIViewModel_MVVM<Panel01Model>
+	public class Panel01ViewModel : UIViewModel<Panel01Model>
 	{
  		private Int32 _count;
 		public Int32 count

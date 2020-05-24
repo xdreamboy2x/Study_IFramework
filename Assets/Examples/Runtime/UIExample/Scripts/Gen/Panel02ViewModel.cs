@@ -10,10 +10,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using IFramework;
+using IFramework.UI;
 
 namespace IFramework_Demo
 {
-	public class Panel02ViewModel : TUIViewModel_MVVM<Panel02Model>
+	public class Panel02ViewModel : UIViewModel<Panel02Model>
 	{
  
 		protected override void SyncModelValue()

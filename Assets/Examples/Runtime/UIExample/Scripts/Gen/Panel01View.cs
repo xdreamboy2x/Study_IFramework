@@ -10,13 +10,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using IFramework;
+using IFramework.UI;
 
 namespace IFramework_Demo
 {
     public class SubArg : IEventArgs { }
     public class AddArg : IEventArgs { }
 
-    public class Panel01View : TUIView_MVVM<Panel01ViewModel, Panel01>
+    public class Panel01View : UIView<Panel01ViewModel, Panel01>
 	{
 		protected override void BindProperty()
 		{

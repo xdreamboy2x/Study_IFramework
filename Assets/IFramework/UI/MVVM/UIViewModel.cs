@@ -8,10 +8,10 @@
 *********************************************************************************/
 using IFramework.Modules.MVVM;
 
-namespace IFramework
+namespace IFramework.UI
 {
-    public abstract class UIViewModel_MVVM : ViewModel { }
-    public abstract class TUIViewModel_MVVM<M> : UIViewModel_MVVM where M : IDataModel
+    public abstract class UIViewModel : ViewModel { }
+    public abstract class UIViewModel<M> : UIViewModel where M : IDataModel
     {
         protected M Tmodel { get { return (M)model; } }
     }

@@ -13,7 +13,7 @@ using UnityEngine.UI;
 using IFramework.Modules;
 using IFramework.Modules.MVVM;
 
-namespace IFramework
+namespace IFramework.UI
 {
     public partial class UIModule
     {
@@ -159,11 +159,11 @@ namespace IFramework
 
 
                 var model = Activator.CreateInstance(tuple.Item1) as IDataModel;
-                var view = Activator.CreateInstance(tuple.Item2) as UIView_MVVM;
-                var vm = Activator.CreateInstance(tuple.Item3) as UIViewModel_MVVM;
+                var view = Activator.CreateInstance(tuple.Item2) as UIView;
+                var vm = Activator.CreateInstance(tuple.Item3) as UIViewModel;
                 view.panel = panel;
 
-                UIGroup_MVVM group = new UIGroup_MVVM(panel.name, view, vm, model);
+                UIGroup group = new UIGroup(panel.name, view, vm, model);
                 _mvvmModule.AddGroup(group);
                 return group;
             }
@@ -355,8 +355,8 @@ namespace IFramework
             }
             else
             {
-                Push((group.view as UIView_MVVM).panel);
-                return (group.view as UIView_MVVM).panel;
+                Push((group.view as UIView).panel);
+                return (group.view as UIView).panel;
             }
 
         }

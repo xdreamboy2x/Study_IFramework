@@ -8,11 +8,11 @@
 *********************************************************************************/
 using IFramework.Modules.MVVM;
 
-namespace IFramework
+namespace IFramework.UI
 {
-    public class UIGroup_MVVM : MVVMGroup
+    public class UIGroup : MVVMGroup
     {
-        public UIGroup_MVVM(string name, View view, ViewModel viewModel, IDataModel model) : base(name, view, viewModel, model)
+        public UIGroup(string name, View view, ViewModel viewModel, IDataModel model) : base(name, view, viewModel, model)
         {
         }
         protected override void OnDispose()

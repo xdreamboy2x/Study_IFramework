@@ -8,14 +8,22 @@
 *********************************************************************************/
 using IFramework.Modules.MVVM;
 using System;
-using UnityEngine.Events;
 using UnityEngine.UI;
 
-namespace IFramework
+namespace IFramework.UI
 {
-    public abstract class UIView_MVVM : View, IUIModuleEventListenner
+
+    public abstract class UIView : View, IUIModuleEventListenner
     {
+        public enum ViewState
+        {
+           None, Load, Top, Press, Pop, Clear
+        }
         public UIPanel panel;
+        private ViewState _lastState= ViewState.None;
+
+        public ViewState lastState { get { return _lastState; } }
+
         protected void Show()
         {
             panel.gameObject.SetActive(true);
@@ -41,22 +49,27 @@ namespace IFramework
 
         void IUIModuleEventListenner.OnLoad()
         {
+            _lastState = ViewState.Load;
             OnLoad();
         }
         void IUIModuleEventListenner.OnTop(UIEventArgs arg)
         {
+            _lastState = ViewState.Top;
             OnTop(arg);
         }
         void IUIModuleEventListenner.OnPress(UIEventArgs arg)
         {
+            _lastState = ViewState.Press;
             OnPress(arg);
         }
         void IUIModuleEventListenner.OnPop(UIEventArgs arg)
         {
+            _lastState = ViewState.Pop;
             OnPop(arg);
         }
         void IUIModuleEventListenner.OnClear()
         {
+            _lastState = ViewState.Clear;
             OnClear();
         }
 
@@ -66,7 +79,7 @@ namespace IFramework
         protected abstract void OnPop(UIEventArgs arg);
         protected abstract void OnClear();
     }
-    public abstract class TUIView_MVVM<VM, Panel> : UIView_MVVM where VM : UIViewModel_MVVM where Panel : UIPanel
+    public abstract class UIView<VM, Panel> : UIView where VM : UIViewModel where Panel : UIPanel
     {
 
         public VM Tcontext { get { return this.context as VM; } }

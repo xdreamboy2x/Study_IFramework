@@ -2,26 +2,24 @@
  *Author:         OnClick
  *Version:        0.0.1
  *UnityVersion:   2018.4.17f1
- *Date:           2020-02-28
+ *Date:           2020-05-24
  *Description:    Description
- *History:        2020-02-28--
+ *History:        2020-05-24--
 *********************************************************************************/
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using IFramework;
-using IFramework.Modules.MVVM;
 using IFramework.UI;
-using UnityEngine;
 
 namespace IFramework_Demo
 {
-    public class Panel02Model: IDataModel
-    { 
-        //public int count;
-    }
-
-    public class Panel02 : UIPanel
+	public class UIMap_MVVM 
 	{
-
+		public static Dictionary<Type, Tuple<Type, Type, Type>> map =
+		new Dictionary<Type, Tuple<Type, Type, Type>>()
+		{
+//ToDo
+		};
 	}
 }
