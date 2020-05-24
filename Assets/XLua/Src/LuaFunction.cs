@@ -26,7 +26,6 @@ namespace XLua
         public LuaFunction(int reference, LuaEnv luaenv) : base(reference, luaenv)
         {
         }
-
         //Action和Func是方便使用的无gc api，如果需要用到out，ref参数，建议使用delegate
         //如果需要其它个数的Action和Func， 这个类声明为partial，可以自己加
         public void Action<T>(T a)

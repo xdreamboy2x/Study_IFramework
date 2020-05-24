@@ -17,7 +17,7 @@ namespace IFramework_Demo
         public static FrameworkEnvironment env{ get { return Framework.GetEnv(envType); } }
         private void Awake()
         {
-            Framework.InitEnv("App_RT", EnvironmentType.Ev1).InitWithAttribute();
+            Framework.InitEnv("App_RT", envType).InitWithAttribute();
         }
         private void Update()
         {
@@ -25,6 +25,7 @@ namespace IFramework_Demo
         }
         private void OnDisable()
         {
+
             Framework.env1.Dispose();
         }
     }

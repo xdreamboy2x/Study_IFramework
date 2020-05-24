@@ -20,7 +20,7 @@ namespace IFramework.Lua
         {
             if (GUI.Button(new Rect(10, 10, 300, 80), "Hotfix"))
             {
-                XLuaEnvironment.DoString(@"
+                XLuaEnv.DoString(@"
                 xlua.hotfix(CS.IFramework.Lua.HotfixTest, 'Update', function(self)
                     self.tick = self.tick + 1
                     if (self.tick % 50) == 0 then

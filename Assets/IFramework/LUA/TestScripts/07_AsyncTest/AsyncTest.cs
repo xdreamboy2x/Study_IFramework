@@ -9,7 +9,7 @@ namespace IFramework.Lua
 
         void Start()
         {
-            XLuaEnvironment.DoString("require 'async_test'");
+            XLuaEnv.DoString("require 'async_test'");
         }
 
     }

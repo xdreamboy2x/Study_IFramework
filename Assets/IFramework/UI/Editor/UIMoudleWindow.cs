@@ -207,12 +207,12 @@ namespace IFramework.UI
             public override void OnOpen()
             {
                 base.OnOpen();
-                EditorApplication.update += Repaint;
+                EditorEnv.update += Repaint;
             }
             public override void OnClose()
             {
                 base.OnClose();
-                EditorApplication.update -= Repaint;
+                EditorEnv.update -= Repaint;
             }
 
             public override Vector2 GetWindowSize()

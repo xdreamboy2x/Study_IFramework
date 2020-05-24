@@ -23,7 +23,7 @@ namespace IFramework_Demo
         {
             module = Framework.env1.modules.CreateModule<UIModule>();
             module.AddLoader(Load);
-            module.SetMap(UIMap_MVVM.map);
+            //module.SetGroups(new Groups(UIMap_MVVM.map));
         }
 
         private UIPanel Load(Type type, string path, string name, UIPanelLayer layer)
@@ -43,5 +43,6 @@ namespace IFramework_Demo
                 module.Get<Panel02>("Panel02",  "Panel02");
             }
         }
+        
     }
 }

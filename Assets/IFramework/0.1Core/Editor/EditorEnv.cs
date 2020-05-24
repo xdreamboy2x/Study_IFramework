@@ -8,6 +8,7 @@
 *********************************************************************************/
 using UnityEditor;
 using IFramework.Modules.Coroutine;
+using System;
 
 namespace IFramework
 {
@@ -49,14 +50,35 @@ namespace IFramework
 
 
         public static FrameworkEnvironment Env { get { return Framework.env0; } }
+
+
+        public static event EditorApplication.CallbackFunction update { add { EditorApplication.update += value; } remove { EditorApplication.update -= value; } }
+        public static event EditorApplication.CallbackFunction delayCall { add { EditorApplication.delayCall += value; } remove { EditorApplication.delayCall -= value; } }
+        public static event EditorApplication.CallbackFunction searchChanged { add { EditorApplication.searchChanged += value; } remove { EditorApplication.searchChanged -= value; } }
+        public static event EditorApplication.CallbackFunction modifierKeysChanged { add { EditorApplication.modifierKeysChanged += value; } remove { EditorApplication.modifierKeysChanged -= value; } }
+        public static event EditorApplication.SerializedPropertyCallbackFunction contextualPropertyMenu { add { EditorApplication.contextualPropertyMenu += value; } remove { EditorApplication.contextualPropertyMenu -= value; } }
+
+        public static event Func<bool> wantsToQuit { add { EditorApplication.wantsToQuit += value; } remove { EditorApplication.wantsToQuit -= value; } }
+        public static event Action quitting { add { EditorApplication.quitting += value; } remove { EditorApplication.quitting -= value; } }
+
+        public static event Action<PlayModeStateChange> playModeStateChanged { add { EditorApplication.playModeStateChanged += value; } remove { EditorApplication.playModeStateChanged -= value; } }
+        public static event Action<PauseState> pauseStateChanged { add { EditorApplication.pauseStateChanged += value; } remove { EditorApplication.pauseStateChanged -= value; } }
+
+
+        public static event EditorApplication.ProjectWindowItemCallback projectWindowItemOnGUI { add { EditorApplication.projectWindowItemOnGUI += value; } remove { EditorApplication.projectWindowItemOnGUI -= value; } }
+        public static event EditorApplication.HierarchyWindowItemCallback hierarchyWindowItemOnGUI { add { EditorApplication.hierarchyWindowItemOnGUI += value; } remove { EditorApplication.hierarchyWindowItemOnGUI -= value; } }
+        public static event Action projectChanged { add { EditorApplication.projectChanged += value; } remove { EditorApplication.projectChanged -= value; } }
+        public static event Action hierarchyChanged { add { EditorApplication.hierarchyChanged += value; } remove { EditorApplication.hierarchyChanged -= value; } }
+
+
         [InitializeOnLoadMethod]
         public static void EditorEnvInit()
         {
             UnityEngine.Debug.Log("FrameworkPath   right?   "+FrameworkPath);
             Framework.InitEnv("IFramework_Editor", envType).InitWithAttribute();
 
-            EditorApplication.quitting += Framework.env0.Dispose;
-            EditorApplication.update += Framework.env0.Update;
+            quitting += Framework.env0.Dispose;
+            update += Framework.env0.Update;
             Framework.env0.modules.Coroutine = Framework.env0.modules.CreateModule<CoroutineModule>();
 
 #if UNITY_2018_1_OR_NEWER

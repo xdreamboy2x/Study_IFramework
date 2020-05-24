@@ -85,8 +85,8 @@ namespace IFramework.Lua
         }
         void Test()
         {
-            XLuaEnvironment.DoString(script);
-            CalcNew calc_new = XLuaEnvironment.GlobalTable.GetInPath<CalcNew>("Calc.New");
+            XLuaEnv.DoString(script);
+            CalcNew calc_new = XLuaEnv.gtable.GetInPath<CalcNew>("Calc.New");
             ICalc calc = calc_new(10, "hi", "john"); //constructor
             Debug.Log("sum(*10) =" + calc.Add(1, 2));
             calc.Mult = 100;

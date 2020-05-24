@@ -15,6 +15,142 @@ using IFramework.Modules.MVVM;
 
 namespace IFramework.UI
 {
+    public interface IGroups:IDisposable
+    {
+        UIPanel FindPanel(string name);
+        void InvokeUIModuleEventListenner(UIEventArgs arg);
+        void Subscribe(UIPanel panel);
+        void UnSubscribe(UIPanel panel);
+    }
+    public class Groups_lua : IGroups
+    {
+        public event Action onDispose;
+        public event Func<string,UIPanel> onFindPanel;
+        public event Func<string, bool> onHaveLoad;
+        public event Action<UIEventArgs> onInvokeListeners;
+        public event Action<UIPanel> onSubscibe;
+        public event Action<UIPanel> onUnSubscibe;
+
+        public void Dispose()
+        {
+
+            if (onDispose!=null)
+            {
+                onDispose();
+            }
+            onDispose = null;
+            onFindPanel = null;
+            onHaveLoad = null;
+            onSubscibe = null;
+            onUnSubscibe = null;
+            onInvokeListeners = null;
+        }
+
+        public UIPanel FindPanel(string name)
+        {
+            if (onFindPanel!=null)
+            {
+                return onFindPanel(name);
+            }
+            return null;
+        }
+
+      
+
+        public void InvokeUIModuleEventListenner(UIEventArgs arg)
+        {
+            if (onInvokeListeners != null)
+            {
+                onInvokeListeners(arg);
+            }
+        }
+
+        public void Subscribe(UIPanel panel)
+        {
+          
+            if (onSubscibe != null)
+            {
+                onSubscibe(panel);
+            }
+        }
+
+        public void UnSubscribe(UIPanel panel)
+        {
+            if (onUnSubscibe != null)
+            {
+                onUnSubscibe(panel);
+            }
+        }
+    }
+    public class Groups:IGroups
+    {
+        private MVVMModule _moudule;
+        private Dictionary<Type, Tuple<Type, Type, Type>> _map;
+
+        private MVVMGroup FindGroup(string panelName)
+        {
+            return _moudule.FindGroup(panelName);
+        }
+        private MVVMGroup FindGroup(UIPanel panel)
+        {
+            return FindGroup(panel.PanelName);
+        }
+
+
+
+        public Groups(Dictionary<Type, Tuple<Type, Type, Type>> map)
+        {
+            _moudule = MVVMModule.CreatInstance<MVVMModule>("UIGroup");
+            this._map = map;
+        }
+        public UIPanel FindPanel(string panelName)
+        {
+            var group = FindGroup(panelName);
+            if (group == null) return null;
+                return (group.view as UIView).panel;
+        }
+        public void InvokeUIModuleEventListenner(UIEventArgs arg)
+        {
+            if (arg.pressPanel != null)
+                (FindGroup(arg.pressPanel).view as IUIModuleEventListenner).OnPress(arg);
+            if (arg.popPanel != null)
+                (FindGroup(arg.popPanel).view as IUIModuleEventListenner).OnPop(arg);
+            if (arg.curPanel != null)
+                (FindGroup(arg.curPanel).view as IUIModuleEventListenner).OnTop(arg);
+        }
+        public void Subscribe(UIPanel panel)
+        {
+            var _group = FindGroup(panel);
+            if (_group != null) throw new Exception(string.Format("Have Subscribe Panel Name: {0}", panel.PanelName));
+
+            Tuple<Type, Type, Type> tuple;
+            _map.TryGetValue(panel.GetType(), out tuple);
+            if (tuple == null) throw new Exception(string.Format("Could Not Find map with Type: {0}", panel.GetType()));
+
+
+            var model = Activator.CreateInstance(tuple.Item1) as IDataModel;
+            var view = Activator.CreateInstance(tuple.Item2) as UIView;
+            var vm = Activator.CreateInstance(tuple.Item3) as UIViewModel;
+            view.panel = panel;
+
+            UIGroup group = new UIGroup(panel.name, view, vm, model);
+            _moudule.AddGroup(group);
+            (view as IUIModuleEventListenner).OnLoad();
+        }
+        public void UnSubscribe(UIPanel panel)
+        {
+            var group = FindGroup(panel);
+            if (group != null)
+            {
+                (group.view as IUIModuleEventListenner).OnClear();
+                group.Dispose();
+            }
+        }
+        public void Dispose()
+        {
+            _moudule.Dispose();
+        }
+    }
     public partial class UIModule
     {
         public Canvas Canvas { get; private set; }
@@ -135,63 +271,7 @@ namespace IFramework.UI
     public partial class UIModule : FrameworkModule
     {
 
-        private class UIGroups : IDisposable
-        {
-            private Dictionary<Type, Tuple<Type, Type, Type, Type, Type>> _mvpMap;
-
-            private MVVMModule _mvvmModule;
-            private Dictionary<Type, Tuple<Type, Type, Type>> _mvvmMap;
-
-
-            public UIGroups(Dictionary<Type, Tuple<Type, Type, Type>> map)
-            {
-                _mvvmModule = CreatInstance<MVVMModule>("UIGroup");
-                this._mvvmMap = map;
-            }
-            public MVVMGroup MVVMSubscribe(UIPanel panel)
-            {
-                var _group = FindMVVMGroup(panel);
-                if (_group != null) throw new Exception(string.Format("Have Subscribe Panel Name: {0}", panel.PanelName));
-
-                Tuple<Type, Type, Type> tuple;
-                _mvvmMap.TryGetValue(panel.GetType(), out tuple);
-                if (tuple == null) throw new Exception(string.Format("Could Not Find map with Type: {0}", panel.GetType()));
-
-
-                var model = Activator.CreateInstance(tuple.Item1) as IDataModel;
-                var view = Activator.CreateInstance(tuple.Item2) as UIView;
-                var vm = Activator.CreateInstance(tuple.Item3) as UIViewModel;
-                view.panel = panel;
-
-                UIGroup group = new UIGroup(panel.name, view, vm, model);
-                _mvvmModule.AddGroup(group);
-                return group;
-            }
-
-            public MVVMGroup FindMVVMGroup(UIPanel panel)
-            {
-                return FindMVVMGroup(panel.PanelName);
-            }
-            public MVVMGroup FindMVVMGroup(string panelName)
-            {
-                return _mvvmModule.FindGroup(panelName);
-            }
-            public void UnSubscribe(UIPanel panel)
-            {
-                var group1 = FindMVVMGroup(panel);
-                group1.Dispose();
-
-            }
-
-            public void Dispose()
-            {
-                _mvvmModule.Dispose();
-
-            }
-        }
-
-        private UIGroups _uiGroups;
-
+        private IGroups _groups;
         protected override void Awake()
         {
             InitTransform();
@@ -203,17 +283,17 @@ namespace IFramework.UI
         }
         protected override void OnDispose()
         {
+
+
             UIStack.Clear();
             UICache.Clear();
             loaders.Clear();
-            if (_uiGroups != null)
-                _uiGroups.Dispose();
+
+            if (_groups != null)
+                _groups.Dispose();
             if (Canvas != null)
                 GameObject.Destroy(Canvas.gameObject);
         }
-
-
-
 
         public delegate UIPanel LoadDel(Type type, string path, string name, UIPanelLayer layer);
 
@@ -222,14 +302,20 @@ namespace IFramework.UI
             loaders.Add(loader);
         }
 
-        public void SetMap(Dictionary<Type, Tuple<Type, Type, Type>> map)
+        public void SetGroups(IGroups groups)
         {
-            _uiGroups = new UIGroups(map);
+            this._groups = groups;
+            Debug.Log(_groups);
+
         }
+        //public void SetMap(Dictionary<Type, Tuple<Type, Type, Type>> map)
+        //{
+        //    _groups = new Groups(map);
+        //}
 
         public UIPanel Load(Type type, string path, UIPanelLayer layer, string name)
         {
-            if (_uiGroups == null)
+            if (_groups == null)
                 throw new Exception("Please Set ModuleType First");
             UIPanel ui = default(UIPanel);
             if (loaders == null || LoaderCount == 0)
@@ -248,8 +334,7 @@ namespace IFramework.UI
                 SetParent(ui);
                 ui.PanelName = name;
                 ui.GetComponent<RectTransform>().sizeDelta = Vector2.zero;
-                var entity2 = _uiGroups.MVVMSubscribe(ui);
-                (entity2.view as IUIModuleEventListenner).OnLoad();
+                 _groups.Subscribe(ui);
 
                 return ui;
             }
@@ -262,7 +347,7 @@ namespace IFramework.UI
         }
         public bool HaveLoadPanel(string panelName)
         {
-            return null == _uiGroups.FindMVVMGroup(panelName);
+            return _groups.FindPanel(panelName)!=null;
         }
 
 
@@ -312,12 +397,7 @@ namespace IFramework.UI
         }
         private void InvokeUIModuleEventListenner(UIEventArgs arg)
         {
-            if (arg.pressPanel != null)
-                (_uiGroups.FindMVVMGroup(arg.pressPanel).view as IUIModuleEventListenner).OnPress(arg);
-            if (arg.popPanel != null)
-                (_uiGroups.FindMVVMGroup(arg.popPanel).view as IUIModuleEventListenner).OnPop(arg);
-            if (arg.curPanel != null)
-                (_uiGroups.FindMVVMGroup(arg.curPanel).view as IUIModuleEventListenner).OnTop(arg);
+            _groups.InvokeUIModuleEventListenner(arg);
         }
 
 
@@ -328,13 +408,7 @@ namespace IFramework.UI
                 UIPanel p = UICache.Pop();
                 if (p != null && !IsInStack(p))
                 {
-                    var group = _uiGroups.FindMVVMGroup(p);
-                    if (group != null)
-                    {
-                        (group.view as IUIModuleEventListenner).OnClear();
-                        _uiGroups.UnSubscribe(p);
-                    }
-
+                    _groups.UnSubscribe(p);
                 }
             }
         }
@@ -346,19 +420,11 @@ namespace IFramework.UI
 
             if (Current != null && Current.PanelName == name && Current.GetType() == type)
                 return Current;
-            var group = _uiGroups.FindMVVMGroup(name);
-            if (group == null)
-            {
-                UIPanel ui = Load(type, path, layer, name);
-                Push(ui);
-                return ui;
-            }
-            else
-            {
-                Push((group.view as UIView).panel);
-                return (group.view as UIView).panel;
-            }
-
+            var panel = _groups.FindPanel(name);
+            if (panel == null)
+                panel = Load(type, path, layer, name);
+            Push(panel);
+            return panel;
         }
         public T Get<T>(string name, string path = "", UIPanelLayer layer = UIPanelLayer.Common) where T : UIPanel
         {

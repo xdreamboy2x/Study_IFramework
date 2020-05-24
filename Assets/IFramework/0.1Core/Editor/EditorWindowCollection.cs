@@ -210,12 +210,12 @@ namespace IFramework
         }
 
     }
-    public class WindowManager : EditorWindow, IRectGUIDrawer, ILayoutGUIDrawer
+    public class EditorWindowCollection : EditorWindow, IRectGUIDrawer, ILayoutGUIDrawer
     {
-        [MenuItem("IFramework/WindowManager")]
+        [MenuItem("IFramework/EditorWindowCollection")]
         static void ShowWindow()
         {
-            GetWindow<WindowManager>();
+            GetWindow<EditorWindowCollection>();
 
         }
         private void OnEnable()

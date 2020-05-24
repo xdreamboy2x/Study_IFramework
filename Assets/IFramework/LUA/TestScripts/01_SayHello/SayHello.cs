@@ -13,8 +13,8 @@ namespace IFramework.Lua
 	{
         private void Awake()
         {
-            XLuaEnvironment.DoString("CS.UnityEngine.Debug.Log('haha By Unity')");
-            XLuaEnvironment.DoString("CS.IFramework.Log.L('haha By IFramework')");
+            XLuaEnv.DoString("CS.UnityEngine.Debug.Log('haha By Unity')");
+            XLuaEnv.DoString("CS.IFramework.Log.L('haha By IFramework')");
 
         }
     }

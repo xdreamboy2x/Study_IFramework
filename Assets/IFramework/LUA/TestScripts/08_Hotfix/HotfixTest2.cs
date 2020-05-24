@@ -283,7 +283,7 @@ namespace IFramework.Lua
 
             Debug.Log("Before Fix: 2 + 1 = " + calc.Add(2, 1));
             Debug.Log("Before Fix: Vector3(2, 3, 4) + Vector3(1, 2, 3) = " + calc.Add(new Vector3(2, 3, 4), new Vector3(1, 2, 3)));
-            XLuaEnvironment.DoString(@"
+            XLuaEnv.DoString(@"
             xlua.hotfix(CS.IFramework.Lua.HotfixCalc, 'Add', function(self, a, b)
                 return a + b
             end)
@@ -296,7 +296,7 @@ namespace IFramework.Lua
             int ret = calc.TestOut(100, out num, ref str);
             Debug.Log("ret = " + ret + ", num = " + num + ", str = " + str);
 
-            XLuaEnvironment.DoString(@"
+            XLuaEnv.DoString(@"
             xlua.hotfix(CS.IFramework.Lua.HotfixCalc, 'TestOut', function(self, a, c, go)
                     print('TestOut', self, a, c, go)
                     if go then error('test error') end
@@ -307,7 +307,7 @@ namespace IFramework.Lua
             ret = calc.TestOut(100, out num, ref str);
             Debug.Log("ret = " + ret + ", num = " + num + ", str = " + str);
 
-            XLuaEnvironment.DoString(@"
+            XLuaEnv.DoString(@"
             xlua.hotfix(CS.IFramework.Lua.HotfixCalc, {
                  Test1 = function(self)
                     print('Test1', self)
@@ -352,7 +352,7 @@ namespace IFramework.Lua
             TestStateful();
             System.GC.Collect();
             System.GC.WaitForPendingFinalizers();
-            XLuaEnvironment.DoString(@"
+            XLuaEnv.DoString(@"
             local util = require 'xlua.util'
             xlua.hotfix(CS.IFramework.Lua.StatefullTest, {
                 ['.ctor'] = function(csobj)
@@ -405,14 +405,14 @@ namespace IFramework.Lua
         ");
             Debug.Log("----------------------after------------------------");
             TestStateful();
-            XLuaEnvironment.FullGc();
+            XLuaEnv.FullGc();
             System.GC.Collect();
             System.GC.WaitForPendingFinalizers();
 
             var genericObj = new GenericClass<double>(1.1);
             genericObj.Func1();
             Debug.Log(genericObj.Func2());
-            XLuaEnvironment.DoString(@"
+            XLuaEnv.DoString(@"
             xlua.hotfix(CS.IFramework.Lua.GenericClass(CS.System.Double), {
                 ['.ctor'] = function(obj, a)
                     print('GenericClass<double>', obj, a)
@@ -432,7 +432,7 @@ namespace IFramework.Lua
 
             InnerTypeTest itt = new InnerTypeTest();
             itt.Foo();
-            XLuaEnvironment.DoString(@"
+            XLuaEnv.DoString(@"
             xlua.hotfix(CS.IFramework.Lua.InnerTypeTest, 'Bar', function(obj)
                     print('lua Bar', obj)
                     return {x = 10, y = 20}
@@ -442,7 +442,7 @@ namespace IFramework.Lua
 
             StructTest st = new StructTest(gameObject);
             Debug.Log("go=" + st.GetGo(123, "john"));
-            XLuaEnvironment.DoString(@"
+            XLuaEnv.DoString(@"
             xlua.hotfix(CS.IFramework.Lua.StructTest, 'GetGo', function(self, a, b)
                     print('GetGo', self, a, b)
                     return nil
@@ -452,7 +452,7 @@ namespace IFramework.Lua
 
             GenericStruct<int> gs = new GenericStruct<int>(1);
             Debug.Log("gs.GetA()=" + gs.GetA(123));
-            XLuaEnvironment.DoString(@"
+            XLuaEnv.DoString(@"
             xlua.hotfix(CS.IFramework.Lua.GenericStruct(CS.System.Int32), 'GetA', function(self, a)
                     print('GetA',self, a)
                     return 789
@@ -474,7 +474,7 @@ namespace IFramework.Lua
             bt.Foo(1);
             Debug.Log(bt);
 
-            XLuaEnvironment.DoString(@"
+            XLuaEnv.DoString(@"
             xlua.hotfix(CS.IFramework.Lua.BaseTest, 'Foo', function(self, p)
                     print('BaseTest', p)
                 end)

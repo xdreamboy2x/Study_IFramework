@@ -12,7 +12,7 @@ using UnityEngine.UI;
 namespace IFramework.Tweens
 {
     [FrameworkVersion(8)]
-    public static class TweenExtension
+    public static class TweenEx
     {
         public static Tween<T> AllocateTween<T>(EnvironmentType env) /*where T : struct*/
         {

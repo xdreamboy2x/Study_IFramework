@@ -186,7 +186,7 @@ public class GUIDRefReplace : EditorWindow
             return;
         }
 
-        EditorApplication.update = delegate ()
+        EditorEnv.update += delegate ()
         {
             string file = files[startIndex];
 
@@ -210,7 +210,7 @@ public class GUIDRefReplace : EditorWindow
             if (isCancel || startIndex >= files.Length)
             {
                 EditorUtility.ClearProgressBar();
-                EditorApplication.update = null;
+               // EditorApplication.update = null;
                 startIndex = 0;
 
                 AssetDatabase.Refresh();

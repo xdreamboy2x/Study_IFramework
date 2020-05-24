@@ -112,7 +112,7 @@ namespace IFramework.Lua
         // Use this for initialization
         void Start()
         {
-            XLuaEnvironment.OnDispose += () =>
+            XLuaEnv.onDispose += () =>
             {
                 f1 = null;
                 f2 = null;
@@ -125,7 +125,7 @@ namespace IFramework.Lua
                 add = null;
 
             };
-            XLuaEnvironment.DoString(@"
+            XLuaEnv.DoString(@"
                 function id(...)
                     return ...
                 end
@@ -163,25 +163,25 @@ namespace IFramework.Lua
                 GDATA = 1234;
             ");
 
-            XLuaEnvironment.GlobalTable.Set("monoBehaviour", this);
+            XLuaEnv.gtable.Set("monoBehaviour", this);
 
-            XLuaEnvironment.GlobalTable.Get("id", out f1);
-            XLuaEnvironment.GlobalTable.Get("id", out f2);
-            XLuaEnvironment.GlobalTable.Get("id", out f3);
-            XLuaEnvironment.GlobalTable.Get("id", out f4);
-            XLuaEnvironment.GlobalTable.Get("id", out f5);
+            XLuaEnv.gtable.Get("id", out f1);
+            XLuaEnv.gtable.Get("id", out f2);
+            XLuaEnv.gtable.Get("id", out f3);
+            XLuaEnv.gtable.Get("id", out f4);
+            XLuaEnv.gtable.Get("id", out f5);
 
-            XLuaEnvironment.GlobalTable.Get("array_exchange", out farr);
-            XLuaEnvironment.GlobalTable.Get("lua_access_csharp", out flua);
-            XLuaEnvironment.GlobalTable.Get("exchanger", out ie);
-            XLuaEnvironment.GlobalTable.Get("add", out add);
+            XLuaEnv.gtable.Get("array_exchange", out farr);
+            XLuaEnv.gtable.Get("lua_access_csharp", out flua);
+            XLuaEnv.gtable.Get("exchanger", out ie);
+            XLuaEnv.gtable.Get("add", out add);
 
-            XLuaEnvironment.GlobalTable.Set("g_int", 123);
-            XLuaEnvironment.GlobalTable.Set(123, 456);
+            XLuaEnv.gtable.Set("g_int", 123);
+            XLuaEnv.gtable.Set(123, 456);
             int i;
-            XLuaEnvironment.GlobalTable.Get("g_int", out i);
+            XLuaEnv.gtable.Get("g_int", out i);
             Debug.Log("g_int:" + i);
-            XLuaEnvironment.GlobalTable.Get(123, out i);
+            XLuaEnv.gtable.Get(123, out i);
             Debug.Log("123:" + i);
         }
 
@@ -215,23 +215,23 @@ namespace IFramework.Lua
             ie.exchange(a2);
 
             //no gc LuaTable use
-            XLuaEnvironment.GlobalTable.Set("g_int", 456);
+            XLuaEnv.gtable.Set("g_int", 456);
             int i;
-            XLuaEnvironment.GlobalTable.Get("g_int", out i);
+            XLuaEnv.gtable.Get("g_int", out i);
 
-            XLuaEnvironment.GlobalTable.Set(123.0001, mystruct1);
+            XLuaEnv.gtable.Set(123.0001, mystruct1);
             MyStruct mystruct2;
-            XLuaEnvironment.GlobalTable.Get(123.0001, out mystruct2);
+            XLuaEnv.gtable.Get(123.0001, out mystruct2);
 
             decimal dec2 = 0.0000001M;
-            XLuaEnvironment.GlobalTable.Set((byte)12, dec1);
-            XLuaEnvironment.GlobalTable.Get((byte)12, out dec2);
+            XLuaEnv.gtable.Set((byte)12, dec1);
+            XLuaEnv.gtable.Get((byte)12, out dec2);
 
-            int gdata = XLuaEnvironment.GlobalTable.Get<int>("GDATA");
-            XLuaEnvironment.GlobalTable.SetInPath("GDATA", gdata + 1);
+            int gdata = XLuaEnv.gtable.Get<int>("GDATA");
+            XLuaEnv.gtable.SetInPath("GDATA", gdata + 1);
 
-            int abc = XLuaEnvironment.GlobalTable.GetInPath<int>("A.B.C");
-            XLuaEnvironment.GlobalTable.SetInPath("A.B.C", abc + 1);
+            int abc = XLuaEnv.gtable.GetInPath<int>("A.B.C");
+            XLuaEnv.gtable.SetInPath("A.B.C", abc + 1);
 
         }
 

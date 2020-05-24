@@ -13,6 +13,9 @@ using XLua;
 
 namespace IFramework.Lua
 {
+    [CSharpCallLua]
+    public delegate void DoSth2(LuaFunction func,params object[] obj);
+
     [Serializable]
     public class Injection
     {
@@ -43,9 +46,9 @@ namespace IFramework.Lua
             luaOnDestroy = null;
             injections = null;
             Dispose();
-            if (!XLuaEnvironment.Disposed)
+            if (!XLuaEnv.disposed)
             {
-                XLuaEnvironment.OnDispose -= LuaDispose;
+                XLuaEnv.onDispose -= LuaDispose;
             }
         }
         protected virtual void Dispose() { }
@@ -56,19 +59,20 @@ namespace IFramework.Lua
         private void Awake()
         {
            // XLuaEnvironment.AddLoader(load);
-            XLuaEnvironment.OnDispose += LuaDispose;
-            scriptEnv = XLuaEnvironment.NewTable();
+            XLuaEnv.onDispose += LuaDispose;
+            scriptEnv = XLuaEnv.GetTable(luaScript, "LuaTestScript");
+            //scriptEnv = XLuaEnv.NewTable();
 
-            // 为每个脚本设置一个独立的环境，可一定程度上防止脚本间全局变量、函数冲突
-            LuaTable meta = XLuaEnvironment.NewTable();
-            meta.Set("__index", XLuaEnvironment.GlobalTable);
-            scriptEnv.SetMetaTable(meta);
-            meta.Dispose();
+            //// 为每个脚本设置一个独立的环境，可一定程度上防止脚本间全局变量、函数冲突
+            //LuaTable meta = XLuaEnv.NewTable();
+            //meta.Set("__index", XLuaEnv.GlobalTable);
+            //scriptEnv.SetMetaTable(meta);
+            //meta.Dispose();
 
             scriptEnv.Set("this", this);
             foreach (var injection in injections) scriptEnv.Set(injection.Key, injection.value);
 
-            XLuaEnvironment.DoString(luaScript.text, "LuaTestScript", scriptEnv);
+            //XLuaEnv.DoString(luaScript.text, "LuaTestScript", scriptEnv);
 
             luaAwake = scriptEnv.Get<Action>("Awake");
             luaOnEnable = scriptEnv.Get<Action>("OnEnable");
@@ -77,13 +81,19 @@ namespace IFramework.Lua
             luaOnDisable = scriptEnv.Get<Action>("OnDisable");
             luaOnDestroy = scriptEnv.Get<Action>("OnDestroy");
 
-            if (luaAwake != null)
-            {
-                luaAwake();
-                luaAwake = null;
-            }
-        }
+            var test1 = scriptEnv.Get<DoSth2>("test"); 
+            var test2 = scriptEnv.Get<LuaFunction>("test2");
+            
+            test1.Invoke(test2, 1, 2);
+            //object[] objs = test2.Call( 1, 2);
 
+
+            //if (luaAwake != null)
+            //{
+            //    luaAwake();
+            //    luaAwake = null;
+            //}
+        }
 
 
         private void OnEnable()

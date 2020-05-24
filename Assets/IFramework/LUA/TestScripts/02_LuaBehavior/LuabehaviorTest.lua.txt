@@ -1,4 +1,4 @@
-require ("function")
+require ("Class")
 
 local  x = class("x")
 function x:ctor(name,age) 
@@ -14,6 +14,21 @@ function man:Say(  )
 	 	print("Say".."   "..self.name.."   "..self.age)
 end
 
+function test(func,param)
+	local o1={}
+	for i=0,param.Length-1 ,1 do
+		--print(param[i])
+		local tmp=param[i]
+		table.insert (o1, tmp)
+	end
+	return func(table.unpack(o1))
+end
+
+function test2(a,b)
+print(a,b)
+return a,b
+end
+
 
 function Awake()
 	--print("Awake")
@@ -26,6 +41,8 @@ function Awake()
 	xx2:Say()
 	xiaoming:Say()
 	print(mmm)
+		print(this)
+
 end
 function OnEnable()
 	--print("OnEnable")

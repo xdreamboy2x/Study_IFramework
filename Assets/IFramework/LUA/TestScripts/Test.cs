@@ -14,7 +14,7 @@ namespace IFramework.Lua
         [UnityEngine.ContextMenu("Con")]
         private void Awake()
         {
-            XLuaEnvironment.DoString(txt.bytes);
+            XLuaEnv.DoString(txt.bytes);
                 
 
         }

@@ -30,7 +30,7 @@ namespace IFramework.Lua
         // Use this for initialization
         void Start()
         {
-            XLuaEnvironment.DoString("require 'coruntine_test'");
+            XLuaEnv.DoString("require 'coruntine_test'");
         }
     }
 }

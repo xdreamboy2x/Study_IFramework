@@ -1,0 +1,29 @@
+local Group = Class("Group",CS.IFramework.UI.Groups_lua)
+function Group:ctor( )
+	
+end
+function Group:printname()
+
+end
+
+function Group:FindPanel( name)
+	return nil;
+end
+function Group:HaveLoad( name)
+	return false;
+end
+function Group:InvokeUIModuleEventListenner( arg)
+	print(arg)
+end
+function Group:Subscribe( panel)
+		print(111)
+	print(self.name)
+		print(panel)
+
+end
+function Group:UnSubscribe( panel)
+		print(panel)
+end
+
+
+return Group
