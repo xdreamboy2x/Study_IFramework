@@ -13,7 +13,7 @@ using UnityEngine;
 
 namespace IFramework_Demo
 {
-    [RequireComponent(typeof(APP))]
+    [RequireComponent(typeof(Game))]
     public class MessageExample:MonoBehaviour,IMessagePublisher
 	{
         public interface IPub : IMessagePublisher { }

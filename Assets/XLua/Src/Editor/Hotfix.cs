@@ -3,7 +3,7 @@
  * Copyright (C) 2016 THL A29 Limited, a Tencent company. All rights reserved.
  * Licensed under the MIT License (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  * http://opensource.org/licenses/MIT
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ * Unless required by Gamelicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 */
 
 #if HOTFIX_ENABLE
@@ -110,7 +110,7 @@ namespace XLua
                 types.Add(type);
             };
 
-            foreach (var assmbly in AppDomain.CurrentDomain.GetAssemblies())
+            foreach (var assmbly in GameDomain.CurrentDomain.GetAssemblies())
             {
                 try
                 {
@@ -328,7 +328,7 @@ namespace XLua
             };
             addSearchDirectory("./Library/ScriptAssemblies/");
             foreach (var path in
-                (from asm in AppDomain.CurrentDomain.GetAssemblies() select asm.ManifestModule.FullyQualifiedName)
+                (from asm in GameDomain.CurrentDomain.GetAssemblies() select asm.ManifestModule.FullyQualifiedName)
                  .Distinct())
             {
                 try
@@ -875,7 +875,7 @@ namespace XLua
                     }
                 }
                 Directory.CreateDirectory(Path.GetDirectoryName(idMapFilePath));
-                hotfix.OutputIntKeyMapper(new FileStream(idMapFilePath, FileMode.Create, FileAccess.Write));
+                hotfix.OutputIntKeyMGameer(new FileStream(idMapFilePath, FileMode.Create, FileAccess.Write));
                 File.Copy(idMapFilePath, idMapFilePath + "." + DateTime.Now.ToString("yyyyMMddHHmmssfff"));
 
                 writeAssembly(injectAssembly, injectAssemblyPath);
@@ -1544,7 +1544,7 @@ namespace XLua
             return true;
         }
 
-        public void OutputIntKeyMapper(Stream output)
+        public void OutputIntKeyMGameer(Stream output)
         {
             using (StreamWriter writer = new StreamWriter(output))
             {
@@ -1654,7 +1654,7 @@ namespace XLua
             List<string> args = new List<string>() { assembly_csharp_path, typeof(LuaEnv).Module.FullyQualifiedName, id_map_file_path, hotfix_cfg_in_editor };
 
             foreach (var path in
-                (from asm in AppDomain.CurrentDomain.GetAssemblies() select asm.ManifestModule.FullyQualifiedName)
+                (from asm in GameDomain.CurrentDomain.GetAssemblies() select asm.ManifestModule.FullyQualifiedName)
                  .Distinct())
             {
                 try

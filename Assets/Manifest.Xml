@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-16"?>
+<ArrayOfManifestXmlContent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ManifestXmlContent>
+    <assetBundleName>assets/examples/runtime/abexample_2</assetBundleName>
+    <assetNames>
+      <string>Assets/Examples/Runtime/ABExample/Logo.prefab</string>
+      <string>Assets/Examples/Runtime/ABExample/tx.png</string>
+    </assetNames>
+  </ManifestXmlContent>
+  <ManifestXmlContent>
+    <assetBundleName>shared/assets/examples/runtime/abexample_1</assetBundleName>
+    <assetNames>
+      <string>Assets/Examples/Runtime/ABExample/UnityLogo.png</string>
+    </assetNames>
+  </ManifestXmlContent>
+  <ManifestXmlContent>
+    <assetBundleName>help</assetBundleName>
+    <assetNames>
+      <string>Assets/Manifest.Xml</string>
+    </assetNames>
+  </ManifestXmlContent>
+</ArrayOfManifestXmlContent>

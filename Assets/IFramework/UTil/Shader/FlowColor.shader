@@ -71,7 +71,7 @@ Shader "Customed/FlowColor" {
                 float4 _MainTexture_var = tex2D(_MainTexture,TRANSFORM_TEX(i.uv0, _MainTexture));
                 float3 finalColor = ((node_8809*_FlowColor.rgb)+_MainTexture_var.rgb);
                 fixed4 finalRGBA = fixed4(finalColor,_MainTexture_var.a);
-                UNITY_APPLY_FOG(i.fogCoord, finalRGBA);
+                UNITY_GameLY_FOG(i.fogCoord, finalRGBA);
                 return finalRGBA;
             }
             ENDCG

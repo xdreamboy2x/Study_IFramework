@@ -11,16 +11,16 @@ using UnityEngine;
 using IFramework;
 namespace IFramework_Demo
 {
-    [RequireComponent(typeof(APP))]
+    [RequireComponent(typeof(Game))]
 	public class ReouourcesTest:MonoBehaviour
 	{
         private void Start()
         {
-            APP.env.modules.Resources = APP.env.modules.CreateModule<ResourceModule>();
-            var res= APP.env.modules.Resources.Load<TextAsset,ResourcesLoader<TextAsset>>("RS","txt","txt", null, null);
-            APP.env.modules.Resources.trick = 10;
+            Game.env.modules.Resources = Game.env.modules.CreateModule<ResourceModule>();
+            var res= Game.env.modules.Resources.Load<TextAsset,ResourcesLoader<TextAsset>>("RS","txt","txt", null, null);
+            Game.env.modules.Resources.trick = 10;
             Log.L(res.value.text);
-            var res1 = APP.env.modules.Resources.Load<TextAsset, ResourcesLoader<TextAsset>>("RS", "txt", "txt", null, null);
+            var res1 = Game.env.modules.Resources.Load<TextAsset, ResourcesLoader<TextAsset>>("RS", "txt", "txt", null, null);
 
             res.Release();
             res.Release();

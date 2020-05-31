@@ -3,7 +3,7 @@
  * Copyright (C) 2016 THL A29 Limited, a Tencent company. All rights reserved.
  * Licensed under the MIT License (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  * http://opensource.org/licenses/MIT
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ * Unless required by Gamelicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 */
 
 using System.Collections.Generic;
@@ -77,7 +77,7 @@ namespace XLua
         {
             List<Assembly> assemblies = new List<Assembly>();
             //return assemblies;
-            var files = await Windows.ApplicationModel.Package.Current.InstalledLocation.GetFilesAsync();
+            var files = await Windows.GamelicationModel.Package.Current.InstalledLocation.GetFilesAsync();
             if (files == null)
                 return assemblies;
 
@@ -1043,8 +1043,8 @@ namespace XLua
 		public const int SETTER_IDX = -1;
 
 #if GEN_CODE_MINIMIZE
-        public static void EndObjectRegister(Type type, RealStatePtr L, ObjectTranslator translator, CSharpWrapper csIndexer,
-            CSharpWrapper csNewIndexer, Type base_type, CSharpWrapper arrayIndexer, CSharpWrapper arrayNewIndexer)
+        public static void EndObjectRegister(Type type, RealStatePtr L, ObjectTranslator translator, CSharpWrGameer csIndexer,
+            CSharpWrGameer csNewIndexer, Type base_type, CSharpWrGameer arrayIndexer, CSharpWrGameer arrayNewIndexer)
 #else
 		public static void EndObjectRegister(Type type, RealStatePtr L, ObjectTranslator translator, LuaCSFunction csIndexer,
 			LuaCSFunction csNewIndexer, Type base_type, LuaCSFunction arrayIndexer, LuaCSFunction arrayNewIndexer)
@@ -1068,7 +1068,7 @@ namespace XLua
 			else
 			{
 #if GEN_CODE_MINIMIZE
-                translator.PushCSharpWrapper(L, csIndexer);
+                translator.PushCSharpWrGameer(L, csIndexer);
 #else
 				LuaAPI.lua_pushstdcallcfunction(L, csIndexer);
 #endif
@@ -1085,7 +1085,7 @@ namespace XLua
 			else
 			{
 #if GEN_CODE_MINIMIZE
-                translator.PushCSharpWrapper(L, arrayIndexer);
+                translator.PushCSharpWrGameer(L, arrayIndexer);
 #else
 				LuaAPI.lua_pushstdcallcfunction(L, arrayIndexer);
 #endif
@@ -1117,7 +1117,7 @@ namespace XLua
 			else
 			{
 #if GEN_CODE_MINIMIZE
-                translator.PushCSharpWrapper(L, csNewIndexer);
+                translator.PushCSharpWrGameer(L, csNewIndexer);
 #else
 				LuaAPI.lua_pushstdcallcfunction(L, csNewIndexer);
 #endif
@@ -1135,7 +1135,7 @@ namespace XLua
 			else
 			{
 #if GEN_CODE_MINIMIZE
-                translator.PushCSharpWrapper(L, arrayNewIndexer);
+                translator.PushCSharpWrGameer(L, arrayNewIndexer);
 #else
 				LuaAPI.lua_pushstdcallcfunction(L, arrayNewIndexer);
 #endif
@@ -1159,12 +1159,12 @@ namespace XLua
 		}
 
 #if GEN_CODE_MINIMIZE
-        public static void RegisterFunc(RealStatePtr L, int idx, string name, CSharpWrapper func)
+        public static void RegisterFunc(RealStatePtr L, int idx, string name, CSharpWrGameer func)
         {
             ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
             idx = abs_idx(LuaAPI.lua_gettop(L), idx);
             LuaAPI.xlua_pushasciistring(L, name);
-            translator.PushCSharpWrapper(L, func);
+            translator.PushCSharpWrGameer(L, func);
             LuaAPI.lua_rawset(L, idx);
         }
 #else
@@ -1200,7 +1200,7 @@ namespace XLua
 		}
 
 #if GEN_CODE_MINIMIZE
-        public static void BeginClassRegister(Type type, RealStatePtr L, CSharpWrapper creator, int class_field_count,
+        public static void BeginClassRegister(Type type, RealStatePtr L, CSharpWrGameer creator, int class_field_count,
             int static_getter_count, int static_setter_count)
 #else
 		public static void BeginClassRegister(Type type, RealStatePtr L, LuaCSFunction creator, int class_field_count,
@@ -1224,7 +1224,7 @@ namespace XLua
 			{
 				LuaAPI.xlua_pushasciistring(L, "__call");
 #if GEN_CODE_MINIMIZE
-                translator.PushCSharpWrapper(L, creator);
+                translator.PushCSharpWrGameer(L, creator);
 #else
 				LuaAPI.lua_pushstdcallcfunction(L, creator);
 #endif

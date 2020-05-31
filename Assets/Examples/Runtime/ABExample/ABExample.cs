@@ -26,7 +26,7 @@ namespace IFramework_Demo
             });
 
         }
-        [SerializeField] string assetPath = "Assets/Examples/ABExample/Logo.prefab";
+        [SerializeField] string assetPath = "Assets/Examples/Runtime/ABExample/Logo.prefab";
         IEnumerator Load()
         {
             var asset = ABAssets.LoadAsync<GameObject>(assetPath);

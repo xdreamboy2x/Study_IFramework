@@ -72,7 +72,7 @@ namespace IFramework
         }
 
         [MenuItem("IFramework/AutoBuild/Append ScriptingDefineSymbols EnableLog")]
-        private static void AppendScriptingDefineSymbols()
+        private static void GameendScriptingDefineSymbols()
         {
             PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildTargetGroup.Android, "EnableLog");
             PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildTargetGroup.Standalone, "EnableLog");

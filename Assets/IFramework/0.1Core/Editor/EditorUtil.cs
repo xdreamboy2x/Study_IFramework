@@ -73,7 +73,7 @@ namespace IFramework
             (target == BuildTarget.StandaloneOSXIntel || target == BuildTarget.StandaloneOSXIntel64 || target == BuildTarget.StandaloneOSXUniversal)
 #endif
             {
-                return  name + ".app";
+                return  name + ".Game";
             }
             if (target == BuildTarget.iOS)
             {

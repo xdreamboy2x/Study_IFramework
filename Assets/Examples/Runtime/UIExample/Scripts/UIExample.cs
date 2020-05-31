@@ -15,7 +15,7 @@ using IFramework.UI;
 
 namespace IFramework_Demo
 {
-    [RequireComponent(typeof(APP))]
+    [RequireComponent(typeof(Game))]
 	public class UIExample : MonoBehaviour
 	{
         UIModule module;

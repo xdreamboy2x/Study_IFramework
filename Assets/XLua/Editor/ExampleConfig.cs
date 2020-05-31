@@ -3,7 +3,7 @@
  * Copyright (C) 2016 THL A29 Limited, a Tencent company. All rights reserved.
  * Licensed under the MIT License (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  * http://opensource.org/licenses/MIT
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ * Unless required by Gamelicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 */
 
 using System.Collections.Generic;
@@ -29,7 +29,7 @@ public static class ExampleConfig
     //    "BitStream", "HostData",
     //    "ConnectionTesterStatus", "GUI", "EventType",
     //    "EventModifiers", "FontStyle", "TextAlignment",
-    //    "TextEditor", "TextEditorDblClickSnapping",
+    //    "TextEditor", "TextEditorDblClickSnGameing",
     //    "TextGenerator", "TextClipping", "Gizmos",
     //    "ADBannerView", "ADInterstitialAd",
     //    "Android", "Tizen", "jvalue",
@@ -50,7 +50,7 @@ public static class ExampleConfig
     //    "ShaderVariantCollection", "SimpleJson.Reflection",
     //    "CoroutineTween", "GraphicRebuildTracker",
     //    "Advertisements", "UnityEditor", "WSA",
-    //    "EventProvider", "Apple",
+    //    "EventProvider", "Gamele",
     //    "ClusterInput", "Motion",
     //    "UnityEngine.UI.ReflectionMethodsCache", "NativeLeakDetection",
     //    "NativeLeakDetectionMode", "WWWAudioExtensions", "UnityEngine.Experimental",
@@ -79,7 +79,7 @@ public static class ExampleConfig
     //            "UnityEngine",
     //            "UnityEngine.UI"
     //        };
-    //        var unityTypes = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
+    //        var unityTypes = (from assembly in GameDomain.CurrentDomain.GetAssemblies()
     //                          where !(assembly.ManifestModule is System.Reflection.Emit.ModuleBuilder)
     //                          from type in assembly.GetExportedTypes()
     //                          where type.Namespace != null && namespaces.Contains(type.Namespace) && !isExcluded(type)

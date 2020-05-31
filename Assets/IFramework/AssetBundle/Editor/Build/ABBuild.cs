@@ -45,7 +45,7 @@ namespace IFramework.AB
 				if (PlayerSettings.iOS.useOnDemandResources)
 				options |= BuildAssetBundleOptions.UncompressedAssetBundle;
 #endif
-#if ENABLE_IOS_APP_SLICING
+#if ENABLE_IOS_Game_SLICING
 				options |= BuildAssetBundleOptions.UncompressedAssetBundle;
 #endif
             }
@@ -82,7 +82,7 @@ namespace IFramework.AB
             (target == BuildTarget.StandaloneOSXIntel || target == BuildTarget.StandaloneOSXIntel64 || target == BuildTarget.StandaloneOSXUniversal)
 #endif
             {
-                return "/" + name + ".app";
+                return "/" + name + ".Game";
             }
             if (target == BuildTarget.iOS)
             {

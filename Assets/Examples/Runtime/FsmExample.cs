@@ -33,7 +33,7 @@ namespace IFramework_Demo
     public class State2 : State
     {
     }
-    [RequireComponent(typeof(APP))]
+    [RequireComponent(typeof(Game))]
     public class FsmExample : MonoBehaviour {
 
         FsmModule fsm { get { return Framework.env1.modules.Fsm; } set { Framework.env1.modules.Fsm = value; } }

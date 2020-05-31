@@ -3,7 +3,7 @@
  * Copyright (C) 2016 THL A29 Limited, a Tencent company. All rights reserved.
  * Licensed under the MIT License (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  * http://opensource.org/licenses/MIT
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ * Unless required by Gamelicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 */
 
 #if USE_UNI_LUA
@@ -99,7 +99,7 @@ namespace XLua
     }
 
 #if GEN_CODE_MINIMIZE
-    public delegate int CSharpWrapper(IntPtr L, int top);
+    public delegate int CSharpWrGameer(IntPtr L, int top);
 #endif
 
     public partial class ObjectTranslator
@@ -1402,19 +1402,19 @@ namespace XLua
         }
 
 #if GEN_CODE_MINIMIZE
-        CSharpWrapper[] csharpWrapper = new CSharpWrapper[0];
-        int csharpWrapperSize = 0;
+        CSharpWrGameer[] csharpWrGameer = new CSharpWrGameer[0];
+        int csharpWrGameerSize = 0;
 
-        internal int CallCSharpWrapper(RealStatePtr L, int funcidx, int top)
+        internal int CallCSharpWrGameer(RealStatePtr L, int funcidx, int top)
         {
-            return csharpWrapper[funcidx](L, top);
+            return csharpWrGameer[funcidx](L, top);
         }
 
-        void ensureCSharpWrapperCapacity(int min)
+        void ensureCSharpWrGameerCapacity(int min)
         {
-            if (csharpWrapper.Length < min)
+            if (csharpWrGameer.Length < min)
             {
-                int num = (csharpWrapper.Length == 0) ? 4 : (csharpWrapper.Length * 2);
+                int num = (csharpWrGameer.Length == 0) ? 4 : (csharpWrGameer.Length * 2);
                 if (num > 2146435071)
                 {
                     num = 2146435071;
@@ -1424,13 +1424,13 @@ namespace XLua
                     num = min;
                 }
 
-                var array = new CSharpWrapper[num];
-                Array.Copy(csharpWrapper, 0, array, 0, csharpWrapper.Length);
-                csharpWrapper = array;
+                var array = new CSharpWrGameer[num];
+                Array.Copy(csharpWrGameer, 0, array, 0, csharpWrGameer.Length);
+                csharpWrGameer = array;
             }
         }
 
-        internal void PushCSharpWrapper(RealStatePtr L, CSharpWrapper func)
+        internal void PushCSharpWrGameer(RealStatePtr L, CSharpWrGameer func)
         {
             if (func == null)
             {
@@ -1438,9 +1438,9 @@ namespace XLua
             }
             else
             {
-                LuaAPI.xlua_push_csharp_wrapper(L, csharpWrapperSize);
-                ensureCSharpWrapperCapacity(csharpWrapperSize + 1);
-                csharpWrapper[csharpWrapperSize++] = func;
+                LuaAPI.xlua_push_csharp_wrGameer(L, csharpWrGameerSize);
+                ensureCSharpWrGameerCapacity(csharpWrGameerSize + 1);
+                csharpWrGameer[csharpWrGameerSize++] = func;
             }
         }
 #endif

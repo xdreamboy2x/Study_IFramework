@@ -3,7 +3,7 @@
  * Copyright (C) 2016 THL A29 Limited, a Tencent company. All rights reserved.
  * Licensed under the MIT License (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  * http://opensource.org/licenses/MIT
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ * Unless required by Gamelicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 */
 
 #if USE_UNI_LUA
@@ -75,7 +75,7 @@ namespace XLua
 #endif
                 LuaIndexes.LUA_REGISTRYINDEX = LuaAPI.xlua_get_registry_index();
 #if GEN_CODE_MINIMIZE
-                LuaAPI.xlua_set_csharp_wrapper_caller(InternalGlobals.CSharpWrapperCallerPtr);
+                LuaAPI.xlua_set_csharp_wrGameer_caller(InternalGlobals.CSharpWrGameerCallerPtr);
 #endif
                 // Create State
                 rawL = LuaAPI.luaL_newstate();
@@ -359,7 +359,7 @@ namespace XLua
 #endif
         }
 
-        //¼æÈİAPI
+        //å…¼å®¹API
         public void GC()
         {
             Tick();
@@ -434,11 +434,11 @@ namespace XLua
                 object err = translator.GetObject(L, -1);
                 LuaAPI.lua_settop(L, oldTop);
 
-                // A pre-wrapped exception - just rethrow it (stack trace of InnerException will be preserved)
+                // A pre-wrGameed exception - just rethrow it (stack trace of InnerException will be preserved)
                 Exception ex = err as Exception;
                 if (ex != null) throw ex;
 
-                // A non-wrapped Lua error (best interpreted as a string) - wrap it and throw it
+                // A non-wrGameed Lua error (best interpreted as a string) - wrap it and throw it
                 if (err == null) err = "Unknown Lua Error";
                 throw new LuaException(err.ToString());
 #if THREAD_SAFE || HOTFIX_ENABLE
@@ -600,8 +600,8 @@ namespace XLua
 
         internal List<CustomLoader> customLoaders = new List<CustomLoader>();
 
-        //loader : CustomLoader£¬ filepath²ÎÊı£º£¨refÀàĞÍ£©ÊäÈëÊÇrequireµÄ²ÎÊı£¬Èç¹ûĞèÒªÖ§³Öµ÷ÊÔ£¬ĞèÒªÊä³öÕæÊµÂ·¾¶¡£
-        //                        ·µ»ØÖµ£ºÈç¹û·µ»Ønull£¬´ú±í¼ÓÔØ¸ÃÔ´ÏÂÎŞºÏÊÊµÄÎÄ¼ş£¬·ñÔò·µ»ØUTF8±àÂëµÄbyte[]
+        //loader : CustomLoaderï¼Œ filepathå‚æ•°ï¼šï¼ˆrefç±»å‹ï¼‰è¾“å…¥æ˜¯requireçš„å‚æ•°ï¼Œå¦‚æœéœ€è¦æ”¯æŒè°ƒè¯•ï¼Œéœ€è¦è¾“å‡ºçœŸå®è·¯å¾„ã€‚
+        //                        è¿”å›å€¼ï¼šå¦‚æœè¿”å›nullï¼Œä»£è¡¨åŠ è½½è¯¥æºä¸‹æ— åˆé€‚çš„æ–‡ä»¶ï¼Œå¦åˆ™è¿”å›UTF8ç¼–ç çš„byte[]
         public void AddLoader(CustomLoader loader)
         {
             customLoaders.Add(loader);

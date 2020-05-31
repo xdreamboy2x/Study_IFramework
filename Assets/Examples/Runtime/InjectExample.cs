@@ -14,7 +14,7 @@ using UnityEngine;
 
 namespace IFramework_Demo
 {
-    [RequireComponent(typeof(APP))]
+    [RequireComponent(typeof(Game))]
 
     public class InjectExample:UnityEngine.MonoBehaviour
 	{

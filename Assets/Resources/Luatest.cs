@@ -7,19 +7,14 @@ using System;
 using XLua;
 
 
-public class Luatest : MonoBehaviour,IXLuaLoader
+public class Luatest : MonoBehaviour
 {
     public TextAsset luaScript;
 
     public TextAsset group;
 
     LuaTable scriptEnv;
-    public byte[] load(ref string filepath)
-    {
-        if (filepath== "Groups_lua")
-       return group.bytes;
-        return null;
-    }
+
 
     private void LuaDispose()
     {
@@ -32,7 +27,6 @@ public class Luatest : MonoBehaviour,IXLuaLoader
    
     private void Start()
     {
-        XLuaEnv.AddLoader(this);
         XLuaEnv.onDispose += LuaDispose;
          scriptEnv = XLuaEnv.GetTable(luaScript, "LuaTestScript");
         scriptEnv.Set("this", this);

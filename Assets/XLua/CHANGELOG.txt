@@ -73,7 +73,7 @@ v2.1.12 2018年7月9日
 6、this[string field]或者this[object field]操作符重载新增get_Item和set_Item调用
 7、正在编译时注入打印error信息
 8、interface配置到CSharpCallLua时的事件跟索引映射的自动实现
-9、unity5.5以上去掉WARNING: The runtime version supported by this application is unavailable打印
+9、unity5.5以上去掉WARNING: The runtime version supported by this Application is unavailable打印
 
 变更
 1、去除Stateful方式（因为xlua.util.state已经可以达成类似的效果）
@@ -121,7 +121,7 @@ bug修复
 v2.1.10 2017年9月18日
 新增特性
 1、新增DoNotGen配置，支持一个类型部分函数用反射，部分用生成；
-2、新增wrapper的emit；
+2、新增wrGameer的emit；
 3、webgl支持；
 4、lua实现interface支持interface继承；
 5、window下支持android编译（由xdestiny110提供）；

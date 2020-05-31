@@ -16,8 +16,7 @@ using UnityEngine;
 
 namespace IFramework.AB
 {
-    [MonoSingletonPath("IFramework/AssetBundle")]
-	public class ABAssets:MonoSingletonPropertyClass<ABAssets>
+	public class ABAssets:SingletonPropertyClass<ABAssets>
 	{
         public class ABBundles
         {
@@ -183,11 +182,6 @@ namespace IFramework.AB
         public static string GetAssetName(string assetPath) { return Instance.manifestXML.GetAssetName(assetPath); }
         private ManifestXML manifestXML;
         public static ABBundles Bundles { get; private set; }
-        protected override void OnSingletonInit()
-        {
-            manifestXML = new ManifestXML();
-            Bundles = new ABBundles();
-        }
 
         private string InitPath
         {
@@ -236,7 +230,7 @@ namespace IFramework.AB
         public static void InitAsync(Action onComplete)
         {
 
-            Instance.StartCoroutine(Bundles.InitAsync(Instance.InitPath, bundle =>
+            Game.instance.StartCoroutine(Bundles.InitAsync(Instance.InitPath, bundle =>
             {
                 if (bundle == null)
                 {
@@ -306,9 +300,18 @@ namespace IFramework.AB
             return asset;
         }
 
-        private List<Asset> assets = new List<Asset>();
-        IEnumerator gc = null;
+        
+        private ABAssets(){}
+        protected override void OnSingletonInit()
+        {
+            manifestXML = new ManifestXML();
+            Bundles = new ABBundles();
+            Framework.BindEnvUpdate(Update, EnvironmentType.Ev1);
+            Framework.BindEnvDispose(Dispose, EnvironmentType.Ev1);
+        }
 
+        private List<Asset> assets = new List<Asset>();
+        private IEnumerator gc;
         IEnumerator GC()
         {
             System.GC.Collect();
@@ -335,10 +338,10 @@ namespace IFramework.AB
             {
                 if (gc != null)
                 {
-                    StopCoroutine(gc);
+                    Game.instance. StopCoroutine(gc);
                 }
                 gc = GC();
-                StartCoroutine(gc);
+                Game.instance.StartCoroutine(gc);
             }
 
             Bundles.ClearUnUseBundles();

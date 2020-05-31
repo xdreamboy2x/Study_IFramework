@@ -151,19 +151,19 @@
             框架提供的模块
             </summary>
         </member>
-        <member name="T:IFramework.Modules.FrameworkAppModule">
+        <member name="T:IFramework.Modules.FrameworkGameModule">
             <summary>
-            一个app的总管理，需要自己写
+            一个Game的总管理，需要自己写
             </summary>
         </member>
-        <member name="P:IFramework.Modules.FrameworkAppModule.appVersion">
+        <member name="P:IFramework.Modules.FrameworkGameModule.GameVersion">
             <summary>
-            app 版本
+            Game 版本
             </summary>
         </member>
-        <member name="P:IFramework.Modules.FrameworkAppModule.appName">
+        <member name="P:IFramework.Modules.FrameworkGameModule.GameName">
             <summary>
-            app名称
+            Game名称
             </summary>
         </member>
         <member name="T:IFramework.Modules.Coroutine.Coroutine">
@@ -2688,7 +2688,7 @@
             父节点，用于返回路径
             </summary>
         </member>
-        <member name="P:IFramework.Utility.Astar.AStarNode2X.mapPos">
+        <member name="P:IFramework.Utility.Astar.AStarNode2X.mGameos">
             <summary>
             
             </summary>
@@ -2697,7 +2697,7 @@
             <summary>
             ctor
             </summary>
-            <param name="mapPos"></param>
+            <param name="mGameos"></param>
             <param name="nodeType"></param>
         </member>
         <member name="M:IFramework.Utility.Astar.AStarNode2X.SetDefaultParent(IFramework.Utility.Astar.IAStarNode)">
@@ -2735,7 +2735,7 @@
             父节点，用于返回路径
             </summary>
         </member>
-        <member name="P:IFramework.Utility.Astar.AStarNode3X.mapPos">
+        <member name="P:IFramework.Utility.Astar.AStarNode3X.mGameos">
             <summary>
             
             </summary>
@@ -4138,7 +4138,7 @@
             <param name="self"></param>
             <returns></returns>
         </member>
-        <member name="M:IFramework.StringExtension.AppendHead(System.String,System.String)">
+        <member name="M:IFramework.StringExtension.GameendHead(System.String,System.String)">
             <summary>
             在字符串前拼接字符串
             </summary>
@@ -4151,7 +4151,7 @@
             拼接字符串
             </summary>
             <param name="self"></param>
-            <param name="toAppend"></param>
+            <param name="toGameend"></param>
             <returns></returns>
         </member>
         <member name="M:IFramework.StringExtension.Append(System.String,System.String[])">
@@ -4159,7 +4159,7 @@
             拼接字符串
             </summary>
             <param name="self"></param>
-            <param name="toAppend"></param>
+            <param name="toGameend"></param>
             <returns></returns>
         </member>
         <member name="M:IFramework.StringExtension.AddSpacedBetwwenWord(System.String)">

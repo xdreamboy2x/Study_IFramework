@@ -3,7 +3,7 @@
  * Copyright (C) 2016 THL A29 Limited, a Tencent company. All rights reserved.
  * Licensed under the MIT License (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  * http://opensource.org/licenses/MIT
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ * Unless required by Gamelicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 */
 
 #if !XLUA_GENERAL
@@ -99,7 +99,7 @@ namespace CSObjectWrapEditor
         public XLuaTemplate LuaEnumWrap;
         public XLuaTemplate LuaInterfaceBridge;
         public XLuaTemplate LuaRegister;
-        public XLuaTemplate LuaWrapPusher;
+        public XLuaTemplate LuaWrGameusher;
         public XLuaTemplate PackUnpack;
         public XLuaTemplate TemplateCommon;
     }
@@ -136,7 +136,7 @@ namespace CSObjectWrapEditor
 #else
                 LuaRegister = { name = template_ref.LuaRegister.name, text = template_ref.LuaRegister.text },
 #endif
-                LuaWrapPusher = { name = template_ref.LuaWrapPusher.name, text = template_ref.LuaWrapPusher.text },
+                LuaWrGameusher = { name = template_ref.LuaWrGameusher.name, text = template_ref.LuaWrGameusher.text },
                 PackUnpack = { name = template_ref.PackUnpack.name, text = template_ref.PackUnpack.text },
                 TemplateCommon = { name = template_ref.TemplateCommon.name, text = template_ref.TemplateCommon.text },
             };
@@ -958,9 +958,9 @@ namespace CSObjectWrapEditor
             textWriter.Close();
         }
 
-        static void GenWrapPusher(IEnumerable<Type> types, string save_path)
+        static void GenWrGameusher(IEnumerable<Type> types, string save_path)
         {
-            string filePath = save_path + "WrapPusher.cs";
+            string filePath = save_path + "WrGameusher.cs";
             StreamWriter textWriter = new StreamWriter(filePath, false, Encoding.UTF8);
             var emptyMap = new Dictionary<Type, Type>();
             GenOne(typeof(ObjectTranslator), (type, type_info) =>
@@ -976,7 +976,7 @@ namespace CSObjectWrapEditor
                 type_info.Set("tableoptimzetypes", types.Where(t => !t.IsEnum && SizeOf(t) == -1)
                      .Select(t => new { Type = t, Fields = t.GetFields(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly) })
                      .ToList());
-            }, templateRef.LuaWrapPusher, textWriter);
+            }, templateRef.LuaWrGameusher, textWriter);
             textWriter.Close();
         }
 
@@ -1585,7 +1585,7 @@ namespace CSObjectWrapEditor
             templateCache.Clear();
             Directory.CreateDirectory(save_path);
             GenWrap(wraps, save_path);
-            GenWrapPusher(gc_optimze_list.Concat(wraps.Where(type=>type.IsEnum)).Distinct(), save_path);
+            GenWrGameusher(gc_optimze_list.Concat(wraps.Where(type=>type.IsEnum)).Distinct(), save_path);
             GenPackUnpack(gc_optimze_list.Where(type => !type.IsPrimitive && SizeOf(type) != -1), save_path);
             GenInterfaceBridge(itf_bridges, save_path);
         }

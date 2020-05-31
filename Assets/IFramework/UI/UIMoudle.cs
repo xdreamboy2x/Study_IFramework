@@ -22,66 +22,6 @@ namespace IFramework.UI
         void Subscribe(UIPanel panel);
         void UnSubscribe(UIPanel panel);
     }
-    public class Groups_lua : IGroups
-    {
-        public event Action onDispose;
-        public event Func<string,UIPanel> onFindPanel;
-        public event Func<string, bool> onHaveLoad;
-        public event Action<UIEventArgs> onInvokeListeners;
-        public event Action<UIPanel> onSubscibe;
-        public event Action<UIPanel> onUnSubscibe;
-
-        public void Dispose()
-        {
-
-            if (onDispose!=null)
-            {
-                onDispose();
-            }
-            onDispose = null;
-            onFindPanel = null;
-            onHaveLoad = null;
-            onSubscibe = null;
-            onUnSubscibe = null;
-            onInvokeListeners = null;
-        }
-
-        public UIPanel FindPanel(string name)
-        {
-            if (onFindPanel!=null)
-            {
-                return onFindPanel(name);
-            }
-            return null;
-        }
-
-      
-
-        public void InvokeUIModuleEventListenner(UIEventArgs arg)
-        {
-            if (onInvokeListeners != null)
-            {
-                onInvokeListeners(arg);
-            }
-        }
-
-        public void Subscribe(UIPanel panel)
-        {
-          
-            if (onSubscibe != null)
-            {
-                onSubscibe(panel);
-            }
-        }
-
-        public void UnSubscribe(UIPanel panel)
-        {
-            if (onUnSubscibe != null)
-            {
-                onUnSubscibe(panel);
-            }
-        }
-    }
     public class Groups:IGroups
     {
         private MVVMModule _moudule;
@@ -284,7 +224,6 @@ namespace IFramework.UI
         protected override void OnDispose()
         {
 
-
             UIStack.Clear();
             UICache.Clear();
             loaders.Clear();
@@ -305,13 +244,9 @@ namespace IFramework.UI
         public void SetGroups(IGroups groups)
         {
             this._groups = groups;
-            Debug.Log(_groups);
-
+            Debug.Log(groups);
         }
-        //public void SetMap(Dictionary<Type, Tuple<Type, Type, Type>> map)
-        //{
-        //    _groups = new Groups(map);
-        //}
+
 
         public UIPanel Load(Type type, string path, UIPanelLayer layer, string name)
         {

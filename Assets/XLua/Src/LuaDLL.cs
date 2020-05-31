@@ -3,7 +3,7 @@
  * Copyright (C) 2016 THL A29 Limited, a Tencent company. All rights reserved.
  * Licensed under the MIT License (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  * http://opensource.org/licenses/MIT
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ * Unless required by Gamelicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 */
 
 namespace XLua.LuaDLL
@@ -20,13 +20,13 @@ namespace XLua.LuaDLL
 
 #if GEN_CODE_MINIMIZE
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate int CSharpWrapperCaller(IntPtr L, int funcidx, int top);
+    public delegate int CSharpWrGameerCaller(IntPtr L, int funcidx, int top);
 #endif
 #else
     public delegate int lua_CSFunction(IntPtr L);
 
 #if GEN_CODE_MINIMIZE
-    public delegate int CSharpWrapperCaller(IntPtr L, int funcidx, int top);
+    public delegate int CSharpWrGameerCaller(IntPtr L, int funcidx, int top);
 #endif
 #endif
 
@@ -582,17 +582,17 @@ namespace XLua.LuaDLL
 
 #if GEN_CODE_MINIMIZE
         [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
-        public static extern void xlua_set_csharp_wrapper_caller(IntPtr wrapper);
+        public static extern void xlua_set_csharp_wrGameer_caller(IntPtr wrGameer);
 
         [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
-        public static extern void xlua_push_csharp_wrapper(IntPtr L, int wrapperID);
+        public static extern void xlua_push_csharp_wrGameer(IntPtr L, int wrGameerID);
 
-        public static void xlua_set_csharp_wrapper_caller(CSharpWrapperCaller wrapper_caller)
+        public static void xlua_set_csharp_wrGameer_caller(CSharpWrGameerCaller wrGameer_caller)
         {
 #if XLUA_GENERAL || (UNITY_WSA && !UNITY_EDITOR)
-            GCHandle.Alloc(wrapper);
+            GCHandle.Alloc(wrGameer);
 #endif
-            xlua_set_csharp_wrapper_caller(Marshal.GetFunctionPointerForDelegate(wrapper_caller));
+            xlua_set_csharp_wrGameer_caller(Marshal.GetFunctionPointerForDelegate(wrGameer_caller));
         }
 #endif
     }

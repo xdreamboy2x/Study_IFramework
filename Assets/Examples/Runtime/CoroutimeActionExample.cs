@@ -14,15 +14,15 @@ using UnityEngine;
 
 namespace IFramework_Demo
 {
-    [RequireComponent(typeof(APP))]
+    [RequireComponent(typeof(Game))]
 
     public class CoroutimeActionExample: MonoBehaviour
     {
         private void Start()
         {
-            APP.env.modules.Coroutine = APP.env.modules.CreateModule<CoroutineModule>();
+            Game.env.modules.Coroutine = Game.env.modules.CreateModule<CoroutineModule>();
 
-           this.Sequence( APP.envType)
+           this.Sequence( Game.envType)
                 .Repeat((r) => {
                     r.Sequence((s) =>
                     {

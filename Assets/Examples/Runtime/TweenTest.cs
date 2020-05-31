@@ -18,7 +18,7 @@ using UnityEngine.UI;
 
 namespace IFramework_Demo
 {
-    [RequireComponent(typeof(APP))]
+    [RequireComponent(typeof(Game))]
 	public class TweenTest : MonoBehaviour
 	{
         FloatTweenValue tv;
