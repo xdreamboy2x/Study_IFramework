@@ -4,11 +4,11 @@ function luaGroups:ctor()
 	self.onDispose=function ()
 		self:OnDispose()
 	end
-	self.onSubscibe=function ( panel )
-		self:OnSubscibe(panel)
+	self.onSubscribe=function ( panel )
+		self:OnSubscribe(panel)
 	end
-	self.onUnSubscibe=function( panel )
-		self:OnUnSubscibe(panel)
+	self.onUnSubscribe=function( panel )
+		self:OnUnSubscribe(panel)
 	end
 	self.onFindPanel=function ( name )
 		return self:OnFindPanel(name)
@@ -29,8 +29,8 @@ function luaGroups:SetMap(map)
 	end
 	self.CS_instance=IFramework.Lua.luaGroups()
 	self.CS_instance:onDispose("+",self.onDispose)
-	self.CS_instance:onSubscibe("+",self.onSubscibe)
-	self.CS_instance:onUnSubscibe("+",self.onUnSubscibe)
+	self.CS_instance:onSubscribe("+",self.onSubscribe)
+	self.CS_instance:onUnSubscribe("+",self.onUnSubscribe)
 	self.CS_instance:onFindPanel("+",self.onFindPanel)
 	self.CS_instance:onInvokeListeners("+",self.onInvokeListeners)
 
@@ -48,8 +48,8 @@ function luaGroups:OnDispose()
 	end
 
 	self.CS_instance:onDispose("-",self.onDispose)
-	self.CS_instance:onSubscibe("-",self.onSubscibe)
-	self.CS_instance:onUnSubscibe("-",self.onUnSubscibe)
+	self.CS_instance:onSubscribe("-",self.onSubscribe)
+	self.CS_instance:onUnSubscribe("-",self.onUnSubscribe)
 	self.CS_instance:onFindPanel("-",self.onFindPanel)
 	self.CS_instance:onInvokeListeners("-",self.onInvokeListeners)
 	self.groups=nil
@@ -57,7 +57,7 @@ function luaGroups:OnDispose()
 	self.map=nil
 end
 
-function luaGroups:OnSubscibe(panel)
+function luaGroups:OnSubscribe(panel)
 	local vvmType = rawget(self.map,panel.name)
 	if(vvmType==nil) then
 		error("not find vvm type with name : "..panel.name)
@@ -75,7 +75,8 @@ function luaGroups:OnSubscibe(panel)
 	rawset(self.groups,panel.name,vvmGroup)
 	view:OnLoad()
 end
-function luaGroups:OnUnSubscibe(panel)
+function luaGroups:OnUnSubscribe(panel)
+
 	local group= rawget(self.groups ,panel.name)
 	if group ~=nil then
 		group.view:OnClear()
@@ -92,6 +93,7 @@ function luaGroups:OnFindPanel(name)
 	return nil
 end
 function luaGroups:OnInvokeListeners(arg)
+
 	if arg.pressPanel ~=nil then
 		self.FindGroup(arg.pressPanel.name).view:OnPress(arg)
 	end

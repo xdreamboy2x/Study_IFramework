@@ -19,8 +19,8 @@ namespace IFramework.Lua
         public event Func<string,UIPanel> onFindPanel;
         public event Func<string, bool> onHaveLoad;
         public event Action<UIEventArgs> onInvokeListeners;
-        public event Action<UIPanel> onSubscibe;
-        public event Action<UIPanel> onUnSubscibe;
+        public event Action<UIPanel> onSubscribe;
+        public event Action<UIPanel> onUnSubscribe;
 
         public void Dispose()
         {
@@ -31,8 +31,8 @@ namespace IFramework.Lua
             onDispose = null;
             onFindPanel = null;
             onHaveLoad = null;
-            onSubscibe = null;
-            onUnSubscibe = null;
+            onSubscribe = null;
+            onUnSubscribe = null;
             onInvokeListeners = null;
         }
 
@@ -58,17 +58,17 @@ namespace IFramework.Lua
         public void Subscribe(UIPanel panel)
         {
           
-            if (onSubscibe != null)
+            if (onSubscribe != null)
             {
-                onSubscibe(panel);
+                onSubscribe(panel);
             }
         }
 
         public void UnSubscribe(UIPanel panel)
         {
-            if (onUnSubscibe != null)
+            if (onUnSubscribe != null)
             {
-                onUnSubscibe(panel);
+                onUnSubscribe(panel);
             }
         }
     }

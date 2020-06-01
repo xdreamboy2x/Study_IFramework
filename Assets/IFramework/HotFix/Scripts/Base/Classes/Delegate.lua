@@ -1,16 +1,16 @@
-local Delgate = Class("Delgate")
+local Delegate = Class("Delgate")
 
-function Delgate:ctor() 
+function Delegate:ctor() 
     self._callList={}
 end
 
 
-function Delgate:Subscribe( object,method )
+function Delegate:Subscribe( object,method )
     local _key = {obj=object,func=method}
     local _call = Util.Handler(object,method)
     rawset(self._callList,_key,_call)
 end
-function Delgate:UnSubscribe( object,method )
+function Delegate:UnSubscribe( object,method )
     local _key 
     for k,v in pairs(self._callList) do
         if (k.obj==object and k.func==method) then
@@ -23,13 +23,13 @@ function Delgate:UnSubscribe( object,method )
     end
 end
 
-function Delgate:Invoke( ... )
+function Delegate:Invoke( ... )
     for k,v in pairs(self._callList) do
         v(...)
     end
 end
 
-function Delgate:Dispose()
+function Delegate:Dispose()
     TableUtil.ClearTable(self._callList)
 end
 

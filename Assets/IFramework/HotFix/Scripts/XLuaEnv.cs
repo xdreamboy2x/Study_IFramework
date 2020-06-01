@@ -120,10 +120,10 @@ namespace IFramework.Lua
             {
                 table.Dispose();
             });
-            DoString(@"
-                    local util = require 'xlua.util'
-                   -- util.print_func_ref_by_csharp()
-            ");
+            // DoString(@"
+            //         local util = require 'xlua.util'
+            //        -- util.print_func_ref_by_csharp()
+            // ");
             _luaenv.Dispose();
             _luaenv = null;
             disposed = true;

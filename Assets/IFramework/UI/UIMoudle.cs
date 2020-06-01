@@ -12,6 +12,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using IFramework.Modules;
 using IFramework.Modules.MVVM;
+using XLua;
 
 namespace IFramework.UI
 {
@@ -208,6 +209,7 @@ namespace IFramework.UI
             return UICache.Peek();
         }
     }
+    public delegate UIPanel LoadDel(Type type, string path, string name, UIPanelLayer layer);
     public partial class UIModule : FrameworkModule
     {
 
@@ -234,7 +236,7 @@ namespace IFramework.UI
                 GameObject.Destroy(Canvas.gameObject);
         }
 
-        public delegate UIPanel LoadDel(Type type, string path, string name, UIPanelLayer layer);
+   
 
         public void AddLoader(LoadDel loader)
         {

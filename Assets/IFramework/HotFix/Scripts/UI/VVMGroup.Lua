@@ -8,8 +8,9 @@ function VVMGroup:ctor( panel,view,viewModel ,message )
     self.viewModel:Initialize()
 end
 function VVMGroup:Dispose()
+    self.message:Dispose()
+
     self.viewModel:Dispose()
     self.view:Dispose()
-    self.message:Dispose()
 end
 return VVMGroup
