@@ -1,5 +1,5 @@
 
-TableUtil={}
+local TableUtil={}
 
 
 -- 深拷贝一个table

@@ -1,5 +1,5 @@
 
-IOUtil={}
+local IOUtil={}
 
 -- 检查指定的文件或目录是否存在，如果存在返回 true，否则返回 false
 function IOUtil.Exists(path)

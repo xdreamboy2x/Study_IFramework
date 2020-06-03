@@ -1,6 +1,8 @@
 local ObservableObject = Class("ObservableObject")
 
 
+---ctor 
+---@param t 字段们
 function ObservableObject:ctor( t )
 	self.__actions={}
 	local meta = setmetatable({__index=function ( table,key,value )
@@ -31,6 +33,8 @@ function ObservableObject:ctor( t )
 	end
 end
 
+---Invoke 触发事件
+---@param key 字段
 function ObservableObject:Invoke( key )
 	if not self.__actions then
 		return
@@ -47,6 +51,9 @@ end
 
 
 
+---Subscribe 注册监听
+---@param key 字段
+---@param func 监听方法
 function ObservableObject:Subscribe( key,func )
 
 	if key and func then
@@ -54,6 +61,9 @@ function ObservableObject:Subscribe( key,func )
 		func()
 	end
 end
+---Subscribe 移除监听
+---@param key 字段
+---@param func 监听方法
 function ObservableObject:UnSubscribe(key,func)
 	if not self.__actions then
 		return
@@ -67,6 +77,7 @@ function ObservableObject:UnSubscribe(key,func)
 	end
 end
 
+---Dispose 释放
 function ObservableObject:Dispose()
 	
 end

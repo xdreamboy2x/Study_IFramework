@@ -21,7 +21,7 @@ namespace IFramework_Demo
         UIModule module;
         private void Start()
         {
-            module = Framework.env1.modules.CreateModule<UIModule>();
+            module = Framework.env1.modules.FindModule<UIModule>();
             module.AddLoader(Load);
             //module.SetGroups(new Groups(UIMap_MVVM.map));
         }

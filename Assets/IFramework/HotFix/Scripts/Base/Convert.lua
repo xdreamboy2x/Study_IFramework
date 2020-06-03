@@ -1,4 +1,4 @@
-Convert={}
+local Convert={}
 function Convert.ToNumber(value, base)
     local val = MathUtil.tonumber(value, base)
     if val==nil then

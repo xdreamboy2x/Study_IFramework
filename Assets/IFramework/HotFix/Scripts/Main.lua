@@ -44,50 +44,63 @@ local function Using( classname ,variant)
 end
 
 
-local function Log(fmt,...)
-	local info = debug.getinfo(2,"S")
-    local source=info.source
-	info = debug.getinfo(2,"l")
-	print(string.format(fmt,...),"\nLine: "..info.currentline.."\n at  "..source)
-end
-local function LogError(fmt,...)
-	local info = debug.getinfo(2,"S")
-	local source=info.source
-	info = debug.getinfo(2,"l")
-	error(string.format(fmt,...).."\nLine: "..info.currentline.."\n at  "..source)
-end
-
 
 Using("UnityEngine")
 Using("IFramework")
 Using("IFramework.Game")
 
+local updateEvent
+local function BindToUpdate(object,method)
+	updateEvent:Subscribe(object,method)
+end
+local function UnBindToUpdate(object,method)
+	updateEvent:UnSubscribe(object,method)
+end
+local disposeEvent
+local function BindToDispose(object,method)
+	disposeEvent:Subscribe(object,method)
+end
+local function UnBindToDispose(object,method)
+	disposeEvent:UnSubscribe(object,method)
+end
+
 
 function Awake()
+
+	Define("Log",require("Base.Log"))
+	Define("Class",require ("Base.Class"))
+
+	Lock_G()
+
 	Define("Using",Using)
 	Define("IsDefine",IsDefine)
 	Define("Define",Define)
-	Define("Log",Log)
-	Define("LogError",LogError)
+	Define("BindToUpdate",BindToUpdate)
+	Define("UnBindToUpdate",UnBindToUpdate)
+	Define("BindToDispose",BindToDispose)
+	Define("UnBindToDispose",UnBindToDispose)
+	
 	
 	Define("MathUtil",require("Base.MathUtil"))
-
 	Define("TableUtil",require("Base.TableUtil"))
 	Define("Convert",require("Base.Convert"))
 	Define("IOUtil",require("Base.IOUtil"))
 	Define("StringUtil",require("Base.StringUtil"))
 	Define("Util",require("Base.Util"))
 	
-	Define("Class",require ("Base.Class"))
 	Define("Delegate",require("Base.Classes.Delegate"))
 	Define("ObservableValue",require("Base.Classes.ObservableValue"))
 	Define("ObservableObject",require("Base.Classes.ObservableObject"))
 	
-	Lock_G()
+
+
+	updateEvent=Delegate()
+	disposeEvent=Delegate()
+	
 	IFramework.Framework.BindEnvUpdate(Update,Game.env)
 	require("Custom.FixCsharp")
 	require("Custom.GameLogic")
-
+	
 end
 
 
@@ -96,13 +109,13 @@ end
 
 function Update()
 
-	Log("Update")
-
+	Log.L("Update")
+	updateEvent:Invoke()
 end
 
 function OnDispose()
-	Log("OnDispose")
+	Log.L("OnDispose")
+	disposeEvent:Invoke()
 	IFramework.Framework.UnBindEnvUpdate(Update,Game.env)
-
 end
 

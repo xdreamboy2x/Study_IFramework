@@ -10,15 +10,24 @@
 using System;
 using IFramework.AB;
 using IFramework.Lua;
+using IFramework.Modules;
+using IFramework.Modules.Coroutine;
+using IFramework.Modules.Message;
+using IFramework.UI;
 using UnityEngine;
 namespace IFramework
 {
 	public partial class Game
 	{
+		public class UnityModules
+		{
+			public UIModule UI;
+		}
 		public const EnvironmentType envType = EnvironmentType.Ev1;
 		public static FrameworkEnvironment env{ get { return Framework.GetEnv(envType); } }
 		public static Game instance { get; private set; }
 		public static FrameworkModules modules { get { return env.modules; } }
+		public static UnityModules unityModules=new UnityModules();
 	}
 	public partial class Game:MonoBehaviour
 	{
@@ -26,9 +35,11 @@ namespace IFramework
 		{
 			instance = this;
 			Framework.InitEnv("Game_RT", envType).InitWithAttribute();
-			InitFrameworkModules();
 			InitGame();
 		}
+
+		
+
 		private void Update()
 		{
 			Framework.env1.Update();
@@ -43,25 +54,34 @@ namespace IFramework
 
 	public partial class Game
 	{
+
 		private void InitFrameworkModules()
 		{
-			
+			modules.Coroutine = modules.CreateModule<CoroutineModule>();
+			modules.Loom = modules.CreateModule<LoomModule>();
+			modules.Message = modules.CreateModule<MessageModule>();
+			unityModules.UI = modules.CreateModule<UIModule>();
 		}
 
 		private void InitGame()
 		{
-			InitHotFix();
-		}
-		public  static string genPath
-		{
-			get { return Application.dataPath.CombinePath("IFramework/HotFix/Scripts").ToRegularPath(); }
-		}
-		private void InitHotFix()
-		{
+			InitFrameworkModules();
+
+			CheckUpdate();
+			
 			ABAssets.Init();
-			var _asset=	 ABAssets.Load<TextAsset>(Application.dataPath.CombinePath("IFramework/HotFix/Scripts/Main.Lua")
-				.ToRegularPath().ToAssetsPath());
-			XluaMain _main=new XluaMain(_asset.asset as TextAsset);
+			
+			StartUpLua();
+		}
+
+		private void CheckUpdate()
+		{
+			
+		}
+		
+		private void StartUpLua()
+		{
+			new XluaMain();
 		}
 	}
 }

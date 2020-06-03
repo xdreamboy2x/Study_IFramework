@@ -278,15 +278,7 @@ function iskindof(obj, classname)
     return false
 end
 
---[[--
-输出格式化字符串
-printf("The value = %d", 100)
-@param #string format 输出格式
-@param #object ... 更多参数
-]]
-function printf(format, ...)
-    print(string.format(tostring(format), ...))
-end
+
 
 setmetatable(public, { __call = function(_, ...) return public.class(...) end })
 return public

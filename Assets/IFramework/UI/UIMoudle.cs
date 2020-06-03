@@ -246,7 +246,6 @@ namespace IFramework.UI
         public void SetGroups(IGroups groups)
         {
             this._groups = groups;
-            Debug.Log(groups);
         }
 
 

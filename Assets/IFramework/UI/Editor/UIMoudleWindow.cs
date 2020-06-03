@@ -23,11 +23,13 @@ namespace IFramework.UI
         [SerializeField] ViewType viewType;
         [SerializeField] private RunTimeView runTimeView;
         [SerializeField] private MVVM_GenCodeView   mVVM_GenCodeView;
+        [SerializeField] private MVVM_GenCodeView_Lua mVVM_GenCodeView_Lua;
+
 
         static string genpath;
         private enum ViewType
         {
-            MVVM_GenCode, Runtime,
+            MVVM_GenCode_CS, MVVM_GenCode_Lua,Runtime,
         }
         private class Styles
         {
@@ -1034,11 +1036,379 @@ namespace IFramework.UI
                 AssetDatabase.Refresh();
             }
         }
+        [Serializable]
+        private class MVVM_GenCodeView_Lua : ILayoutGUIDrawer
+        {
+            private static string hotFixScriptPath{ get { return EditorEnv.FrameworkPath.CombinePath("HotFix/Scripts"); } }
+            private string UIMapDir { get { return hotFixScriptPath.CombinePath("Custom/UI"); } }
+            [SerializeField] string UIMapName = "UIMap_MVVM";
+            [SerializeField] private string PanelGenDir;
+            string uimapPath { get { return UIMapDir.CombinePath(UIMapName).Append(".lua"); } }
+
+            private List<string> panelTypes;
+            private string panelType;
+
+
+            string ViewName { get {
+                    var items =  panelType.Split('.');
+                    return items.Last().Append("View"); } }
+            string VMName { get {
+                    var items = panelType.Split('.');
+                    return items.Last().Append("ViewModel"); } }
+
+
+           
+
+            private int hashID;
+            private bool DropdownButton(int id, Rect position, GUIContent content)
+            {
+                Event e = Event.current;
+                switch (e.type)
+                {
+                    case EventType.MouseDown:
+                        if (position.Contains(e.mousePosition) && e.button == 0)
+                        {
+                            Event.current.Use();
+                            return true;
+                        }
+                        break;
+                    case EventType.KeyDown:
+                        if (GUIUtility.keyboardControl == id && e.character == '\n')
+                        {
+                            Event.current.Use();
+                            return true;
+                        }
+                        break;
+                    case EventType.Repaint:
+                        Styles.BoldLabel.Draw(position, content, id, false);
+                        break;
+                }
+                return false;
+            }
+            public void OnGUI()
+            {
+
+                this.Space(5)
+                    .DrawHorizontal(() => {
+                        this.Label("Check UIMap Script Name", Styles.toolbar);
+                        this.TextField(ref UIMapName);
+                    });
+                this.DrawHorizontal(() =>
+                {
+                    this.Label("UIMap Gen Directory", Styles.toolbar);
+                    this.Label(UIMapDir);
+                })
+                .Space(30);
+                if (hashID == 0) hashID = "MVVM_GenCodeView_Lua".GetHashCode();
+                this.DrawHorizontal(() =>
+                {
+                    this.Label("Click Choose Panel Type", Styles.toolbar);
+                    GUILayout.Label("");
+                    Rect pos = GUILayoutUtility.GetLastRect();
+
+                    int ctrlId = GUIUtility.GetControlID(hashID, FocusType.Keyboard, pos);
+                    {
+                        if (DropdownButton(ctrlId, pos, new GUIContent(string.Format("PanelType: {0}", panelType))))
+                        {
+                            if (panelTypes == null)
+                            {
+                                EditorWindow.focusedWindow.ShowNotification(new GUIContent("Fresh Panel Types"));
+                                return;
+                            }
+                            int index = -1;
+                            for (int i = 0; i < panelTypes.Count; i++)
+                            {
+                                if (panelTypes[i] == panelType)
+                                {
+                                    index = i; break;
+                                }
+                            }
+                            SearchablePopup.Show(pos, panelTypes.ToArray(), index, (i, str) =>
+                            {
+                                panelType = str;
+                                EditorWindow.focusedWindow.Repaint();
+                            });
+                        }
+                    }
+                })
+                    .Space(10)
+                    .DrawHorizontal(() =>
+                    {
+                        this.Label("Drag Panel Gen Directory", Styles.toolbar);
+                        this.Label(PanelGenDir);
+                        Rect rect = GUILayoutUtility.GetLastRect();
+                        if (string.IsNullOrEmpty(PanelGenDir))
+                            rect.DrawOutLine(10, Color.red);
+                        else
+                            rect.DrawOutLine(2, Color.black);
+                        if (rect.Contains(Event.current.mousePosition))
+                        {
+                            var drag = DragAndDropUtil.Drag(Event.current, rect);
+                            if (drag.Finsh && drag.EnterArera && drag.paths.Length == 1)
+                            {
+                                string path = drag.paths[0];
+                                if (path.Contains("Assets"))
+                                {
+                                    if (path.IsDirectory())
+                                        PanelGenDir = path;
+                                    else
+                                        PanelGenDir = path.GetDirPath();
+                                    if (!PanelGenDir.Contains(UIMapDir))
+                                        PanelGenDir = string.Empty;
+                                }
+
+                            }
+                        }
+
+                    })
+                    .Space(10)
+                    .DrawHorizontal(() =>
+                    {
+                        this
+                        .Button(() =>
+                        {
+                            if (File.Exists(uimapPath))
+                            {
+                                EditorWindow.focusedWindow.ShowNotification(new GUIContent("UI Map Have Exist "));
+                                return;
+                            }
+                            CreateUIMap(uimapPath);
+                            AssetDatabase.Refresh();
+
+                        }, "Create UIMap")
+                        .Button(() =>
+                        {
+                            panelTypes = typeof(UIPanel).GetSubTypesInAssemblys().Select((type) =>
+                            {
+                                return type.FullName;
+                            }).ToList();
+
+                        }, "Fresh Panel  Types")
+                        .Space(20)
+                        .Button(() =>
+                        {
+                            if (!File.Exists(uimapPath))
+                            {
+                                EditorWindow.focusedWindow.ShowNotification(new GUIContent("Create UI Map"));
+                                return;
+                            }
+                            if (string.IsNullOrEmpty(panelType))
+                            {
+                                EditorWindow.focusedWindow.ShowNotification(new GUIContent("Choose UI Panel Type "));
+                                return;
+                            }
+                            if (string.IsNullOrEmpty(PanelGenDir))
+                            {
+                                EditorWindow.focusedWindow.ShowNotification(new GUIContent("Set UI Panel Gen Dir "));
+                                return;
+                            }
+
+//                            string paneltype = panelType.Split('.').Last();
+
+                          
+                           CreateView(PanelGenDir.CombinePath(ViewName).Append(".lua"));
+                            CreateVM(PanelGenDir.CombinePath(VMName).Append(".lua"));
+                            WriteMap(uimapPath, panelType.AppendHead("CS."));
+                            AssetDatabase.Refresh();
+                        }, "Gen");
+                    });
+
+            }
+            private void WriteMap(string Path,string pannelName)
+            {
+                var txt = File.ReadAllText(Path);
+                string flag = "--ToDo";
+
+                string sub = PanelGenDir.Replace(hotFixScriptPath, "").Replace("/",".");
+                if (sub[0]=='.' )
+                {
+                    sub = sub.Remove(0, 1);
+                }
+
+
+
+                string tmp = string.Format("{0} PanelType= typeof({2}),ViewType =require(\"{3}\"), VMType=require(\"{4}\"){1}", "{", "}", pannelName, sub.Append("."+ViewName), sub.Append("." + VMName));
+                tmp = tmp.Append(",\n").AppendHead("\t").Append(flag);
+                txt = txt.Replace(flag, tmp);
+                File.WriteAllText(Path, txt, System.Text.Encoding.UTF8);
+            }
+
+
+
+            private void CreateVM(string path)
+            {
+                if (File.Exists(path)) return;
+                using (FileStream fs = new FileStream(path, FileMode.Create, FileAccess.Write))
+                {
+                    using (StreamWriter sw = new StreamWriter(fs))
+                    {
+                        fs.Lock(0, fs.Length);
+                        sw.WriteLine("--*********************************************************************************");
+                        sw.WriteLine(" --Author:         " + ProjectConfig.NameSpace);
+                        sw.WriteLine(" --Version:        " + ProjectConfig.Version);
+                        sw.WriteLine(" --UnityVersion:   " + Application.unityVersion);
+                        sw.WriteLine(" --Date:           " + DateTime.Now.ToString("yyyy-MM-dd"));
+                        sw.WriteLine(" --Description:    " + ProjectConfig.Description);
+                        sw.WriteLine(" --History:        " + DateTime.Now.ToString("yyyy-MM-dd") + "--");
+                        sw.WriteLine("--*********************************************************************************/");
+
+                        sw.WriteLine("--super Fields ");
+                        sw.WriteLine("--super Function ");
+                        sw.WriteLine("----self:Subscribe( key,func )");
+                        sw.WriteLine("----self:UnSubscribe(key,func)");
+                        sw.WriteLine("----self:Invoke( key )\n\n");
+
+
+                        sw.WriteLine("");
+                        sw.WriteLine("local "+ VMName+ "=Class(\""+ VMName + "\",require(\"UI.ViewModel\"))\n");
+
+                        sw.WriteLine("--return "+ VMName+"'s Fields By table");
+                        sw.WriteLine("--Example return { myCount = 666 }");
+                        sw.WriteLine("function " + VMName + ":GetFieldTable()");
+                        sw.WriteLine("");
+                        sw.WriteLine("end\n");
+
+                        sw.WriteLine("function " + VMName + ":OnDispose()");
+                        sw.WriteLine("");
+                        sw.WriteLine("end\n");
+
+                        sw.WriteLine("function " + VMName + ":OnInitialize()");
+                        sw.WriteLine("");
+                        sw.WriteLine("end\n");
+
+
+                        sw.WriteLine("--View's  Event ");
+                        sw.WriteLine("function " + VMName + ":ListenViewEvent( code,... )");
+                        sw.WriteLine("");
+                        sw.WriteLine("end\n");
+
+
+                        sw.WriteLine("return "+ VMName);
+
+
+
+
+                        fs.Unlock(0, fs.Length);
+                        sw.Flush();
+                        fs.Flush();
+                    }
+                }
+                AssetDatabase.Refresh();
+            }
+
+            private void CreateView(string genSourcePath)
+            {
+                if (File.Exists(genSourcePath)) return;
+                using (FileStream fs = new FileStream(genSourcePath, FileMode.Create, FileAccess.Write))
+                {
+                    using (StreamWriter sw = new StreamWriter(fs))
+                    {
+                        fs.Lock(0, fs.Length);
+                        sw.WriteLine("--*********************************************************************************");
+                        sw.WriteLine(" --Author:         " + ProjectConfig.NameSpace);
+                        sw.WriteLine(" --Version:        " + ProjectConfig.Version);
+                        sw.WriteLine(" --UnityVersion:   " + Application.unityVersion);
+                        sw.WriteLine(" --Date:           " + DateTime.Now.ToString("yyyy-MM-dd"));
+                        sw.WriteLine(" --Description:    " + ProjectConfig.Description);
+                        sw.WriteLine(" --History:        " + DateTime.Now.ToString("yyyy-MM-dd") + "--");
+                        sw.WriteLine("--*********************************************************************************/");
+                        sw.WriteLine("");
+
+                        sw.WriteLine("--super Fields ");
+                        sw.WriteLine("----self.message : publish Event");
+                        sw.WriteLine("----self.context : ViewModel");
+                        sw.WriteLine("----self.panel :  UIpanel From C#");
+                        sw.WriteLine("--super Function ");
+                        sw.WriteLine("----self:PublishViewEvent(code,...)\n\n");
+
+
+                        sw.WriteLine("local " + ViewName + "=Class(\"" + ViewName + "\",require(\"UI.UIView\"))\n");
+    
+
+                        sw.WriteLine("--Bind ViewModel Fields");
+                        sw.WriteLine("function " + ViewName + ":BindProperty()");
+                        sw.WriteLine("");
+                        sw.WriteLine("end\n");
+
+                        sw.WriteLine("function " + ViewName + ":Dispose()");
+                        sw.WriteLine("");
+                        sw.WriteLine("end\n");
+
+                        sw.WriteLine("function " + ViewName + ":OnLoad()");
+                        sw.WriteLine("");
+                        sw.WriteLine("end\n");
+
+                        sw.WriteLine("function " + ViewName + ":OnTop( arg )");
+                        sw.WriteLine("");
+                        sw.WriteLine("end\n");
+
+                        sw.WriteLine("function " + ViewName + ":OnPress( arg )");
+                        sw.WriteLine("");
+                        sw.WriteLine("end\n");
+
+                        sw.WriteLine("function " + ViewName + ":OnPop( arg )");
+                        sw.WriteLine("");
+                        sw.WriteLine("end\n");
+
+                        sw.WriteLine("function " + ViewName + ":OnClear()");
+                        sw.WriteLine("");
+                        sw.WriteLine("end\n");
+
+                        sw.WriteLine("return " + ViewName);
+
+
+
+
+                        fs.Unlock(0, fs.Length);
+                        sw.Flush();
+                        fs.Flush();
+                    }
+
+                }
+                AssetDatabase.Refresh();
+            }
+
+
+            private void CreateUIMap(string path)
+            {
+                if (File.Exists(path)) return;
+                using (FileStream fs = new FileStream(path, FileMode.Create, FileAccess.Write))
+                {
+                    using (StreamWriter sw = new StreamWriter(fs))
+                    {
+                        fs.Lock(0, fs.Length);
+                        sw.WriteLine("--*********************************************************************************");
+                        sw.WriteLine(" --Author:         "+ProjectConfig.NameSpace);
+                        sw.WriteLine(" --Version:        "+ ProjectConfig.Version);
+                        sw.WriteLine(" --UnityVersion:   " + Application.unityVersion);
+                        sw.WriteLine(" --Date:           "+ DateTime.Now.ToString("yyyy-MM-dd"));
+                        sw.WriteLine(" --Description:    " + ProjectConfig.Description);
+                        sw.WriteLine(" --History:        " + DateTime.Now.ToString("yyyy-MM-dd")+"--");
+                        sw.WriteLine("--*********************************************************************************/");
+
+                        sw.WriteLine("-- {PanelType =CS.???,type={ViewType=77,VMType=66},}");
+
+
+                        sw.WriteLine("");
+                        sw.WriteLine("local map=");
+                        sw.WriteLine("{");
+
+                        sw.WriteLine("--ToDo");
+                        sw.WriteLine("}");
+                        sw.WriteLine("return map");
+                        fs.Unlock(0, fs.Length);
+                        sw.Flush();
+                        fs.Flush();
+                    }
+
+                }
+            }
+        }
     }
     partial class UIMoudleWindow 
     {
 
-        private void OnEnable()
+        private void OnEnable() 
         {
             genpath = EditorEnv.FrameworkPath.CombinePath("UI/Editor/Gen");
             if (runTimeView == null)
@@ -1047,6 +1417,8 @@ namespace IFramework.UI
 
             if (mVVM_GenCodeView == null)
                 mVVM_GenCodeView = new MVVM_GenCodeView();
+            if (mVVM_GenCodeView_Lua == null)
+                mVVM_GenCodeView_Lua = new MVVM_GenCodeView_Lua();
 
         }
         private void OnGUI()
@@ -1058,8 +1430,10 @@ namespace IFramework.UI
                     viewType = (ViewType)viewIndex;
                     switch (viewType)
                     {
-                        case ViewType.MVVM_GenCode: mVVM_GenCodeView.OnGUI(); break;
+                        case ViewType.MVVM_GenCode_CS: mVVM_GenCodeView.OnGUI(); break;
                         case ViewType.Runtime: runTimeView.OnGUI(); break;
+                        case ViewType.MVVM_GenCode_Lua:
+                            mVVM_GenCodeView_Lua.OnGUI();break;
                     }
                 });
           

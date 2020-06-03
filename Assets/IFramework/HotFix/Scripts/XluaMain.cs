@@ -6,32 +6,23 @@
  *Description:    IFramework
  *History:        2018.11--
 *********************************************************************************/
-
-using UnityEngine;
-using System;
-using XLua;
-
 namespace IFramework.Lua
 {
 	public class XluaMain
 	{
-		private LuaTable scriptEnv;
-		public XluaMain(TextAsset main)
+		public XluaMain()
 		{
 			XLuaEnv.AddLoader(new AssetBundleLoader());
 			XLuaEnv.onDispose += LuaDispose;
+			XLuaEnv.DoString("require 'Main'" +
+			                 " Awake()");
 			
-			scriptEnv = XLuaEnv.GetTable(main, "Main");
-			var  awake= scriptEnv.Get<Action>("Awake");
-			awake.Invoke();
-			awake = null;
 		}
 
 		private void LuaDispose()
 		{
-			var dis = scriptEnv.Get<Action>("OnDispose");
-			dis.Invoke();
-			dis = null;
+			XLuaEnv.DoString("require 'Main'" +
+			                 "OnDispose()");
 		}
 	}
 }

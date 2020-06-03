@@ -13,7 +13,7 @@ using UnityEngine;
 
 namespace IFramework.Lua
 {
-    public class luaGroups : IGroups
+    public class LuaGroups : IGroups
     {
         public event Action onDispose;
         public event Func<string,UIPanel> onFindPanel;

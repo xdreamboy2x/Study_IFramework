@@ -1,4 +1,4 @@
-StringUtil={}
+local StringUtil={}
 
 -- 用指定字符或字符串分割输入字符串，返回包含分割结果的数组
 

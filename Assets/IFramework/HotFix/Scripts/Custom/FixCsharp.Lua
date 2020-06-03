@@ -1,1 +1,1 @@
-Log("Start Fix C# ")
+Log.L("Start Fix C# ")

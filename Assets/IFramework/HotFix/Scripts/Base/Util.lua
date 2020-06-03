@@ -1,5 +1,5 @@
 
-Util={}
+local Util={}
 -- 深度克隆一个值
 -- @param mixed object 要克隆的值
 -- @return mixed

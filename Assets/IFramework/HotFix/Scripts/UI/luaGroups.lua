@@ -1,6 +1,6 @@
-local luaGroups = Class("luaGroups")
+local LuaGroups = Class("LuaGroups")
 local VVMGroup =require("UI.VVMGroup")
-function luaGroups:ctor()
+function LuaGroups:ctor()
 	self.onDispose=function ()
 		self:OnDispose()
 	end
@@ -22,12 +22,12 @@ function luaGroups:ctor()
 	end
 end
 --map: {name={ViewType=77,VMType=66},}
-function luaGroups:SetMap(map)
+function LuaGroups:SetMap(map)
 	if map == nil then
 		error("map could not be null ")
 		return
 	end
-	self.CS_instance=IFramework.Lua.luaGroups()
+	self.CS_instance=IFramework.Lua.LuaGroups()
 	self.CS_instance:onDispose("+",self.onDispose)
 	self.CS_instance:onSubscribe("+",self.onSubscribe)
 	self.CS_instance:onUnSubscribe("+",self.onUnSubscribe)
@@ -40,7 +40,7 @@ end
 
 -- 以下方法私有
 
-function luaGroups:OnDispose()
+function LuaGroups:OnDispose()
 
 	for i, group in pairs(self.groups) do
 		group.view:OnClear()
@@ -57,10 +57,17 @@ function luaGroups:OnDispose()
 	self.map=nil
 end
 
-function luaGroups:OnSubscribe(panel)
-	local vvmType = rawget(self.map,panel.name)
+function LuaGroups:OnSubscribe(panel)
+	local panelType=panel:GetType()
+	local vvmType 
+	for i, v in pairs(self.map) do
+		if v.PanelType==panelType then
+			vvmType=v
+			break
+		end
+	end
 	if(vvmType==nil) then
-		error("not find vvm type with name : "..panel.name)
+		error("not find vvm type with Type : "..panelType)
 		return
 	end
 	if rawget(self.groups,panel.name) ~=nil then
@@ -75,7 +82,7 @@ function luaGroups:OnSubscribe(panel)
 	rawset(self.groups,panel.name,vvmGroup)
 	view:OnLoad()
 end
-function luaGroups:OnUnSubscribe(panel)
+function LuaGroups:OnUnSubscribe(panel)
 
 	local group= rawget(self.groups ,panel.name)
 	if group ~=nil then
@@ -85,14 +92,14 @@ function luaGroups:OnUnSubscribe(panel)
 end
 
 
-function luaGroups:OnFindPanel(name)
+function LuaGroups:OnFindPanel(name)
 	local group=self.FindGroup(name)
 	if group ~= nil then
 		return group.panel
 	end
 	return nil
 end
-function luaGroups:OnInvokeListeners(arg)
+function LuaGroups:OnInvokeListeners(arg)
 
 	if arg.pressPanel ~=nil then
 		self.FindGroup(arg.pressPanel.name).view:OnPress(arg)
@@ -107,4 +114,4 @@ end
 
 
 
-return luaGroups
+return LuaGroups
