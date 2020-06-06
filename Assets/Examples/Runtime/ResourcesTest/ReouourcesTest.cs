@@ -19,7 +19,7 @@ namespace IFramework_Demo
             Game.env.modules.Resources = Game.env.modules.CreateModule<ResourceModule>();
             var res= Game.env.modules.Resources.Load<TextAsset,ResourcesLoader<TextAsset>>("RS","txt","txt", null, null);
             Game.env.modules.Resources.trick = 10;
-            Log.L(res.value.text);
+            Log.L(res.Tvalue.text);
             var res1 = Game.env.modules.Resources.Load<TextAsset, ResourcesLoader<TextAsset>>("RS", "txt", "txt", null, null);
 
             res.Release();

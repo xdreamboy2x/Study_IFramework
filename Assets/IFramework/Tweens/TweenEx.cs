@@ -11,6 +11,7 @@ using UnityEngine;
 using UnityEngine.UI;
 namespace IFramework.Tweens
 {
+
     [FrameworkVersion(8)]
     public static class TweenEx
     {

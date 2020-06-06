@@ -14,20 +14,20 @@ namespace IFramework
 {
     public partial class ProjectConfig
     {
-        public static string NameSpace { get { return Info.NameSpace; } }
-        public static string UserName { get { return Info.UserName; } }
-        public static string Version { get { return Info.Version; } }
-        public static string Description { get { return Info.Description; } }
-        private static ProjectConfigInfo info;
-        private static ProjectConfigInfo Info
+        public static string NameSpace { get { return info.NameSpace; } }
+        public static string UserName { get { return info.UserName; } }
+        public static string Version { get { return info.Version; } }
+        public static string Description { get { return info.Description; } }
+        private static ProjectConfigInfo __info;
+        private static ProjectConfigInfo info
         {
             get
             {
-                if (info == null) LoadProjectInfo();
-                return info;
+                if (__info == null) LoadProjectInfo();
+                return __info;
             }
         }
-        public static string ProjectConfigInfoPath = EditorEnv.CorePath.CombinePath("ProjectConfig/Editor/ProjectConfig.asset").ToRegularPath();
+        public static string ProjectConfigInfoPath = EditorEnv.corePath.CombinePath("ProjectConfig/Editor/ProjectConfig.asset").ToRegularPath();
         private static void LoadProjectInfo()
         {
             string[] guids = AssetDatabase.FindAssets(string.Format("t:{0}",typeof(ProjectConfigInfo)), new string[] { @"Assets" });
@@ -38,14 +38,14 @@ namespace IFramework
             {
                 for (int i = 1; i < stos.Count; i++)
                     AssetDatabase.DeleteAsset(AssetDatabase.GetAssetPath(stos[i]));
-                info = stos[0];
+                __info = stos[0];
             }
         }
         private static void CreateNewSto(List<ProjectConfigInfo> stos)
         {
             if (stos.Count > 0)
                 stos.ReverseForEach((sto) => { AssetDatabase.DeleteAsset(AssetDatabase.GetAssetPath(sto)); });
-            info = ScriptableObj.Create<ProjectConfigInfo>(ProjectConfigInfoPath);
+            __info = ScriptableObj.Create<ProjectConfigInfo>(ProjectConfigInfoPath);
         }
     }
 }

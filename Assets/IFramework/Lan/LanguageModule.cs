@@ -14,6 +14,10 @@ using UnityEngine;
 
 namespace IFramework
 {
+    public interface ILanPairGroup
+    {
+        List<LanPair> Load();
+    }
     public class LanguageModule : FrameworkModule
     {
         public class LanObserver : IDisposable
@@ -77,7 +81,6 @@ namespace IFramework
 
         private List<LanPair> lanPairs;
         private Dictionary<string, List<LanPair>> keyDic;
-        private List<Func<List<LanPair>>> lanPairLoaders;
         private List<LanObserver> lanObservers;
         private event Action ObserveEvent;
 
@@ -95,33 +98,9 @@ namespace IFramework
             }
         }
 
-
-
-        public void AddLoader(Func<List<LanPair>> loader)
+        public void Load(ILanPairGroup group, bool reWrite = true)
         {
-            lanPairLoaders.Add(loader);
-        }
-        public void Load(bool reWrite = true)
-        {
-            List<LanPair> tmpPairs = new List<LanPair>();
-            lanPairLoaders.ForEach((loader) => {
-                List<LanPair> result = loader.Invoke();
-                if (result != null && result.Count > 0)
-                    tmpPairs.AddRange(result);
-            });
-            tmpPairs.ForEach((tmpPair) => {
-                LanPair pair = lanPairs.Find((p) => { return p.Lan == tmpPair.Lan && p.key == tmpPair.key; });
-                if (pair != null && reWrite && pair.Value != tmpPair.Value)
-                    pair.Value = tmpPair.Value;
-                else
-                    lanPairs.Add(tmpPair);
-            });
-            tmpPairs.Clear();
-            Fresh();
-        }
-        public void Load(Func<List<LanPair>> loader, bool reWrite = true)
-        {
-            List<LanPair> tmpPairs = loader.Invoke();
+            List<LanPair> tmpPairs = group.Load();
             tmpPairs.ForEach((tmpPair) => {
                 LanPair pair = lanPairs.Find((p) => { return p.Lan == tmpPair.Lan && p.key == tmpPair.key; });
                 if (pair != null && reWrite && pair.Value != tmpPair.Value)
@@ -153,18 +132,13 @@ namespace IFramework
         protected override void Awake()
         {
             lanPairs = new List<LanPair>();
-            lanPairLoaders = new List<Func<List<LanPair>>>();
             lanObservers = new List<LanObserver>();
         }
         protected override void OnDispose()
         {
             lanPairs.Clear();
-            lanPairLoaders.Clear();
             lanObservers.Clear();
         }
       
-      
-
-       
     }
 }

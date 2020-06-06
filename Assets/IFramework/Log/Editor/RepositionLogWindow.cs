@@ -40,18 +40,18 @@ namespace IFramework
                 {
                     new ListViewCalculator.ColumnSetting()
                     {
-                        Name=Preview,
-                        Width=100,
+                        name=Preview,
+                        width=100,
                     },
                     new ListViewCalculator.ColumnSetting()
                     {
-                        Name=Name,
-                        Width=200,
+                        name=Name,
+                        width=200,
                     },
                     new ListViewCalculator.ColumnSetting()
                     {
-                        Name = Path,
-                        Width = 600
+                        name = Path,
+                        width = 600
                     }
                 };
 
@@ -65,7 +65,7 @@ namespace IFramework
         }
         public void LoadInfo()
         {
-            infoPath = EditorEnv.FrameworkPath.
+            infoPath = EditorEnv.frameworkPath.
                 CombinePath("Log/Resources/" + RepositionLog.StoName + ".asset");
             if (!File.Exists(infoPath)) ScriptableObj.Create<LogSetting>(infoPath);
             info = ScriptableObj.Load<LogSetting>(infoPath);
@@ -115,67 +115,67 @@ namespace IFramework
             float LineHeight = 20;
             table.Calc(rect, new Vector2(rect.x, rect.y + LineHeight), ScrollPos, LineHeight, info.Infos.Count, ViewSetting);
             if (Event.current.type == EventType.Repaint)
-                new GUIStyle(EntryBackodd).Draw(table.Position, false, false, false, false);
+                new GUIStyle(EntryBackodd).Draw(table.position, false, false, false, false);
 
-            this.LabelField(table.TitleRow.Position, "",new GUIStyle(TitleStyle))
-                .LabelField(table.TitleRow[Preview].Position, Preview)
-                .LabelField(table.TitleRow[Name].Position, Name)
-                .LabelField(table.TitleRow[Path].Position, Path)
+            this.LabelField(table.titleRow.position, "",new GUIStyle(TitleStyle))
+                .LabelField(table.titleRow[Preview].position, Preview)
+                .LabelField(table.titleRow[Name].position, Name)
+                .LabelField(table.titleRow[Path].position, Path)
                 .DrawScrollView(() =>
                     {
-                        for (int i = table.FirstVisibleRow; i < table.LastVisibleRow + 1; i++)
+                        for (int i = table.firstVisibleRow; i < table.lastVisibleRow + 1; i++)
                         {
 
                             GUIStyle style = i % 2 == 0 ? EntryBackEven : EntryBackodd;
 
                             if (Event.current.type == EventType.Repaint)
-                                style.Draw(table.Rows[i].Position, false, false, table.Rows[i].Selected, false);
+                                style.Draw(table.rows[i].position, false, false, table.rows[i].selected, false);
                             if (Event.current.modifiers == EventModifiers.Control &&
                                     Event.current.button == 0 && Event.current.clickCount == 1 &&
-                                    table.Rows[i].Position.Contains(Event.current.mousePosition))
+                                    table.rows[i].position.Contains(Event.current.mousePosition))
                             {
                                 table.ControlSelectRow(i);
                                 Repaint();
                             }
                             else if (Event.current.modifiers == EventModifiers.Shift &&
                                             Event.current.button == 0 && Event.current.clickCount == 1 &&
-                                            table.Rows[i].Position.Contains(Event.current.mousePosition))
+                                            table.rows[i].position.Contains(Event.current.mousePosition))
                             {
                                 table.ShiftSelectRow(i);
 
                                 Repaint();
                             }
                             else if (Event.current.button == 0 && Event.current.clickCount == 1 &&
-                                            table.Rows[i].Position.Contains(Event.current.mousePosition))
+                                            table.rows[i].position.Contains(Event.current.mousePosition))
                             {
                                 table.SelectRow(i);
                                 Repaint();
                             }
                             Texture2D tx = AssetPreview.GetMiniThumbnail(info.Infos[i].Text);
-                            this.Label(table.Rows[i][Preview].Position, new GUIContent(tx));
-                            this.Label(table.Rows[i][Name].Position, info.Infos[i].Name);
-                            this.Label(table.Rows[i][Path].Position, info.Infos[i].Path);
+                            this.Label(table.rows[i][Preview].position, new GUIContent(tx));
+                            this.Label(table.rows[i][Name].position, info.Infos[i].Name);
+                            this.Label(table.rows[i][Path].position, info.Infos[i].Path);
                         }
                     }, 
-                    table.View,ref ScrollPos,table.Content, false, false
+                    table.view,ref ScrollPos,table.content, false, false
             );
 
 
 
             Handles.color = Color.black;
-            for (int i = 0; i < table.TitleRow.Columns.Count; i++)
+            for (int i = 0; i < table.titleRow.columns.Count; i++)
             {
-                var item = table.TitleRow.Columns[i];
+                var item = table.titleRow.columns[i];
 
                 if (i != 0)
-                    Handles.DrawAAPolyLine(1, new Vector3(item.Position.x,
-                                                            item.Position.y,
+                    Handles.DrawAAPolyLine(1, new Vector3(item.position.x,
+                                                            item.position.y,
                                                             0),
-                                              new Vector3(item.Position.x,
-                                                            item.Position.y + item.Position.height - 2,
+                                              new Vector3(item.position.x,
+                                                            item.position.y + item.position.height - 2,
                                                             0));
             }
-            table.Position.DrawOutLine(2, Color.black);
+            table.position.DrawOutLine(2, Color.black);
 
 
             Handles.color = Color.white;
@@ -216,15 +216,15 @@ namespace IFramework
         {
             Event eve = Event.current;
             if (eve.button == 0 && eve.clickCount == 1 &&
-                    (!table.View.Contains(eve.mousePosition) ||
-                        (table.View.Contains(eve.mousePosition) &&
-                         !table.Content.Contains(eve.mousePosition))))
+                    (!table.view.Contains(eve.mousePosition) ||
+                        (table.view.Contains(eve.mousePosition) &&
+                         !table.content.Contains(eve.mousePosition))))
             {
                 table.SelectNone();
                 Repaint();
             }
-            DragAndDropIInfo dragInfo = DragAndDropUtil.Drag(eve, table.View);
-            if (table.View.Contains(eve.mousePosition) && dragInfo.EnterArera && dragInfo.Finsh)
+            DragAndDropIInfo dragInfo = DragAndDropUtil.Drag(eve, table.view);
+            if (table.view.Contains(eve.mousePosition) && dragInfo.enterArera && dragInfo.compelete)
             {
                 for (int i = 0; i < dragInfo.paths.Length; i++)
                 {
@@ -237,16 +237,16 @@ namespace IFramework
             }
 
             if (eve.button == 1 && eve.clickCount == 1 &&
-                        table.Content.Contains(eve.mousePosition))
+                        table.content.Contains(eve.mousePosition))
             {
                 GenericMenu menu = new GenericMenu();
                 menu.AddItem(new GUIContent("Delete"), false, () => {
 
-                    for (int i = table.SelectedRows.Count - 1; i >= 0; i--)
+                    for (int i = table.welectedRows.Count - 1; i >= 0; i--)
                     {
-                        float progress = (float)i / table.SelectedRows.Count;
-                        EditorUtility.DisplayProgressBar(string.Format("Delete Script {0}/{1}", i, table.SelectedRows.Count),"", progress);
-                        this.info.Infos.RemoveAt(table.SelectedRows[i].RowID);
+                        float progress = (float)i / table.welectedRows.Count;
+                        EditorUtility.DisplayProgressBar(string.Format("Delete Script {0}/{1}", i, table.welectedRows.Count),"", progress);
+                        this.info.Infos.RemoveAt(table.welectedRows[i].rowID);
                     }
                     EditorUtility.ClearProgressBar();
                     ScriptableObj.Update(info);
@@ -254,9 +254,9 @@ namespace IFramework
                 });
                 menu.AddItem(new GUIContent("Select Script"), false, () =>
                 {
-                    for (int i = table.Rows.Count - 1; i >= 0; i--)
+                    for (int i = table.rows.Count - 1; i >= 0; i--)
                     {
-                        if (table.Rows[i].Position.Contains(eve.mousePosition))
+                        if (table.rows[i].position.Contains(eve.mousePosition))
                         {
                             Selection.activeObject = this.info.Infos[i].Text;
                             break;

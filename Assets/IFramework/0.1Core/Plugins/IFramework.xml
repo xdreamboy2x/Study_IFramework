@@ -151,19 +151,19 @@
             框架提供的模块
             </summary>
         </member>
-        <member name="T:IFramework.Modules.FrameworkGameModule">
+        <member name="T:IFramework.Modules.FrameworkAppModule">
             <summary>
-            一个Game的总管理，需要自己写
+            一个app的总管理，需要自己写
             </summary>
         </member>
-        <member name="P:IFramework.Modules.FrameworkGameModule.GameVersion">
+        <member name="P:IFramework.Modules.FrameworkAppModule.appVersion">
             <summary>
-            Game 版本
+            app 版本
             </summary>
         </member>
-        <member name="P:IFramework.Modules.FrameworkGameModule.GameName">
+        <member name="P:IFramework.Modules.FrameworkAppModule.appName">
             <summary>
-            Game名称
+            app名称
             </summary>
         </member>
         <member name="T:IFramework.Modules.Coroutine.Coroutine">
@@ -828,12 +828,12 @@
             状态机
             </summary>
         </member>
-        <member name="P:IFramework.Modules.Fsm.FsmModule.ExitState">
+        <member name="P:IFramework.Modules.Fsm.FsmModule.exitState">
             <summary>
             退出状态
             </summary>
         </member>
-        <member name="P:IFramework.Modules.Fsm.FsmModule.EnterState">
+        <member name="P:IFramework.Modules.Fsm.FsmModule.enterState">
             <summary>
             第一个状态
             </summary>
@@ -843,12 +843,12 @@
             当状态改变
             </summary>
         </member>
-        <member name="P:IFramework.Modules.Fsm.FsmModule.CurrentState">
+        <member name="P:IFramework.Modules.Fsm.FsmModule.currentState">
             <summary>
             当前状态
             </summary>
         </member>
-        <member name="P:IFramework.Modules.Fsm.FsmModule.IsRuning">
+        <member name="P:IFramework.Modules.Fsm.FsmModule.runing">
             <summary>
             是否在运行
             </summary>
@@ -1635,7 +1635,7 @@
             释放资源 
             </summary>
         </member>
-        <member name="P:IFramework.Modules.Resources.Resource.o_value">
+        <member name="P:IFramework.Modules.Resources.Resource.value">
             <summary>
             资源
             </summary>
@@ -1646,7 +1646,7 @@
             </summary>
             <typeparam name="T"></typeparam>
         </member>
-        <member name="P:IFramework.Modules.Resources.Resource`1.value">
+        <member name="P:IFramework.Modules.Resources.Resource`1.Tvalue">
             <summary>
             资源值
             </summary>
@@ -2412,12 +2412,12 @@
             每一个格子
             </summary>
         </member>
-        <member name="F:IFramework.Serialization.DataTable.DataColumn.HeadLineName">
+        <member name="F:IFramework.Serialization.DataTable.DataColumn.headLineName">
             <summary>
             标题名称
             </summary>
         </member>
-        <member name="F:IFramework.Serialization.DataTable.DataColumn.StrValue">
+        <member name="F:IFramework.Serialization.DataTable.DataColumn.strValue">
             <summary>
             string 数据
             </summary>
@@ -2584,7 +2584,7 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="P:IFramework.Utility.Astar.AStarMap2X.WalkSideways">
+        <member name="P:IFramework.Utility.Astar.AStarMap2X.walkSideways">
             <summary>
             是否可以斜着走
             </summary>
@@ -2628,7 +2628,7 @@
             三维A* 地图
             </summary>
         </member>
-        <member name="P:IFramework.Utility.Astar.AStarMap3X.WalkSideways">
+        <member name="P:IFramework.Utility.Astar.AStarMap3X.walkSideways">
             <summary>
             是否可以斜着走
             </summary>
@@ -2678,17 +2678,17 @@
             二维 A* 地图节点
             </summary>
         </member>
-        <member name="P:IFramework.Utility.Astar.AStarNode2X.NodeType">
+        <member name="P:IFramework.Utility.Astar.AStarNode2X.nodeType">
             <summary>
             节点类型（是否可以行走）
             </summary>
         </member>
-        <member name="P:IFramework.Utility.Astar.AStarNode2X.ParentNode">
+        <member name="P:IFramework.Utility.Astar.AStarNode2X.parentNode">
             <summary>
             父节点，用于返回路径
             </summary>
         </member>
-        <member name="P:IFramework.Utility.Astar.AStarNode2X.mGameos">
+        <member name="P:IFramework.Utility.Astar.AStarNode2X.mapPos">
             <summary>
             
             </summary>
@@ -2697,7 +2697,7 @@
             <summary>
             ctor
             </summary>
-            <param name="mGameos"></param>
+            <param name="mapPos"></param>
             <param name="nodeType"></param>
         </member>
         <member name="M:IFramework.Utility.Astar.AStarNode2X.SetDefaultParent(IFramework.Utility.Astar.IAStarNode)">
@@ -2725,17 +2725,17 @@
             三维 A* 地图节点
             </summary>
         </member>
-        <member name="P:IFramework.Utility.Astar.AStarNode3X.NodeType">
+        <member name="P:IFramework.Utility.Astar.AStarNode3X.nodeType">
             <summary>
             节点类型（是否可以行走）
             </summary>
         </member>
-        <member name="P:IFramework.Utility.Astar.AStarNode3X.ParentNode">
+        <member name="P:IFramework.Utility.Astar.AStarNode3X.parentNode">
             <summary>
             父节点，用于返回路径
             </summary>
         </member>
-        <member name="P:IFramework.Utility.Astar.AStarNode3X.mGameos">
+        <member name="P:IFramework.Utility.Astar.AStarNode3X.mapPos">
             <summary>
             
             </summary>
@@ -2786,7 +2786,7 @@
             </summary>
             <typeparam name="T"></typeparam>
         </member>
-        <member name="P:IFramework.Utility.Astar.IAstarMap`1.WalkSideways">
+        <member name="P:IFramework.Utility.Astar.IAstarMap`1.walkSideways">
             <summary>
             是否可以斜着走
             </summary>
@@ -2816,12 +2816,12 @@
             A*节点
             </summary>
         </member>
-        <member name="P:IFramework.Utility.Astar.IAStarNode.NodeType">
+        <member name="P:IFramework.Utility.Astar.IAStarNode.nodeType">
             <summary>
             节点类型
             </summary>
         </member>
-        <member name="P:IFramework.Utility.Astar.IAStarNode.ParentNode">
+        <member name="P:IFramework.Utility.Astar.IAStarNode.parentNode">
             <summary>
             父节点，用于寻路递归
             </summary>
@@ -3326,72 +3326,72 @@
         <member name="F:IFramework.Net.FileDownLoader_Http.tempSaveFilePath">
             临时文件全路径
         </member>
-        <member name="P:IFramework.Net.AccessInfo.Host">
+        <member name="P:IFramework.Net.AccessInfo.host">
             <summary>
             连接主机
             </summary>
         </member>
-        <member name="P:IFramework.Net.AccessInfo.Origin">
+        <member name="P:IFramework.Net.AccessInfo.origin">
             <summary>
             连接源
             </summary>
         </member>
-        <member name="P:IFramework.Net.AccessInfo.SecWebSocketExtensions">
+        <member name="P:IFramework.Net.AccessInfo.secWebSocketExtensions">
             <summary>
             安全扩展
             </summary>
         </member>
-        <member name="P:IFramework.Net.AccessInfo.SecWebSocketKey">
+        <member name="P:IFramework.Net.AccessInfo.secWebSocketKey">
             <summary>
             安全密钥
             </summary>
         </member>
-        <member name="P:IFramework.Net.AccessInfo.SecWebSocketVersion">
+        <member name="P:IFramework.Net.AccessInfo.secWebSocketVersion">
             <summary>
             安全版本
             </summary>
         </member>
-        <member name="P:IFramework.Net.BaseInfo.HttpProto">
+        <member name="P:IFramework.Net.BaseInfo.httpProto">
             <summary>
             http连接协议
             </summary>
         </member>
-        <member name="P:IFramework.Net.BaseInfo.Connection">
+        <member name="P:IFramework.Net.BaseInfo.connection">
             <summary>
             连接类型
             </summary>
         </member>
-        <member name="P:IFramework.Net.BaseInfo.Upgrade">
+        <member name="P:IFramework.Net.BaseInfo.upgrade">
             <summary>
             连接方式
             </summary>
         </member>
-        <member name="P:IFramework.Net.AcceptInfo.SecWebSocketAccept">
+        <member name="P:IFramework.Net.AcceptInfo.secWebSocketAccept">
             <summary>
             接入访问验证码
             </summary>
         </member>
-        <member name="P:IFramework.Net.AcceptInfo.SecWebSocketLocation">
+        <member name="P:IFramework.Net.AcceptInfo.secWebSocketLocation">
             <summary>
             客户端来源
             </summary>
         </member>
-        <member name="P:IFramework.Net.AcceptInfo.SecWebSocketOrigin">
+        <member name="P:IFramework.Net.AcceptInfo.secWebSocketOrigin">
             <summary>
             服务端来源
             </summary>
         </member>
-        <member name="F:IFramework.Net.DataFrame.isEof">
+        <member name="F:IFramework.Net.DataFrame._isEof">
             <summary>
             如果为true则该消息为消息尾部,如果false为零则还有后续数据包;
             </summary>
         </member>
-        <member name="P:IFramework.Net.DataFrame.Rsv1">
+        <member name="P:IFramework.Net.DataFrame.rsv1">
             <summary>
             RSV1,RSV2,RSV3,各1位，用于扩展定义的,如果没有扩展约定的情况则必须为0
             </summary>
         </member>
-        <member name="F:IFramework.Net.DataFrame.opCode">
+        <member name="F:IFramework.Net.DataFrame._opCode">
              <summary>
             0x0表示附加数据帧
             0x1表示文本数据帧
@@ -3403,7 +3403,7 @@
             0xB-F暂时无定义，为以后的控制帧保留
              </summary>
         </member>
-        <member name="F:IFramework.Net.DataFrame.mask">
+        <member name="F:IFramework.Net.DataFrame._mask">
             <summary>
             true使用掩码解析消息
             </summary>
@@ -4138,7 +4138,7 @@
             <param name="self"></param>
             <returns></returns>
         </member>
-        <member name="M:IFramework.StringExtension.GameendHead(System.String,System.String)">
+        <member name="M:IFramework.StringExtension.AppendHead(System.String,System.String)">
             <summary>
             在字符串前拼接字符串
             </summary>
@@ -4151,7 +4151,7 @@
             拼接字符串
             </summary>
             <param name="self"></param>
-            <param name="toGameend"></param>
+            <param name="toAppend"></param>
             <returns></returns>
         </member>
         <member name="M:IFramework.StringExtension.Append(System.String,System.String[])">
@@ -4159,7 +4159,7 @@
             拼接字符串
             </summary>
             <param name="self"></param>
-            <param name="toGameend"></param>
+            <param name="toAppend"></param>
             <returns></returns>
         </member>
         <member name="M:IFramework.StringExtension.AddSpacedBetwwenWord(System.String)">

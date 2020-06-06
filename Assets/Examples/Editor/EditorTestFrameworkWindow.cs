@@ -17,7 +17,7 @@ namespace IFramework_Demo
 	{
         private void OnEnable()
         {
-            this.Sequence(EditorEnv.Env)
+            this.Sequence(EditorEnv.env)
                 .Repeat((r) =>
                 {
                     r.Event(() =>

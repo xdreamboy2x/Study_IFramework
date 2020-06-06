@@ -11,7 +11,7 @@ using IFramework.Modules.Fsm;
 using UnityEngine;
 namespace IFramework_Demo
 {
-    public class State:IState
+    public class State : IState
     {
         public void OnEnter()
         {
@@ -34,22 +34,23 @@ namespace IFramework_Demo
     {
     }
     [RequireComponent(typeof(Game))]
-    public class FsmExample : MonoBehaviour {
+    public class FsmExample : MonoBehaviour
+    {
 
         FsmModule fsm { get { return Framework.env1.modules.Fsm; } set { Framework.env1.modules.Fsm = value; } }
         private void Start()
-        
+
         {
             fsm = Framework.env1.modules.CreateModule<FsmModule>();
             State1 s1 = new State1();
             State2 s2 = new State2();
             fsm.SubscribeState(s1);
-            fsm.EnterState = s1;
-            fsm.SubscribeState(s2); 
-            //f.ExitState = s2;
-         var val= fsm.CreateConditionValue<bool>("bool", true);
+            fsm.enterState = s1;
+            fsm.SubscribeState(s2);
+            // fsm.exitState = s2;
+            var val = fsm.CreateConditionValue<bool>("bool", true);
 
-            var t1= fsm.CreateTransition(s1, s2);
+            var t1 = fsm.CreateTransition(s1, s2);
             var t2 = fsm.CreateTransition(s2, s1);
 
             t1.BindCondition(fsm.CreateCondition<bool>("bool", false, CompareType.Equals));
@@ -68,6 +69,6 @@ namespace IFramework_Demo
                 fsm.SetBool("bool", true);
             }
         }
-       
+
     }
 }

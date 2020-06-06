@@ -14,42 +14,43 @@ namespace IFramework
 {
     class EditorEnv
     {
-        private const string RelativeCorePath = "0.1Core";
-        private const string RelativeCoreEditorPath = "0.1Core/Editor";
-        private const string RelativeUtilPath = "UTil";
-        private const string RelativeEditorPath = "UTil/Editor";
-        private static string _Fpath;
-        private const EnvironmentType envType = EnvironmentType.Ev0;
+        private const string _relativeCorePath = "0.1Core";
+        private const string _relativeCoreEditorPath = "0.1Core/Editor";
+        private const string _relativeUtilPath = "UTil";
+        private const string _relativeEditorPath = "UTil/Editor";
+        private static string _fpath;
+        public const EnvironmentType envType = EnvironmentType.Ev0;
+        public static FrameworkEnvironment env { get { return Framework.env0; } }
 
-        public static string FrameworkName { get { return Framework.FrameworkName; } }
-        public static string Author { get { return Framework.Author; } }
-        public static string Version { get { return Framework.Version; } }
-        public static string Description { get { return Framework.Description; } }
-        public static string FrameworkPath { get {
-                if (string.IsNullOrEmpty(_Fpath))
+        public static string frameworkName { get { return Framework.FrameworkName; } }
+        public static string author { get { return Framework.Author; } }
+        public static string version { get { return Framework.Version; } }
+        public static string description { get { return Framework.Description; } }
+        public static string frameworkPath { get {
+                if (string.IsNullOrEmpty(_fpath))
                 {
                     string[] assetPaths = AssetDatabase.GetAllAssetPaths();
                     for (int i = 0; i < assetPaths.Length; i++)
                     {
-                        if (assetPaths[i].Contains(RelativeCorePath))
+                        if (assetPaths[i].Contains(_relativeCorePath))
                         {
                             string tempPath = assetPaths[i];
-                            int index = tempPath.IndexOf(RelativeCorePath);
-                            _Fpath= tempPath.Substring(0, index);
+                            int index = tempPath.IndexOf(_relativeCorePath);
+                            _fpath= tempPath.Substring(0, index);
                             break;
                         }
                     }
                 }
-                return _Fpath;
+                return _fpath;
             }
         }
-        public static string EditorPath { get { return FrameworkPath.CombinePath(RelativeEditorPath); } }
-        public static string UtilPath { get { return FrameworkPath.CombinePath(RelativeUtilPath); } }
-        public static string CorePath { get { return FrameworkPath.CombinePath(RelativeCorePath); } }
-        public static string CoreEditorPath { get { return  FrameworkPath.CombinePath(RelativeCoreEditorPath); } }
+        public static string editorPath { get { return frameworkPath.CombinePath(_relativeEditorPath); } }
+        public static string utilPath { get { return frameworkPath.CombinePath(_relativeUtilPath); } }
+        public static string corePath { get { return frameworkPath.CombinePath(_relativeCorePath); } }
+        public static string coreEditorPath { get { return  frameworkPath.CombinePath(_relativeCoreEditorPath); } }
 
 
-        public static FrameworkEnvironment Env { get { return Framework.env0; } }
+
 
 
         public static event EditorApplication.CallbackFunction update { add { EditorApplication.update += value; } remove { EditorApplication.update -= value; } }
@@ -74,7 +75,7 @@ namespace IFramework
         [InitializeOnLoadMethod]
         public static void EditorEnvInit()
         {
-            UnityEngine.Debug.Log("FrameworkPath   right?   "+FrameworkPath);
+            UnityEngine.Debug.Log("FrameworkPath   right?   "+frameworkPath);
             Framework.InitEnv("IFramework_Editor", envType).InitWithAttribute();
 
             quitting += Framework.env0.Dispose;

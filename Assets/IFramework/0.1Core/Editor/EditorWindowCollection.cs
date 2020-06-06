@@ -30,15 +30,15 @@ namespace IFramework
     {
         public class EditorWindowInfo
         {
-            public string SearchName;
+            public string searchName;
             public Type type;
             public EditorWindowInfo(Type type, string SearchName = "")
             {
                 this.type = type;
                 if (string.IsNullOrEmpty(SearchName))
-                    this.SearchName = type.Name;
+                    this.searchName = type.Name;
                 else
-                    this.SearchName = SearchName;
+                    this.searchName = SearchName;
             }
             public EditorWindow[] FindAll()
             {
@@ -152,11 +152,11 @@ namespace IFramework
         }
         public static EditorWindowInfo FindInfo(string name)
         {
-            EditorWindowInfo Info = Windows.Find((info) => { return info.SearchName == name; });
+            EditorWindowInfo Info = Windows.Find((info) => { return info.searchName == name; });
             if (Info == null)
             {
                 FreshInfoDic();
-                Info = Windows.Find((info) => { return info.SearchName == name; });
+                Info = Windows.Find((info) => { return info.searchName == name; });
                 if (Info == null) return null;
                 return Info;
             }
@@ -243,64 +243,64 @@ namespace IFramework
         {
                 new ListViewCalculator.ColumnSetting()
                 {
-                    Name=Name,
-                    Width=400
+                    name=Name,
+                    width=400
                 },
                 new ListViewCalculator.ColumnSetting()
                 {
-                    Name=Find,
-                        Width=60
+                    name=Find,
+                        width=60
                 },
                 new ListViewCalculator.ColumnSetting()
                 {
-                    Name=Create,
-                        Width=60
+                    name=Create,
+                        width=60
                 },
                 new ListViewCalculator.ColumnSetting()
                 {
-                    Name=FindOrCreate,
-                        Width=100,
-                        OffsetX=-8
+                    name=FindOrCreate,
+                        width=100,
+                        offsetX=-8
                 },
                 new ListViewCalculator.ColumnSetting()
                 {
-                    Name=CloseBtn,
-                        Width=50,
+                    name=CloseBtn,
+                        width=50,
                 },
                 new ListViewCalculator.ColumnSetting()
                 {
-                    Name=SearchStr,
-                        Width=50
+                    name=SearchStr,
+                        width=50
                 }
         };
         private void OnGUI()
         {
-            var ws = EditorWindowUtil.Windows.FindAll((w) => { return w.SearchName.ToLower().Contains(search); }).ToArray();
+            var ws = EditorWindowUtil.Windows.FindAll((w) => { return w.searchName.ToLower().Contains(search); }).ToArray();
             table.Calc(new Rect(Vector2.zero, position.size), new Vector2(0, LineHeight), scroll, LineHeight, ws.Length, setting);
 
-            this.LabelField(table.TitleRow.Position, "", new GUIStyle(TitleStyle))
-                .LabelField(table.TitleRow[Create].LocalPostion, Create)
-                .LabelField(table.TitleRow[Name].LocalPostion, Name)
-                .LabelField(table.TitleRow[Find].LocalPostion, Find)
-                .LabelField(table.TitleRow[FindOrCreate].LocalPostion, FindOrCreate)
-                .LabelField(table.TitleRow[CloseBtn].LocalPostion, CloseBtn)
+            this.LabelField(table.titleRow.position, "", new GUIStyle(TitleStyle))
+                .LabelField(table.titleRow[Create].localPostion, Create)
+                .LabelField(table.titleRow[Name].localPostion, Name)
+                .LabelField(table.titleRow[Find].localPostion, Find)
+                .LabelField(table.titleRow[FindOrCreate].localPostion, FindOrCreate)
+                .LabelField(table.titleRow[CloseBtn].localPostion, CloseBtn)
                 .Pan(() =>{
-                    sear.OnGUI(table.TitleRow[SearchStr].LocalPostion);
+                    sear.OnGUI(table.titleRow[SearchStr].localPostion);
                 })
                 .DrawScrollView(() =>
                 {
-                    for (int i = table.FirstVisibleRow; i < table.LastVisibleRow + 1; i++)
+                    for (int i = table.firstVisibleRow; i < table.lastVisibleRow + 1; i++)
                     {
                         if (Event.current.type == EventType.Repaint)
                         {
                             GUIStyle style = i % 2 == 0 ? EntryBackEven : EntryBackodd;
-                            style.Draw(table.Rows[i].Position, false, false, false, false);
+                            style.Draw(table.rows[i].position, false, false, false, false);
                         }
                         Texture tx = null;
                         if (EditorWindowUtil.Windows[i].type.Namespace.Contains("UnityEditor"))
                             tx = EditorGUIUtility.IconContent("BuildSettings.Editor.Small").image;
-                        string windowName = ws[i].SearchName;
-                        this.Label(table.Rows[i][Name].Position, new GUIContent(windowName, tx))
+                        string windowName = ws[i].searchName;
+                        this.Label(table.rows[i][Name].position, new GUIContent(windowName, tx))
                             .Button(() =>
                             {
                                 var w = EditorWindowUtil.Find(windowName);
@@ -308,7 +308,7 @@ namespace IFramework
                                 {
                                     w.Focus();
                                 }
-                            }, table.Rows[i][Find].Position, Find)
+                            }, table.rows[i][Find].position, Find)
                             .Button(() =>
                             {
                                 var w = EditorWindowUtil.Create(windowName);
@@ -316,7 +316,7 @@ namespace IFramework
                                 {
                                     w.Focus();
                                 }
-                            }, table.Rows[i][Create].Position, Create)
+                            }, table.rows[i][Create].position, Create)
                             .Button(() =>
                             {
                                 var w = EditorWindowUtil.FindOrCreate(windowName);
@@ -324,32 +324,32 @@ namespace IFramework
                                 {
                                     w.Focus();
                                 }
-                            }, table.Rows[i][FindOrCreate].Position, FindOrCreate)
+                            }, table.rows[i][FindOrCreate].position, FindOrCreate)
                             .Button(() =>
                             {
                                 EditorWindowUtil.FindAll(windowName).ToList().ForEach((w) =>
                                 {
                                     w.Close();
                                 });
-                            }, table.Rows[i][CloseBtn].Position, CloseBtn);
+                            }, table.rows[i][CloseBtn].position, CloseBtn);
                     }
-                }, table.View, ref scroll, table.Content, false, false);
+                }, table.view, ref scroll, table.content, false, false);
 
 
             Handles.color = Color.black;
-            for (int i = 0; i < table.TitleRow.Columns.Count; i++)
+            for (int i = 0; i < table.titleRow.columns.Count; i++)
             {
-                var item = table.TitleRow.Columns[i];
+                var item = table.titleRow.columns[i];
 
                 if (i != 0)
-                    Handles.DrawAAPolyLine(1, new Vector3(item.Position.x,
-                                                            item.Position.y,
+                    Handles.DrawAAPolyLine(1, new Vector3(item.position.x,
+                                                            item.position.y,
                                                             0),
-                                              new Vector3(item.Position.x,
-                                                            item.Position.y + item.Position.height - 2,
+                                              new Vector3(item.position.x,
+                                                            item.position.y + item.position.height - 2,
                                                             0));
             }
-            table.Position.DrawOutLine(2, Color.black);
+            table.position.DrawOutLine(2, Color.black);
             Handles.color = Color.white;
         }
 

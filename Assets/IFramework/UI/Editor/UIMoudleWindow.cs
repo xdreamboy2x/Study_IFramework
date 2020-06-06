@@ -85,7 +85,7 @@ namespace IFramework.UI
                     {
                         Styles.SearchTextFieldStyle.fontSize++;
                     }
-                    GUI.SetNextControlName(FocusID);
+                    GUI.SetNextControlName(focusID);
 
                     value = GUI.TextField(new Rect(position.x,
                                                                      position.y + 1,
@@ -110,10 +110,10 @@ namespace IFramework.UI
                     Event e = Event.current;
                     if (position.Contains(e.mousePosition))
                     {
-                        if (!Focused)
+                        if (!focused)
                             if ((e.type == EventType.MouseDown /*&& e.clickCount == 2*/) /*|| e.keyCode == KeyCode.F2*/)
                             {
-                                Focused = true;
+                                focused = true;
                                 GUIFocusControl.Focus(this);
                                 if (e.type != EventType.Repaint && e.type != EventType.Layout)
                                     Event.current.Use();
@@ -614,7 +614,7 @@ namespace IFramework.UI
                     if (rect.Contains(Event.current.mousePosition))
                     {
                         var drag = DragAndDropUtil.Drag(Event.current, rect);
-                        if (drag.Finsh && drag.EnterArera && drag.paths.Length == 1)
+                        if (drag.compelete && drag.enterArera && drag.paths.Length == 1)
                         {
                             string path = drag.paths[0];
                             if (path.Contains("Assets"))
@@ -724,7 +724,7 @@ namespace IFramework.UI
                         if (rect.Contains(Event.current.mousePosition))
                         {
                             var drag = DragAndDropUtil.Drag(Event.current, rect);
-                            if (drag.Finsh && drag.EnterArera && drag.paths.Length == 1)
+                            if (drag.compelete && drag.enterArera && drag.paths.Length == 1)
                             {
                                 string path = drag.paths[0];
                                 if (path.Contains("Assets"))
@@ -1039,7 +1039,7 @@ namespace IFramework.UI
         [Serializable]
         private class MVVM_GenCodeView_Lua : ILayoutGUIDrawer
         {
-            private static string hotFixScriptPath{ get { return EditorEnv.FrameworkPath.CombinePath("HotFix/Scripts"); } }
+            private static string hotFixScriptPath{ get { return EditorEnv.frameworkPath.CombinePath("HotFix/Scripts"); } }
             private string UIMapDir { get { return hotFixScriptPath.CombinePath("Custom/UI"); } }
             [SerializeField] string UIMapName = "UIMap_MVVM";
             [SerializeField] private string PanelGenDir;
@@ -1144,7 +1144,7 @@ namespace IFramework.UI
                         if (rect.Contains(Event.current.mousePosition))
                         {
                             var drag = DragAndDropUtil.Drag(Event.current, rect);
-                            if (drag.Finsh && drag.EnterArera && drag.paths.Length == 1)
+                            if (drag.compelete && drag.enterArera && drag.paths.Length == 1)
                             {
                                 string path = drag.paths[0];
                                 if (path.Contains("Assets"))
@@ -1410,7 +1410,7 @@ namespace IFramework.UI
 
         private void OnEnable() 
         {
-            genpath = EditorEnv.FrameworkPath.CombinePath("UI/Editor/Gen");
+            genpath = EditorEnv.frameworkPath.CombinePath("UI/Editor/Gen");
             if (runTimeView == null)
                 runTimeView = new RunTimeView();
             runTimeView.OnEnable();

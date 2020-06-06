@@ -105,7 +105,7 @@ namespace IFramework
         private void OnEnable()
         {
             LanwindowItem.window = this;
-            stoPath = EditorEnv.FrameworkPath.CombinePath("Lan/Resources/LanGroup.asset");
+            stoPath = EditorEnv.frameworkPath.CombinePath("Lan/Resources/LanGroup.asset");
             LoadLanGroup();
             this.titleContent = new GUIContent("Lan", EditorGUIUtility.IconContent("d_WelcomeScreen.AssetStoreLogo").image);
             SubwinInit();
@@ -610,7 +610,7 @@ namespace IFramework
                         {
                             Styles.SearchTextFieldStyle.fontSize++;
                         }
-                        GUI.SetNextControlName(FocusID);
+                        GUI.SetNextControlName(focusID);
 
                         value = GUI.TextField(new Rect(position.x,
                                                                          position.y + 1,
@@ -635,10 +635,10 @@ namespace IFramework
                         Event e = Event.current;
                         if (position.Contains(e.mousePosition))
                         {
-                            if (!Focused)
+                            if (!focused)
                                 if ((e.type == EventType.MouseDown /*&& e.clickCount == 2*/) /*|| e.keyCode == KeyCode.F2*/)
                                 {
-                                    Focused = true;
+                                    focused = true;
                                     GUIFocusControl.Focus(this);
                                     if (e.type != EventType.Repaint && e.type != EventType.Layout)
                                         Event.current.Use();

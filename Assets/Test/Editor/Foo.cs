@@ -31,9 +31,9 @@ public class Foo : EditorWindow
         }
         GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(prePath);
         IFPreview = new IFPreview(prefab, prefab.GetComponentsInChildren<MeshFilter>(true), prefab.GetComponentsInChildren<Renderer>(true));
-        IFPreview.Preview.camera.farClipPlane = 500;
-        IFPreview.Preview.camera.clearFlags = CameraClearFlags.Skybox;
-        IFPreview.Preview.camera.transform.position = new Vector3(0, 0.2f, -10);
+        IFPreview.preview.camera.farClipPlane = 500;
+        IFPreview.preview.camera.clearFlags = CameraClearFlags.Skybox;
+        IFPreview.preview.camera.transform.position = new Vector3(0, 0.2f, -10);
     }
 
     private void OnDisable()
