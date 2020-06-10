@@ -13,19 +13,19 @@ namespace IFramework
     public class LogSetting : ScriptableObject
     {
         public List<LogEliminateItem> Infos = new List<LogEliminateItem>();
-        public int LogLevel;
-        public int WarnningLevel;
-        public int ErrLevel;
-        public bool Enable = true;
-        public bool LogEnable = true;
-        public bool WarnningEnable = true;
-        public bool ErrEnable = true;
+        public int lev_L;
+        public int lev_W;
+        public int lev_E;
+        public bool enable = true;
+        public bool enable_L = true;
+        public bool enable_W = true;
+        public bool enable_E = true;
     }
     [System.Serializable]
     public class LogEliminateItem
     {
-        public string Name;
-        public string Path;
-        public TextAsset Text;
+        public string name;
+        public string path;
+        public TextAsset text;
     }
 }

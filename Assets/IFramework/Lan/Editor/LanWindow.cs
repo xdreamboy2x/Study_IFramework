@@ -99,7 +99,7 @@ namespace IFramework
     {
         private LanGroup lanGroup;
         private List<LanPair> lanPairs { get { return lanGroup.lanPairs; } }
-        private List<string> lanKeys { get { return lanGroup.Keys; } }
+        private List<string> lanKeys { get { return lanGroup.keys; } }
 
         private string stoPath;
         private void OnEnable()
@@ -216,7 +216,7 @@ namespace IFramework
         {
             keyDic = lanPairs.GroupBy(lanPair => { return lanPair.key; }, (key, list) => { return new { key, list }; })
                              .ToDictionary((v) => { return v.key; }, (v) => { return v.list.ToList(); });
-            lanDic = lanPairs.GroupBy(lanPair => { return lanPair.Lan; }, (key, list) => { return new { key, list }; })
+            lanDic = lanPairs.GroupBy(lanPair => { return lanPair.lan; }, (key, list) => { return new { key, list }; })
                             .ToDictionary((v) => { return v.key; }, (v) => { return v.list.ToList(); });
         }
         private void DeletePairsByLan(SystemLanguage lan)
@@ -236,18 +236,18 @@ namespace IFramework
         }
         private void AddLanPair(LanPair pair)
         {
-            if (string.IsNullOrEmpty(pair.Value.Trim()))
+            if (string.IsNullOrEmpty(pair.value.Trim()))
             {
                 ShowNotification(new GUIContent("Value Can't be Null"));
                 return;
             }
             LanPair tmpPair = new LanPair()
             {
-                Lan = pair.Lan,
+                lan = pair.lan,
                 key = pair.key,
-                Value = pair.Value
+                value = pair.value
             };
-            LanPair lp = lanPairs.Find((p) => { return p.Lan == tmpPair.Lan && p.key == tmpPair.key; });
+            LanPair lp = lanPairs.Find((p) => { return p.lan == tmpPair.lan && p.key == tmpPair.key; });
             if (lp == null)
             {
                 lanPairs.Add(tmpPair);
@@ -255,14 +255,14 @@ namespace IFramework
             }
             else
             {
-                if (lp.Value == tmpPair.Value)
+                if (lp.value == tmpPair.value)
                     ShowNotification(new GUIContent("Don't Add Same"));
                 else
                 {
                     if (EditorUtility.DisplayDialog("Warn",
-                        string.Format("Replace Old Value ?\n Old Value  {0}\n New Vlaue  {1}", lp.Value, tmpPair.Value), "Yes", "No"))
+                        string.Format("Replace Old Value ?\n Old Value  {0}\n New Vlaue  {1}", lp.value, tmpPair.value), "Yes", "No"))
                     {
-                        lp.Value = tmpPair.Value;
+                        lp.value = tmpPair.value;
                     }
                 }
             }
@@ -307,26 +307,26 @@ namespace IFramework
         {
             List<LanPair> ps = Xml.ToObject<List<LanPair>>(path.ReadText(Encoding.UTF8))
                 .Distinct()
-                .ToList().FindAll((p) => { return !string.IsNullOrEmpty(p.key) && !string.IsNullOrEmpty(p.Value); });
+                .ToList().FindAll((p) => { return !string.IsNullOrEmpty(p.key) && !string.IsNullOrEmpty(p.value); });
             if (ps == null || ps.Count == 0) return;
             for (int i = 0; i < ps.Count; i++)
             {
                 var filePair = ps[i];
                 if (!lanKeys.Contains(filePair.key)) lanKeys.Add(filePair.key);
-                LanPair oldPair = lanPairs.Find((pair) => { return pair.key == filePair.key && pair.Lan == filePair.Lan; });
+                LanPair oldPair = lanPairs.Find((pair) => { return pair.key == filePair.key && pair.lan == filePair.lan; });
                 if (oldPair == null) lanPairs.Add(filePair);
                 else
                 {
-                    if (oldPair.Value != filePair.Value)
+                    if (oldPair.value != filePair.value)
                     {
                         if (EditorUtility.DisplayDialog("Warning",
                                             "The LanPair Is Same Do You Want Replace \n"
-                                            .Append(string.Format("Lan {0}\t\t Key {0}\t \n", oldPair.Lan, oldPair.key))
-                                            .Append(string.Format("Old  Val\t\t {0}\n", oldPair.Value))
-                                            .Append(string.Format("New  Val\t\t {0}\n", filePair.Value))
+                                            .Append(string.Format("Lan {0}\t\t Key {0}\t \n", oldPair.lan, oldPair.key))
+                                            .Append(string.Format("Old  Val\t\t {0}\n", oldPair.value))
+                                            .Append(string.Format("New  Val\t\t {0}\n", filePair.value))
                                             , "Yes", "No"))
                         {
-                            oldPair.Value = filePair.Value;
+                            oldPair.value = filePair.value;
                         }
                     }
                 }
@@ -342,26 +342,26 @@ namespace IFramework
         {
             List<LanPair> ps = Json.ToObject<List<LanPair>>(path.ReadText(Encoding.UTF8))
                .Distinct()
-               .ToList().FindAll((p) => { return !string.IsNullOrEmpty(p.key) && !string.IsNullOrEmpty(p.Value); });
+               .ToList().FindAll((p) => { return !string.IsNullOrEmpty(p.key) && !string.IsNullOrEmpty(p.value); });
             if (ps == null || ps.Count == 0) return;
             for (int i = 0; i < ps.Count; i++)
             {
                 var filePair = ps[i];
                 if (!lanKeys.Contains(filePair.key)) lanKeys.Add(filePair.key);
-                LanPair oldPair = lanPairs.Find((pair) => { return pair.key == filePair.key && pair.Lan == filePair.Lan; });
+                LanPair oldPair = lanPairs.Find((pair) => { return pair.key == filePair.key && pair.lan == filePair.lan; });
                 if (oldPair == null) lanPairs.Add(filePair);
                 else
                 {
-                    if (oldPair.Value != filePair.Value)
+                    if (oldPair.value != filePair.value)
                     {
                         if (EditorUtility.DisplayDialog("Warning",
                                             "The LanPair Is Same Do You Want Replace \n"
-                                            .Append(string.Format("Lan {0}\t\t Key {0}\t \n", oldPair.Lan, oldPair.key))
-                                            .Append(string.Format("Old  Val\t\t {0}\n", oldPair.Value))
-                                            .Append(string.Format("New  Val\t\t {0}\n", filePair.Value))
+                                            .Append(string.Format("Lan {0}\t\t Key {0}\t \n", oldPair.lan, oldPair.key))
+                                            .Append(string.Format("Old  Val\t\t {0}\n", oldPair.value))
+                                            .Append(string.Format("New  Val\t\t {0}\n", filePair.value))
                                             , "Yes", "No"))
                         {
-                            oldPair.Value = filePair.Value;
+                            oldPair.value = filePair.value;
                         }
                     }
                 }
@@ -470,7 +470,7 @@ namespace IFramework
                         {
                             this.BeginHorizontal()
                                     .Label("Lan", GUILayout.Width(describeWidth))
-                                    .Pan(() => { tmpLanPair.Lan = (SystemLanguage)EditorGUILayout.EnumPopup(tmpLanPair.Lan); })
+                                    .Pan(() => { tmpLanPair.lan = (SystemLanguage)EditorGUILayout.EnumPopup(tmpLanPair.lan); })
                                 .EndHorizontal()
                                 .BeginHorizontal()
                                     .Label("Key", GUILayout.Width(describeWidth))
@@ -501,7 +501,7 @@ namespace IFramework
                                 })
                                 .BeginHorizontal()
                                     .Label("Val", GUILayout.Width(describeWidth))
-                                    .TextField(ref tmpLanPair.Value)
+                                    .TextField(ref tmpLanPair.value)
                                     .EndHorizontal()
                                 .BeginHorizontal()
                                     .FlexibleSpace()
@@ -945,8 +945,8 @@ namespace IFramework
                                                 .Button(() => {  GUIUtility.systemCopyBuffer = pair.key; }, Contents.CopyBtn, GUILayout.Width(smallBtnSize))
                                             .EndHorizontal()
                                             .BeginHorizontal()
-                                                .Label(new GUIContent(string.Format("Val   \t{0}", pair.Value), pair.Value))
-                                                .Button(() => {  GUIUtility.systemCopyBuffer = pair.Value; }, Contents.CopyBtn, GUILayout.Width(smallBtnSize))
+                                                .Label(new GUIContent(string.Format("Val   \t{0}", pair.value), pair.value))
+                                                .Button(() => {  GUIUtility.systemCopyBuffer = pair.value; }, Contents.CopyBtn, GUILayout.Width(smallBtnSize))
                                             .EndHorizontal();
                                     }, Styles.BG);
                                 });
@@ -1045,13 +1045,13 @@ namespace IFramework
                                             .BeginHorizontal()
                                                 .Label("Lan", GUILayout.Width(describeWidth));
                                         GUI.enabled = false;
-                                        EditorGUILayout.EnumPopup(pair.Lan);
+                                        EditorGUILayout.EnumPopup(pair.lan);
                                         GUI.enabled = true;
                                         this.EndHorizontal()
                                             .BeginHorizontal()
                                              .Label("Lan", GUILayout.Width(describeWidth))
-                                             .Label(new GUIContent(pair.Value, pair.Value))
-                                             .Button(() => {  GUIUtility.systemCopyBuffer = pair.Value; }, Contents.CopyBtn, GUILayout.Width(smallBtnSize))
+                                             .Label(new GUIContent(pair.value, pair.value))
+                                             .Button(() => {  GUIUtility.systemCopyBuffer = pair.value; }, Contents.CopyBtn, GUILayout.Width(smallBtnSize))
                                          .EndHorizontal();
                                     }, Styles.BG);
                                 });

@@ -44,7 +44,7 @@ namespace IFramework
                 for (int i = 0; i < info.Infos.Count; i++)
                 {
                     LogEliminateItem item = info.Infos[i];
-                    EditorGUILayout.ObjectField(item.Text, typeof(TextAsset), false);
+                    EditorGUILayout.ObjectField(item.text, typeof(TextAsset), false);
                 }
             }
         }

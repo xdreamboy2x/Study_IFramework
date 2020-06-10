@@ -31,7 +31,7 @@ namespace IFramework
         {
             for (int i = 0; i < Info.Infos.Count; i++)
             {
-                if (Path == Info.Infos[i].Path) return true;
+                if (Path == Info.Infos[i].path) return true;
             }
             return false;
         }

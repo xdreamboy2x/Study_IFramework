@@ -14,11 +14,11 @@ namespace IFramework
 	public class LanGroup:ScriptableObject
 	{
         [ReadOnly] public readonly List<LanPair> lanPairs = new List<LanPair>();
-        [ReadOnly] public readonly List<string> Keys = new List<string>();
+        [ReadOnly] public readonly List<string> keys = new List<string>();
 
         public void DeletePairsByLan(SystemLanguage lan)
         {
-            lanPairs.RemoveAll((pair) => { return pair.Lan == lan; });
+            lanPairs.RemoveAll((pair) => { return pair.lan == lan; });
         }
 
         public void DeletePairsByKey(string key)

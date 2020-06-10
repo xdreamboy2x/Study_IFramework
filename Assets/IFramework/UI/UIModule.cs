@@ -6,92 +6,14 @@
  *Description:    IFramework
  *History:        2018.11--
 *********************************************************************************/
+using IFramework.Modules;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using IFramework.Modules;
-using IFramework.Modules.MVVM;
-using XLua;
 
 namespace IFramework.UI
 {
-    public interface IGroups:IDisposable
-    {
-        UIPanel FindPanel(string name);
-        void InvokeUIModuleEventListenner(UIEventArgs arg);
-        void Subscribe(UIPanel panel);
-        void UnSubscribe(UIPanel panel);
-    }
-    public class Groups:IGroups
-    {
-        private MVVMModule _moudule;
-        private Dictionary<Type, Tuple<Type, Type, Type>> _map;
-
-        private MVVMGroup FindGroup(string panelName)
-        {
-            return _moudule.FindGroup(panelName);
-        }
-        private MVVMGroup FindGroup(UIPanel panel)
-        {
-            return FindGroup(panel.PanelName);
-        }
-
-
-
-        public Groups(Dictionary<Type, Tuple<Type, Type, Type>> map)
-        {
-            _moudule = MVVMModule.CreatInstance<MVVMModule>("UIGroup");
-            this._map = map;
-        }
-        public UIPanel FindPanel(string panelName)
-        {
-            var group = FindGroup(panelName);
-            if (group == null) return null;
-                return (group.view as UIView).panel;
-        }
-        public void InvokeUIModuleEventListenner(UIEventArgs arg)
-        {
-            if (arg.pressPanel != null)
-                (FindGroup(arg.pressPanel).view as IUIModuleEventListenner).OnPress(arg);
-            if (arg.popPanel != null)
-                (FindGroup(arg.popPanel).view as IUIModuleEventListenner).OnPop(arg);
-            if (arg.curPanel != null)
-                (FindGroup(arg.curPanel).view as IUIModuleEventListenner).OnTop(arg);
-        }
-        public void Subscribe(UIPanel panel)
-        {
-            var _group = FindGroup(panel);
-            if (_group != null) throw new Exception(string.Format("Have Subscribe Panel Name: {0}", panel.PanelName));
-
-            Tuple<Type, Type, Type> tuple;
-            _map.TryGetValue(panel.GetType(), out tuple);
-            if (tuple == null) throw new Exception(string.Format("Could Not Find map with Type: {0}", panel.GetType()));
-
-
-            var model = Activator.CreateInstance(tuple.Item1) as IDataModel;
-            var view = Activator.CreateInstance(tuple.Item2) as UIView;
-            var vm = Activator.CreateInstance(tuple.Item3) as UIViewModel;
-            view.panel = panel;
-
-            UIGroup group = new UIGroup(panel.name, view, vm, model);
-            _moudule.AddGroup(group);
-            (view as IUIModuleEventListenner).OnLoad();
-        }
-        public void UnSubscribe(UIPanel panel)
-        {
-            var group = FindGroup(panel);
-            if (group != null)
-            {
-                (group.view as IUIModuleEventListenner).OnClear();
-                group.Dispose();
-            }
-        }
-        public void Dispose()
-        {
-            _moudule.Dispose();
-        }
-    }
     public partial class UIModule
     {
         public Canvas Canvas { get; private set; }
@@ -183,33 +105,32 @@ namespace IFramework.UI
     }
     public partial class UIModule
     {
-        private List<LoadDel> loaders;
-        public int LoaderCount { get { return loaders.Count; } }
+        private List<IPanelLoader> _loaders;
+        public int loaderCount { get { return _loaders.Count; } }
 
-        public Stack<UIPanel> UIStack;
-        public Stack<UIPanel> UICache;
-        public int StackCount { get { return UIStack.Count; } }
-        public int CacheCount { get { return UICache.Count; } }
-        public bool IsInStack(UIPanel panel) { return UIStack.Contains(panel); }
-        public bool IsInCache(UIPanel panel) { return UICache.Contains(panel); }
-        public bool IsInUse(UIPanel panel) { return IsInCache(panel) || IsInStack(panel); }
-        public UIPanel Current
+        public Stack<UIPanel> stack;
+        public Stack<UIPanel> memory;
+        public int stackCount { get { return stack.Count; } }
+        public int memoryCount { get { return memory.Count; } }
+        public bool IsInStack(UIPanel panel) { return stack.Contains(panel); }
+        public bool IsInMemory(UIPanel panel) { return memory.Contains(panel); }
+        public bool IsInUse(UIPanel panel) { return IsInMemory(panel) || IsInStack(panel); }
+        public UIPanel current
         {
             get
             {
-                if (UIStack.Count == 0)
+                if (stack.Count == 0)
                     return null;
-                return UIStack.Peek();
+                return stack.Peek();
             }
         }
-        public UIPanel CachePeek()
+        public UIPanel MemoryPeek()
         {
-            if (UICache.Count == 0)
+            if (memory.Count == 0)
                 return null;
-            return UICache.Peek();
+            return memory.Peek();
         }
     }
-    public delegate UIPanel LoadDel(Type type, string path, string name, UIPanelLayer layer);
     public partial class UIModule : FrameworkModule
     {
 
@@ -218,17 +139,17 @@ namespace IFramework.UI
         {
             InitTransform();
 
-            UIStack = new Stack<UIPanel>();
-            UICache = new Stack<UIPanel>();
-            loaders = new List<LoadDel>();
+            stack = new Stack<UIPanel>();
+            memory = new Stack<UIPanel>();
+            _loaders = new List<IPanelLoader>();
 
         }
         protected override void OnDispose()
         {
 
-            UIStack.Clear();
-            UICache.Clear();
-            loaders.Clear();
+            stack.Clear();
+            memory.Clear();
+            _loaders.Clear();
 
             if (_groups != null)
                 _groups.Dispose();
@@ -236,11 +157,11 @@ namespace IFramework.UI
                 GameObject.Destroy(Canvas.gameObject);
         }
 
-   
 
-        public void AddLoader(LoadDel loader)
+
+        public void AddLoader(IPanelLoader loader)
         {
-            loaders.Add(loader);
+            _loaders.Add(loader);
         }
 
         public void SetGroups(IGroups groups)
@@ -254,14 +175,14 @@ namespace IFramework.UI
             if (_groups == null)
                 throw new Exception("Please Set ModuleType First");
             UIPanel ui = default(UIPanel);
-            if (loaders == null || LoaderCount == 0)
+            if (_loaders == null || loaderCount == 0)
             {
                 Log.E("NO UILoader");
                 return ui;
             }
-            for (int i = 0; i < loaders.Count; i++)
+            for (int i = 0; i < _loaders.Count; i++)
             {
-                var result = loaders[i].Invoke(type, path, name, layer);
+                var result = _loaders[i].Load(type, path, name, layer);
                 if (result == null) continue;
 
                 ui = result;
@@ -270,7 +191,7 @@ namespace IFramework.UI
                 SetParent(ui);
                 ui.PanelName = name;
                 ui.GetComponent<RectTransform>().sizeDelta = Vector2.zero;
-                 _groups.Subscribe(ui);
+                _groups.Subscribe(ui);
 
                 return ui;
             }
@@ -283,7 +204,7 @@ namespace IFramework.UI
         }
         public bool HaveLoadPanel(string panelName)
         {
-            return _groups.FindPanel(panelName)!=null;
+            return _groups.FindPanel(panelName) != null;
         }
 
 
@@ -291,27 +212,27 @@ namespace IFramework.UI
         {
             UIEventArgs arg = UIEventArgs.Allocate<UIEventArgs>(this.container.env.envType);
             arg.code = UIEventArgs.Code.Push;
-            if (StackCount > 0)
-                arg.pressPanel = Current;
+            if (stackCount > 0)
+                arg.pressPanel = current;
             arg.curPanel = ui;
 
-            UIStack.Push(ui);
+            stack.Push(ui);
             InvokeUIModuleEventListenner(arg);
             arg.Recyle();
-            if (UICache.Count > 0) ClearCache();
+            if (memory.Count > 0) ClearCache();
         }
         public void GoForWard()
         {
             UIEventArgs arg = UIEventArgs.Allocate<UIEventArgs>(this.container.env.envType);
             arg.code = UIEventArgs.Code.GoForward;
 
-            if (CacheCount <= 0) return;
-            if (StackCount > 0)
-                arg.pressPanel = Current;
+            if (memoryCount <= 0) return;
+            if (stackCount > 0)
+                arg.pressPanel = current;
 
-            var ui = UICache.Pop();
+            var ui = memory.Pop();
             arg.curPanel = ui;
-            UIStack.Push(ui);
+            stack.Push(ui);
             InvokeUIModuleEventListenner(arg);
             arg.Recyle();
         }
@@ -319,14 +240,14 @@ namespace IFramework.UI
         {
             UIEventArgs arg = UIEventArgs.Allocate<UIEventArgs>(this.container.env.envType);
             arg.code = UIEventArgs.Code.GoBack;
-            if (StackCount <= 0) return;
+            if (stackCount <= 0) return;
 
-            var ui = UIStack.Pop();
+            var ui = stack.Pop();
             arg.popPanel = ui;
-            UICache.Push(ui);
+            memory.Push(ui);
 
-            if (StackCount > 0)
-                arg.curPanel = Current;
+            if (stackCount > 0)
+                arg.curPanel = current;
             InvokeUIModuleEventListenner(arg);
             arg.Recyle();
 
@@ -339,9 +260,9 @@ namespace IFramework.UI
 
         public void ClearCache()
         {
-            while (UICache.Count != 0)
+            while (memory.Count != 0)
             {
-                UIPanel p = UICache.Pop();
+                UIPanel p = memory.Pop();
                 if (p != null && !IsInStack(p))
                 {
                     _groups.UnSubscribe(p);
@@ -354,8 +275,8 @@ namespace IFramework.UI
         {
             //if (UICache.Count > 0) ClearCache(arg);
 
-            if (Current != null && Current.PanelName == name && Current.GetType() == type)
-                return Current;
+            if (current != null && current.PanelName == name && current.GetType() == type)
+                return current;
             var panel = _groups.FindPanel(name);
             if (panel == null)
                 panel = Load(type, path, layer, name);

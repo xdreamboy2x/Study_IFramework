@@ -22,14 +22,14 @@ namespace IFramework_Demo
                 {
                     new LanPair()
                     {
-                        Lan= SystemLanguage.Chinese,
-                        Value="哈哈",
+                        lan= SystemLanguage.Chinese,
+                        value="哈哈",
                         key="77"
                     },
                     new LanPair()
                     {
-                        Lan= SystemLanguage.English,
-                        Value="haha",
+                        lan= SystemLanguage.English,
+                        value="haha",
                         key="77"
                     }
                 };
@@ -49,7 +49,7 @@ namespace IFramework_Demo
         private void Update()
         {
             index = ++index % 40;
-            mou.Lan = (SystemLanguage)index;
+            mou.lan = (SystemLanguage)index;
         }
         
     }

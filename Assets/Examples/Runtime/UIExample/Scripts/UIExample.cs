@@ -16,17 +16,17 @@ using IFramework.UI;
 namespace IFramework_Demo
 {
     [RequireComponent(typeof(Game))]
-	public class UIExample : MonoBehaviour
-	{
+	public class UIExample : MonoBehaviour, IPanelLoader
+    {
         UIModule module;
         private void Start()
         {
             module = Framework.env1.modules.FindModule<UIModule>();
-            module.AddLoader(Load);
+            module.AddLoader(this);
             //module.SetGroups(new Groups(UIMap_MVVM.map));
         }
 
-        private UIPanel Load(Type type, string path, string name, UIPanelLayer layer)
+        public UIPanel Load(Type type, string path, string name, UIPanelLayer layer)
         {
             GameObject go = Resources.Load<GameObject>(path);
             return go.GetComponent<UIPanel>();

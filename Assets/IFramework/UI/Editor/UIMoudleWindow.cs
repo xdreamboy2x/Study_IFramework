@@ -416,17 +416,17 @@ namespace IFramework.UI
                 .BeginVertical()
                     .BeginHorizontal(Styles.Fold, GUILayout.Height(20))
                         .Space(10)
-                        .Foldout(ref IsStackOn, string.Format("Stack  Count:  {0}", moudle.StackCount), true, Styles.FoldOut)
+                        .Foldout(ref IsStackOn, string.Format("Stack  Count:  {0}", moudle.stackCount), true, Styles.FoldOut)
                         .FlexibleSpace()
                     .EndHorizontal()
                     .Pan(() => {
-                        if (moudle.StackCount <= 0) return;
-                        var o = moudle.UIStack.ToList();
+                        if (moudle.stackCount <= 0) return;
+                        var o = moudle.stack.ToList();
                     //GUI.enabled = false;
                     if (IsStackOn)
                         {
                             this.DrawScrollView(() => {
-                                for (int i = moudle.UIStack.Count - 1; i >= 0; i--)
+                                for (int i = moudle.stack.Count - 1; i >= 0; i--)
                                 {
                                     GUI.enabled = i == 0;
                                     bool canshow = FitCanShow(o[i]);
@@ -454,18 +454,18 @@ namespace IFramework.UI
 
                     .BeginHorizontal(Styles.Fold, GUILayout.Height(20))
                         .Space(10)
-                        .Foldout(ref IsCacheOn, string.Format("Cache  Count:  {0}", moudle.CacheCount), true, Styles.FoldOut)
+                        .Foldout(ref IsCacheOn, string.Format("Cache  Count:  {0}", moudle.memoryCount), true, Styles.FoldOut)
                         .FlexibleSpace()
                     .EndHorizontal()
                     .Pan(() => {
-                        if (moudle.UICache.Count <= 0) return;
-                        var o = moudle.UICache.ToList();
+                        if (moudle.memory.Count <= 0) return;
+                        var o = moudle.memory.ToList();
                         if (IsCacheOn)
                         {
                             this.DrawScrollView(() =>
                             {
                                 GUI.enabled = false;
-                                for (int i = 0; i < moudle.UICache.Count; i++)
+                                for (int i = 0; i < moudle.memory.Count; i++)
                                 {
                                     bool canshow = FitCanShow(o[i]);
                                     if (!canshow) continue;
@@ -518,20 +518,20 @@ namespace IFramework.UI
             }
             private void TestButton()
             {
-                if (moudle.LoaderCount <= 0)
+                if (moudle.loaderCount <= 0)
                     EditorGUILayout.HelpBox("Must Have Loader ", UnityEditor.MessageType.Error);
-                EditorGUILayout.LabelField("LoaderCount: " + moudle.LoaderCount);
+                EditorGUILayout.LabelField("LoaderCount: " + moudle.loaderCount);
                 using (new EditorGUI.DisabledScope(!EditorApplication.isPlaying))
                 {
                     GUILayout.BeginHorizontal();
-                    using (new EditorGUI.DisabledScope(moudle.StackCount <= 0))
+                    using (new EditorGUI.DisabledScope(moudle.stackCount <= 0))
                     {
                         if (GUILayout.Button("GoBack", GUILayout.Height(30)))
                         {
                             moudle.GoBack();
                         }
                     }
-                    using (new EditorGUI.DisabledScope(moudle.CacheCount <= 0))
+                    using (new EditorGUI.DisabledScope(moudle.memoryCount <= 0))
                     {
                         if (GUILayout.Button("GoForWard", GUILayout.Height(30)))
                         {
@@ -539,7 +539,7 @@ namespace IFramework.UI
                         }
                     }
                     GUILayout.EndHorizontal();
-                    using (new EditorGUI.DisabledScope(moudle.CacheCount <= 0))
+                    using (new EditorGUI.DisabledScope(moudle.memoryCount <= 0))
                     {
                         if (GUILayout.Button("ClearCache", GUILayout.Height(30)))
                         {

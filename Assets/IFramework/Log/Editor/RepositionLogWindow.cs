@@ -72,31 +72,31 @@ namespace IFramework
             for (int i = 0; i < info.Infos.Count; i++)
             {
                 LogEliminateItem item = info.Infos[i];
-                if (item.Text == null)
+                if (item.text == null)
                 {
-                    if (string.IsNullOrEmpty(item.Path))
+                    if (string.IsNullOrEmpty(item.path))
                     {
                         ShowNotification(new GUIContent("Null Err"));
                     }
                     else
                     {
-                        TextAsset txt = AssetDatabase.LoadAssetAtPath<TextAsset>(item.Path);
+                        TextAsset txt = AssetDatabase.LoadAssetAtPath<TextAsset>(item.path);
                         if (txt == null)
                         {
                             ShowNotification(new GUIContent("Not Found Err"));
                         }
                         else
                         {
-                            item.Text = txt;
-                            item.Name = item.Path.GetFileName();
+                            item.text = txt;
+                            item.name = item.path.GetFileName();
                         }
                     }
                 }
                 else
                 {
-                    string path = AssetDatabase.GetAssetPath(item.Text);
-                    item.Path = path;
-                    item.Name = path.GetFileName();
+                    string path = AssetDatabase.GetAssetPath(item.text);
+                    item.path = path;
+                    item.name = path.GetFileName();
                 }
             }
             EditorUtility.ClearProgressBar();
@@ -151,10 +151,10 @@ namespace IFramework
                                 table.SelectRow(i);
                                 Repaint();
                             }
-                            Texture2D tx = AssetPreview.GetMiniThumbnail(info.Infos[i].Text);
+                            Texture2D tx = AssetPreview.GetMiniThumbnail(info.Infos[i].text);
                             this.Label(table.rows[i][Preview].position, new GUIContent(tx));
-                            this.Label(table.rows[i][Name].position, info.Infos[i].Name);
-                            this.Label(table.rows[i][Path].position, info.Infos[i].Path);
+                            this.Label(table.rows[i][Name].position, info.Infos[i].name);
+                            this.Label(table.rows[i][Path].position, info.Infos[i].path);
                         }
                     }, 
                     table.view,ref ScrollPos,table.content, false, false
@@ -192,19 +192,19 @@ namespace IFramework
             this.DrawArea(() => {
                 this.DrawHorizontal(() =>
                 {
-                    this.Toggle("Enable",ref info.Enable);
-                    using (new EditorGUI.DisabledScope(!info.Enable))
+                    this.Toggle("Enable",ref info.enable);
+                    using (new EditorGUI.DisabledScope(!info.enable))
                     {
-                        this.Toggle("LogEnable",ref info.LogEnable);
-                        this.Toggle("WarnningEnable",ref info.WarnningEnable);
-                        this.Toggle("ErrEnable",ref info.ErrEnable);
+                        this.Toggle("LogEnable",ref info.enable_L);
+                        this.Toggle("WarnningEnable",ref info.enable_W);
+                        this.Toggle("ErrEnable",ref info.enable_E);
                     }
                 });
-                using (new EditorGUI.DisabledScope(!info.Enable))
+                using (new EditorGUI.DisabledScope(!info.enable))
                 {
-                    this.IntSlider("LogLevel ",ref info.LogLevel, 0, 100);
-                    this.IntSlider("WarnningLevel ",ref info.WarnningLevel, 0, 100);
-                    this.IntSlider("ErrLevel ",ref info.ErrLevel, 0, 100);
+                    this.IntSlider("LogLevel ",ref info.lev_L, 0, 100);
+                    this.IntSlider("WarnningLevel ",ref info.lev_W, 0, 100);
+                    this.IntSlider("ErrLevel ",ref info.lev_E, 0, 100);
                 }
 
 
@@ -258,7 +258,7 @@ namespace IFramework
                     {
                         if (table.rows[i].position.Contains(eve.mousePosition))
                         {
-                            Selection.activeObject = this.info.Infos[i].Text;
+                            Selection.activeObject = this.info.Infos[i].text;
                             break;
                         }
                     }
@@ -277,13 +277,13 @@ namespace IFramework
             if (txt == null) return;
             for (int i = 0; i < info.Infos.Count; i++)
             {
-                if (info.Infos[i].Path == path) return;
+                if (info.Infos[i].path == path) return;
             }
             info.Infos.Add(new LogEliminateItem()
             {
-                Path = path,
-                Name = path.GetFileName(),
-                Text = txt
+                path = path,
+                name = path.GetFileName(),
+                text = txt
             });
         }
     }
