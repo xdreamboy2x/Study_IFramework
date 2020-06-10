@@ -23,15 +23,15 @@ namespace IFramework_Demo
                     r.Event(() =>
                     {
                         color = Color.Lerp(color, 
-                            new Color(Random.Range(0.5f, 1f), 
-                                        Random.Range(0.5f, 1f), 
-                                        Random.Range(0.5f, 1f), 
+                            new Color(Random.Range(0, 1f), 
+                                        Random.Range(0, 1f), 
+                                        Random.Range(0, 1f), 
                                         Random.Range(0.9f, 1f)),
-                            (float)Framework.env0.deltaTime.TotalMilliseconds);
+                            (float)Framework.env0.deltaTime.TotalMilliseconds*2);
                         if (big)
-                            rect = rect.Lerp(rect, new Rect(100, 100, 100, 100), (float)Framework.env0.deltaTime.TotalMilliseconds);
+                            rect = rect.Lerp(rect, new Rect(200, 200, 100, 100), (float)EditorEnv.env.deltaTime.TotalMilliseconds/2);
                         else
-                            rect = rect.Lerp(rect, Rect.zero, (float)Framework.env0.deltaTime.TotalMilliseconds);
+                            rect = rect.Lerp(rect, Rect.zero, (float)EditorEnv.env.deltaTime.TotalMilliseconds/2);
                         if (rect.size.x > 90)
                             big = false;
                         if (rect.size.x < 10)
@@ -42,7 +42,7 @@ namespace IFramework_Demo
                 .Run();
         }
         bool big;
-        private Rect rect = new Rect(100, 100, 100, 100);
+        private Rect rect = new Rect(200, 200, 100, 100);
         private Color color;
         private void OnGUI()
         {

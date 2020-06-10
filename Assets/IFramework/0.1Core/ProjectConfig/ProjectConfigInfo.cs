@@ -1,18 +1,18 @@
 ﻿/*********************************************************************************
  *Author:         OnClick
  *Version:        0.0.1
- *UnityVersion:   2017.2.3p3
- *Date:           2019-05-17
+ *UnityVersion:   2018.3.1f1
+ *Date:           2019-03-23
  *Description:    IFramework
  *History:        2018.11--
 *********************************************************************************/
-using System.Collections.Generic;
-using UnityEngine;
+using System;
 namespace IFramework
 {
-    public class LogSetting : ScriptableObject
-    {
-        public List<LogEliminateItem> Infos = new List<LogEliminateItem>();
+    [Serializable][UnityEngine.CreateAssetMenu]
+	public class ProjectConfigInfo:UnityEngine.ScriptableObject
+	{
+
         public int lev_L;
         public int lev_W;
         public int lev_E;
@@ -20,12 +20,19 @@ namespace IFramework
         public bool enable_L = true;
         public bool enable_W = true;
         public bool enable_E = true;
-    }
-    [System.Serializable]
-    public class LogEliminateItem
-    {
-        public string name;
-        public string path;
-        public TextAsset text;
+
+
+
+        public string NameSpace;
+        public string UserName;
+        public string Version;
+        public string Description;
+        public ProjectConfigInfo()
+        {
+            UserName = "OnClick";
+            NameSpace = "IFramework_Demo";
+            Version = "0.0.1";
+            Description = "Description";
+        }
     }
 }

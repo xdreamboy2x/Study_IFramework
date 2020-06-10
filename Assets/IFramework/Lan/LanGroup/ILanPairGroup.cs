@@ -1,14 +1,17 @@
 ﻿/*********************************************************************************
  *Author:         OnClick
  *Version:        0.0.1
- *UnityVersion:   2017.2.3p3
- *Date:           2019-08-29
+ *UnityVersion:   2018.3.11f1
+ *Date:           2019-09-01
  *Description:    IFramework
  *History:        2018.11--
 *********************************************************************************/
-using UnityEngine;
+using System.Collections.Generic;
 
 namespace IFramework.Language
 {
-    public class LanguageKeyAttribute : PropertyAttribute { }
+    public interface ILanPairGroup
+    {
+        List<LanPair> Load();
+    }
 }

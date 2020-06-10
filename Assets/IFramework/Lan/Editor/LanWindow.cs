@@ -16,7 +16,7 @@ using System.Text;
 using IFramework.Serialization;
 using IFramework.GUITool;
 
-namespace IFramework
+namespace IFramework.Language
 {
     [EditorWindowCache("IFramework.Language")]
     public partial class LanWindow : EditorWindow

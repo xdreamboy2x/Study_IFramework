@@ -21,12 +21,18 @@ namespace IFramework
         private static string _fpath;
         public const EnvironmentType envType = EnvironmentType.Ev0;
         public static FrameworkEnvironment env { get { return Framework.env0; } }
+        public static FrameworkModules moudules { get { return env.modules; } }
+
+
 
         public static string frameworkName { get { return Framework.FrameworkName; } }
         public static string author { get { return Framework.Author; } }
         public static string version { get { return Framework.Version; } }
         public static string description { get { return Framework.Description; } }
-        public static string frameworkPath { get {
+        public static string frameworkPath
+        {
+            get
+            {
                 if (string.IsNullOrEmpty(_fpath))
                 {
                     string[] assetPaths = AssetDatabase.GetAllAssetPaths();
@@ -36,7 +42,7 @@ namespace IFramework
                         {
                             string tempPath = assetPaths[i];
                             int index = tempPath.IndexOf(_relativeCorePath);
-                            _fpath= tempPath.Substring(0, index);
+                            _fpath = tempPath.Substring(0, index);
                             break;
                         }
                     }
@@ -47,7 +53,7 @@ namespace IFramework
         public static string editorPath { get { return frameworkPath.CombinePath(_relativeEditorPath); } }
         public static string utilPath { get { return frameworkPath.CombinePath(_relativeUtilPath); } }
         public static string corePath { get { return frameworkPath.CombinePath(_relativeCorePath); } }
-        public static string coreEditorPath { get { return  frameworkPath.CombinePath(_relativeCoreEditorPath); } }
+        public static string coreEditorPath { get { return frameworkPath.CombinePath(_relativeCoreEditorPath); } }
 
 
 
@@ -73,9 +79,9 @@ namespace IFramework
 
 
         [InitializeOnLoadMethod]
-        public static void EditorEnvInit()
+        static void EditorEnvInit()
         {
-            UnityEngine.Debug.Log("FrameworkPath   right?   "+frameworkPath);
+            UnityEngine.Debug.Log("FrameworkPath   right?   " + frameworkPath);
             Framework.InitEnv("IFramework_Editor", envType).InitWithAttribute();
 
             quitting += Framework.env0.Dispose;

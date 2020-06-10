@@ -7,6 +7,7 @@
  *History:        2018.11--
 *********************************************************************************/
 using IFramework;
+using IFramework.Language;
 using System.Collections.Generic;
 using UnityEngine;
 namespace IFramework_Demo

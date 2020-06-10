@@ -921,6 +921,7 @@ namespace IFramework.AB
             WinTree.OnGUI(rs[1]);
             ToolBarTree.OnGUI(rs[0]);
             this.minSize = WinTree.minSize + new Vector2(0, ToolBarHeight);
+            Repaint();
         }
     }
 }

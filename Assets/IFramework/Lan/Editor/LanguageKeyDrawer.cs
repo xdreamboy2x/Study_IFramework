@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace IFramework
+namespace IFramework.Language
 {
     [CustomPropertyDrawer(typeof(LanguageKeyAttribute))]
     public class LanguageKeyDrawer:PropertyDrawer

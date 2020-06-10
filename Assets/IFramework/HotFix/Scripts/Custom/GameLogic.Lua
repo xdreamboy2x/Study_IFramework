@@ -1,4 +1,4 @@
-Log.L("Start Game Logic ")
+Log.L(0,"Start Game Logic ")
 
 local _group=require("UI.LuaGroups")()
 local _uimodule=  Game.unityModules.UI

@@ -100,7 +100,6 @@ function Awake()
 	IFramework.Framework.BindEnvUpdate(Update,Game.env)
 	require("Custom.FixCsharp")
 	require("Custom.GameLogic")
-	
 end
 
 
@@ -109,13 +108,16 @@ end
 
 function Update()
 
-	Log.L("Update")
+	Log.L(0,"Update")
 	updateEvent:Invoke()
 end
 
 function OnDispose()
-	Log.L("OnDispose")
+	Log.L(0,"OnDispose")
+	updateEvent:Dispose()
 	disposeEvent:Invoke()
+	disposeEvent:Dispose()
+	
 	IFramework.Framework.UnBindEnvUpdate(Update,Game.env)
 end
 

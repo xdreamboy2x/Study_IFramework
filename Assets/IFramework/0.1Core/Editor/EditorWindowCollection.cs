@@ -122,7 +122,7 @@ namespace IFramework
                     if (attrs[i] is EditorWindowCacheAttribute)
                     {
                         EditorWindowCacheAttribute attr = attrs[i] as EditorWindowCacheAttribute;
-                        Windows.Add(new EditorWindowInfo(item,  string.IsNullOrEmpty(attr.searchName)?item.FullName: attr.searchName));
+                        Windows.Add(new EditorWindowInfo(item, string.IsNullOrEmpty(attr.searchName) ? item.FullName : attr.searchName));
                     }
                 }
             }
@@ -210,7 +210,7 @@ namespace IFramework
         }
 
     }
-    public class EditorWindowCollection : EditorWindow, IRectGUIDrawer, ILayoutGUIDrawer
+    class EditorWindowCollection : EditorWindow, IRectGUIDrawer, ILayoutGUIDrawer
     {
         [MenuItem("IFramework/EditorWindowCollection")]
         static void ShowWindow()
@@ -284,7 +284,7 @@ namespace IFramework
                 .LabelField(table.titleRow[Find].localPostion, Find)
                 .LabelField(table.titleRow[FindOrCreate].localPostion, FindOrCreate)
                 .LabelField(table.titleRow[CloseBtn].localPostion, CloseBtn)
-                .Pan(() =>{
+                .Pan(() => {
                     sear.OnGUI(table.titleRow[SearchStr].localPostion);
                 })
                 .DrawScrollView(() =>

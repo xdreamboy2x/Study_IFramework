@@ -10,6 +10,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using IFramework;
+using IFramework.Inject;
 using UnityEngine;
 
 namespace IFramework_Demo

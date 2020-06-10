@@ -111,7 +111,7 @@ namespace IFramework.AB
             public void ClearUnUseBundles()
             {
                 foreach (var item in bundles)
-                    if (item.Value.IsDone && item.Value.IsUnused)
+                    if (item.Value.IsDone && !item.Value.useful)
                         destoryQueue.Enqueue(item.Value);
                 while (destoryQueue.Count > 0)
                 {
@@ -124,7 +124,7 @@ namespace IFramework.AB
             }
         }
 
-        private class ManifestXML
+        private class Manifest
         {
             //存储asset对应allBundle的index
             private readonly Dictionary<string, int> amap;
@@ -133,7 +133,7 @@ namespace IFramework.AB
             public List<string> allAssets;
             public List<string> allBundles;
 
-            public ManifestXML()
+            public Manifest()
             {
                 amap = new Dictionary<string, int>();
                 bmap = new Dictionary<string, List<int>>();
@@ -147,7 +147,7 @@ namespace IFramework.AB
 
                 allAssets.Clear();
                 allBundles.Clear();
-                List<ManifestXmlContent> list = Xml.ToObject<List<ManifestXmlContent>>(txt);
+                List<BundleGroup> list = Xml.ToObject<List<BundleGroup>>(txt);
                 foreach (var content in list)
                 {
                     allBundles.Add(content.assetBundleName);
@@ -180,7 +180,7 @@ namespace IFramework.AB
         private List<string> allBundleNames { get { return Instance.manifestXML.allBundles; } }
         public static string GetBundleName(string assetPath) { return Instance.manifestXML.GetBundleName(assetPath); }
         public static string GetAssetName(string assetPath) { return Instance.manifestXML.GetAssetName(assetPath); }
-        private ManifestXML manifestXML;
+        private Manifest manifestXML;
         public static ABBundles Bundles { get; private set; }
 
         private string InitPath
@@ -304,7 +304,7 @@ namespace IFramework.AB
         private ABAssets(){}
         protected override void OnSingletonInit()
         {
-            manifestXML = new ManifestXML();
+            manifestXML = new Manifest();
             Bundles = new ABBundles();
             Framework.BindEnvUpdate(Update, EnvironmentType.Ev1);
             Framework.BindEnvDispose(Dispose, EnvironmentType.Ev1);
@@ -324,7 +324,7 @@ namespace IFramework.AB
             for (int i = 0; i < assets.Count; i++)
             {
                 var asset = assets[i];
-                if (!asset.IsDone && asset.IsUnused)
+                if (!asset.IsDone && !asset.useful)
                 {
                     asset.UnLoad();
                     asset = null;

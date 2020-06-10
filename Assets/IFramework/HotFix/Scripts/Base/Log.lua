@@ -8,26 +8,29 @@ local Log = {}
 --public static bool enable_E = true;
 
 
- function Log.L(fmt,...)
+function Log.L(lev,fmt,...)
+    lev= tonumber(lev)
     local info = debug.getinfo(2,"S")
     local source=info.source
     info = debug.getinfo(2,"l")
     local message="LUA :"..string.format(fmt,...).."\nLine: "..info.currentline.."\n at  "..source
-    CS.IFramework.Log.L(message)
+    CS.IFramework.Log.L(message,lev)
 end
- function Log.W(fmt,...)
+function Log.W(lev,fmt,...)
+    lev= tonumber(lev)
     local info = debug.getinfo(2,"S")
     local source=info.source
     info = debug.getinfo(2,"l")
     local message="LUA :"..string.format(fmt,...).."\nLine: "..info.currentline.."\n at  "..source
-    CS.IFramework.Log.W(message)
+    CS.IFramework.Log.W(message,lev)
 end
-function Log.E(fmt,...)
+function Log.E(lev,fmt,...)
+    lev= tonumber(lev)
     local info = debug.getinfo(2,"S")
     local source=info.source
     info = debug.getinfo(2,"l")
     local message="LUA :"..string.format(fmt,...).."\nLine: "..info.currentline.."\n at  "..source
-    CS.IFramework.Log.E(message)
+    CS.IFramework.Log.E(message,lev)
 end
 
 
@@ -56,19 +59,19 @@ setmetatable(Log,{
 ,
     __newindex=function(t,k,v)
         if k=="lev_L" then
-             CS.IFramework.Log.lev_L =v
+            CS.IFramework.Log.lev_L =v
         elseif k=="lev_W" then
-             CS.IFramework.Log.lev_W =vs
+            CS.IFramework.Log.lev_W =vs
         elseif k=="lev_E" then
-             CS.IFramework.Log.lev_E =v
+            CS.IFramework.Log.lev_E =v
         elseif k=="enable" then
-             CS.IFramework.Log.enable =v
+            CS.IFramework.Log.enable =v
         elseif k=="enable_L" then
-             CS.IFramework.Log.enable_L =v
+            CS.IFramework.Log.enable_L =v
         elseif k=="enable_W" then
-             CS.IFramework.Log.enable_W =v
+            CS.IFramework.Log.enable_W =v
         elseif k=="enable_E" then
-             CS.IFramework.Log.enable_E =v
+            CS.IFramework.Log.enable_E =v
         else
             error("No such Field in Log :"..tostring(k))
         end

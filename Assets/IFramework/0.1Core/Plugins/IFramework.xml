@@ -4,23 +4,56 @@
         <name>IFramework</name>
     </assembly>
     <members>
-        <member name="T:IFramework.OnEnvironmentInitAttribute">
+        <member name="T:IFramework.DependenceAttribute">
             <summary>
-            框架初始化时候调用被标记的静态类
+            依赖描述
             </summary>
         </member>
-        <member name="P:IFramework.OnEnvironmentInitAttribute.type">
+        <member name="F:IFramework.DependenceAttribute.type">
             <summary>
-            配合初始化的版本 0，
-            默认初始化，其他自行规定，用于区分环境，
-            一般某个环境特有的静态类和环境编号一致
+            types
             </summary>
         </member>
-        <member name="M:IFramework.OnEnvironmentInitAttribute.#ctor(IFramework.EnvironmentType)">
+        <member name="M:IFramework.DependenceAttribute.#ctor(System.Type)">
             <summary>
-            Ctor
+            ctor
             </summary>
             <param name="type"></param>
+        </member>
+        <member name="M:IFramework.DependenceAttribute.#ctor(System.Type,System.String)">
+            <summary>
+            ctor
+            </summary>
+            <param name="type"></param>
+            <param name="description"></param>
+        </member>
+        <member name="T:IFramework.DescriptionAttribute">
+            <summary>
+            描述
+            </summary>
+        </member>
+        <member name="F:IFramework.DescriptionAttribute.description">
+            <summary>
+            描述
+            </summary>
+        </member>
+        <member name="M:IFramework.DescriptionAttribute.#ctor(System.String)">
+            <summary>
+            ctor
+            </summary>
+        </member>
+        <member name="T:IFramework.FrameworkArgs">
+            <summary>
+            可回收接口
+            </summary>
+            <summary>
+            可回收消息基类
+            </summary>
+        </member>
+        <member name="P:IFramework.FrameworkArgs.argsDirty">
+            <summary>
+            消息是否可用
+            </summary>
         </member>
         <member name="T:IFramework.EnvironmentType">
             <summary>
@@ -149,6 +182,323 @@
         <member name="T:IFramework.FrameworkModules">
             <summary>
             框架提供的模块
+            </summary>
+        </member>
+        <member name="T:IFramework.FrameworkVersionAttribute">
+            <summary>
+             框架代码版本默认有 1
+            </summary>
+        </member>
+        <member name="P:IFramework.FrameworkVersionAttribute.version">
+            <summary>
+            版本
+            </summary>
+        </member>
+        <member name="M:IFramework.FrameworkVersionAttribute.#ctor(System.Int32)">
+            <summary>
+            Ctor
+            </summary>
+            <param name="version"></param>
+        </member>
+        <member name="T:IFramework.Inject.FrameworkContainer.Tuple`2">
+            http://stackoverflow.com/questions/1171812/multi-key-dictionary-in-c
+        </member>
+        <member name="T:IFramework.Modules.ECS.IEntity">
+            <summary>
+            实体
+            </summary>
+        </member>
+        <member name="P:IFramework.Modules.ECS.IEntity._mou">
+            <summary>
+            注册的模块
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.ECS.IEntity.GetComponent(System.Type)">
+            <summary>
+            获取组件
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Modules.ECS.IEntity.GetComponent``1">
+            <summary>
+            湖区组件
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Modules.ECS.IEntity.AddComponent(System.Type)">
+            <summary>
+            添加组件
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Modules.ECS.IEntity.AddComponent``1">
+            <summary>
+            添加组件
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Modules.ECS.IEntity.AddComponent(IFramework.Modules.ECS.IComponent,System.Boolean)">
+            <summary>
+            添加组件
+            </summary>
+            <param name="component"></param>
+            <param name="useSame"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Modules.ECS.IEntity.AddComponent``1(``0,System.Boolean)">
+            <summary>
+            添加组件
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="component"></param>
+            <param name="useSame"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Modules.ECS.IEntity.RemoveComponent(System.Type)">
+            <summary>
+            移除组件
+            </summary>
+            <param name="type"></param>
+        </member>
+        <member name="M:IFramework.Modules.ECS.IEntity.RemoveComponent``1">
+            <summary>
+            移除组件
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:IFramework.Modules.ECS.IEntity.ContainsComponent(System.Type)">
+            <summary>
+            是否包含组件
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Modules.ECS.IEntity.ContainsComponent``1">
+            <summary>
+            是否包含组件
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Modules.ECS.IEntity.ReFreshComponent(System.Type,IFramework.Modules.ECS.IComponent)">
+            <summary>
+            直接替换原组件，结构体必须使用这个方法刷新数据
+            </summary>
+            <param name="type"></param>
+            <param name="component"></param>
+        </member>
+        <member name="M:IFramework.Modules.ECS.IEntity.ReFreshComponent``1(``0)">
+            <summary>
+            直接替换原组件，结构体必须使用这个方法刷新数据
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="component"></param>
+        </member>
+        <member name="M:IFramework.Modules.ECS.IEntity.Destory">
+            <summary>
+            解除模块注册
+            </summary>
+        </member>
+        <member name="T:IFramework.Modules.ECS.ECSModule">
+            <summary>
+            模仿Ecs结构
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.ECS.ECSModule.CreateEntity``1">
+            <summary>
+            创建实体，创建完，注册
+            </summary>
+            <typeparam name="TEntity"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Modules.ECS.ECSModule.SubscribeEntity``1(``0)">
+            <summary>
+            注册实体
+            </summary>
+            <typeparam name="TEntity"></typeparam>
+            <param name="entity"></param>
+        </member>
+        <member name="M:IFramework.Modules.ECS.ECSModule.UnSubscribeEntity(IFramework.Modules.ECS.IEntity)">
+            <summary>
+            解除注册实体
+            </summary>
+            <param name="entity"></param>
+        </member>
+        <member name="M:IFramework.Modules.ECS.ECSModule.SubscribeSystem(IFramework.Modules.ECS.IExcuteSystem)">
+            <summary>
+            注册系统
+            </summary>
+            <param name="system"></param>
+        </member>
+        <member name="M:IFramework.Modules.ECS.ECSModule.UnSubscribeSystem(IFramework.Modules.ECS.IExcuteSystem)">
+            <summary>
+            解除注册系统
+            </summary>
+            <param name="system"></param>
+        </member>
+        <member name="T:IFramework.Modules.ECS.Entity">
+            <summary>
+            实体
+            </summary>
+        </member>
+        <member name="P:IFramework.Modules.ECS.Entity._mou">
+            <summary>
+            注册的模块
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.ECS.Entity.GetComponent(System.Type)">
+            <summary>
+            获取组件
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Modules.ECS.Entity.GetComponent``1">
+            <summary>
+            湖区组件
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Modules.ECS.Entity.AddComponent(System.Type)">
+            <summary>
+            添加组件
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Modules.ECS.Entity.AddComponent``1">
+            <summary>
+            添加组件
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Modules.ECS.Entity.AddComponent(IFramework.Modules.ECS.IComponent,System.Boolean)">
+            <summary>
+            添加组件
+            </summary>
+            <param name="component"></param>
+            <param name="useSame"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Modules.ECS.Entity.AddComponent``1(``0,System.Boolean)">
+            <summary>
+            添加组件
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="component"></param>
+            <param name="useSame"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Modules.ECS.Entity.RemoveComponent(System.Type)">
+            <summary>
+            移除组件
+            </summary>
+            <param name="type"></param>
+        </member>
+        <member name="M:IFramework.Modules.ECS.Entity.RemoveComponent``1">
+            <summary>
+            移除组件
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:IFramework.Modules.ECS.Entity.ContainsComponent(System.Type)">
+            <summary>
+            是否包含组件
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Modules.ECS.Entity.ContainsComponent``1">
+            <summary>
+            是否包含组件
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Modules.ECS.Entity.ReFreshComponent(System.Type,IFramework.Modules.ECS.IComponent)">
+            <summary>
+            直接替换原组件，结构体必须使用这个方法刷新数据
+            </summary>
+            <param name="type"></param>
+            <param name="component"></param>
+        </member>
+        <member name="M:IFramework.Modules.ECS.Entity.ReFreshComponent``1(``0)">
+            <summary>
+            直接替换原组件，结构体必须使用这个方法刷新数据
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="component"></param>
+        </member>
+        <member name="M:IFramework.Modules.ECS.Entity.Destory">
+            <summary>
+            解除模块注册
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.ECS.Entity.OnDestory">
+            <summary>
+            解除模块注册时调用
+            </summary>
+        </member>
+        <member name="T:IFramework.Modules.ECS.ExcuteSystem`1">
+            <summary>
+            处理系统
+            </summary>
+            <typeparam name="TEntity"></typeparam>
+        </member>
+        <member name="M:IFramework.Modules.ECS.ExcuteSystem`1.#ctor(IFramework.Modules.ECS.ECSModule)">
+            <summary>
+            ctor
+            </summary>
+            <param name="module"></param>
+        </member>
+        <member name="M:IFramework.Modules.ECS.ExcuteSystem`1.GetEntitys">
+            <summary>
+            获取所有实体（模块内）
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Modules.ECS.ExcuteSystem`1.Fitter(`0)">
+            <summary>
+            适配
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.Modules.ECS.ExcuteSystem`1.Excute(`0)">
+            <summary>
+            操作合法实体
+            </summary>
+            <param name="entity"></param>
+        </member>
+        <member name="M:IFramework.Modules.ECS.ExcuteSystem`1.OnModuleDispose">
+            <summary>
+            模块释放时
+            </summary>
+        </member>
+        <member name="T:IFramework.Modules.ECS.IComponent">
+            <summary>
+            组件
+            </summary>
+        </member>
+        <member name="T:IFramework.Modules.ECS.IExcuteSystem">
+            <summary>
+            处理系统
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.ECS.IExcuteSystem.Excute">
+            <summary>
+            处理
+            </summary>
+        </member>
+        <member name="M:IFramework.Modules.ECS.IExcuteSystem.OnModuleDispose">
+            <summary>
+            模块释放时
             </summary>
         </member>
         <member name="T:IFramework.Modules.FrameworkAppModule">
@@ -366,304 +716,6 @@
             override
             </summary>
             <returns></returns>
-        </member>
-        <member name="T:IFramework.Modules.ECS.ECSModule">
-            <summary>
-            模仿Ecs结构
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.ECS.ECSModule.CreateEntity``1">
-            <summary>
-            创建实体，创建完，注册
-            </summary>
-            <typeparam name="TEntity"></typeparam>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Modules.ECS.ECSModule.SubscribeEntity``1(``0)">
-            <summary>
-            注册实体
-            </summary>
-            <typeparam name="TEntity"></typeparam>
-            <param name="entity"></param>
-        </member>
-        <member name="M:IFramework.Modules.ECS.ECSModule.UnSubscribeEntity(IFramework.Modules.ECS.IEntity)">
-            <summary>
-            解除注册实体
-            </summary>
-            <param name="entity"></param>
-        </member>
-        <member name="M:IFramework.Modules.ECS.ECSModule.SubscribeSystem(IFramework.Modules.ECS.IExcuteSystem)">
-            <summary>
-            注册系统
-            </summary>
-            <param name="system"></param>
-        </member>
-        <member name="M:IFramework.Modules.ECS.ECSModule.UnSubscribeSystem(IFramework.Modules.ECS.IExcuteSystem)">
-            <summary>
-            解除注册系统
-            </summary>
-            <param name="system"></param>
-        </member>
-        <member name="T:IFramework.Modules.ECS.IEntity">
-            <summary>
-            实体
-            </summary>
-        </member>
-        <member name="P:IFramework.Modules.ECS.IEntity._mou">
-            <summary>
-            注册的模块
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.ECS.IEntity.GetComponent(System.Type)">
-            <summary>
-            获取组件
-            </summary>
-            <param name="type"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Modules.ECS.IEntity.GetComponent``1">
-            <summary>
-            湖区组件
-            </summary>
-            <typeparam name="T"></typeparam>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Modules.ECS.IEntity.AddComponent(System.Type)">
-            <summary>
-            添加组件
-            </summary>
-            <param name="type"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Modules.ECS.IEntity.AddComponent``1">
-            <summary>
-            添加组件
-            </summary>
-            <typeparam name="T"></typeparam>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Modules.ECS.IEntity.AddComponent(IFramework.Modules.ECS.IComponent,System.Boolean)">
-            <summary>
-            添加组件
-            </summary>
-            <param name="component"></param>
-            <param name="useSame"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Modules.ECS.IEntity.AddComponent``1(``0,System.Boolean)">
-            <summary>
-            添加组件
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="component"></param>
-            <param name="useSame"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Modules.ECS.IEntity.RemoveComponent(System.Type)">
-            <summary>
-            移除组件
-            </summary>
-            <param name="type"></param>
-        </member>
-        <member name="M:IFramework.Modules.ECS.IEntity.RemoveComponent``1">
-            <summary>
-            移除组件
-            </summary>
-            <typeparam name="T"></typeparam>
-        </member>
-        <member name="M:IFramework.Modules.ECS.IEntity.ContainsComponent(System.Type)">
-            <summary>
-            是否包含组件
-            </summary>
-            <param name="type"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Modules.ECS.IEntity.ContainsComponent``1">
-            <summary>
-            是否包含组件
-            </summary>
-            <typeparam name="T"></typeparam>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Modules.ECS.IEntity.ReFreshComponent(System.Type,IFramework.Modules.ECS.IComponent)">
-            <summary>
-            直接替换原组件，结构体必须使用这个方法刷新数据
-            </summary>
-            <param name="type"></param>
-            <param name="component"></param>
-        </member>
-        <member name="M:IFramework.Modules.ECS.IEntity.ReFreshComponent``1(``0)">
-            <summary>
-            直接替换原组件，结构体必须使用这个方法刷新数据
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="component"></param>
-        </member>
-        <member name="M:IFramework.Modules.ECS.IEntity.Destory">
-            <summary>
-            解除模块注册
-            </summary>
-        </member>
-        <member name="T:IFramework.Modules.ECS.Entity">
-            <summary>
-            实体
-            </summary>
-        </member>
-        <member name="P:IFramework.Modules.ECS.Entity._mou">
-            <summary>
-            注册的模块
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.ECS.Entity.GetComponent(System.Type)">
-            <summary>
-            获取组件
-            </summary>
-            <param name="type"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Modules.ECS.Entity.GetComponent``1">
-            <summary>
-            湖区组件
-            </summary>
-            <typeparam name="T"></typeparam>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Modules.ECS.Entity.AddComponent(System.Type)">
-            <summary>
-            添加组件
-            </summary>
-            <param name="type"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Modules.ECS.Entity.AddComponent``1">
-            <summary>
-            添加组件
-            </summary>
-            <typeparam name="T"></typeparam>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Modules.ECS.Entity.AddComponent(IFramework.Modules.ECS.IComponent,System.Boolean)">
-            <summary>
-            添加组件
-            </summary>
-            <param name="component"></param>
-            <param name="useSame"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Modules.ECS.Entity.AddComponent``1(``0,System.Boolean)">
-            <summary>
-            添加组件
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="component"></param>
-            <param name="useSame"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Modules.ECS.Entity.RemoveComponent(System.Type)">
-            <summary>
-            移除组件
-            </summary>
-            <param name="type"></param>
-        </member>
-        <member name="M:IFramework.Modules.ECS.Entity.RemoveComponent``1">
-            <summary>
-            移除组件
-            </summary>
-            <typeparam name="T"></typeparam>
-        </member>
-        <member name="M:IFramework.Modules.ECS.Entity.ContainsComponent(System.Type)">
-            <summary>
-            是否包含组件
-            </summary>
-            <param name="type"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Modules.ECS.Entity.ContainsComponent``1">
-            <summary>
-            是否包含组件
-            </summary>
-            <typeparam name="T"></typeparam>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Modules.ECS.Entity.ReFreshComponent(System.Type,IFramework.Modules.ECS.IComponent)">
-            <summary>
-            直接替换原组件，结构体必须使用这个方法刷新数据
-            </summary>
-            <param name="type"></param>
-            <param name="component"></param>
-        </member>
-        <member name="M:IFramework.Modules.ECS.Entity.ReFreshComponent``1(``0)">
-            <summary>
-            直接替换原组件，结构体必须使用这个方法刷新数据
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="component"></param>
-        </member>
-        <member name="M:IFramework.Modules.ECS.Entity.Destory">
-            <summary>
-            解除模块注册
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.ECS.Entity.OnDestory">
-            <summary>
-            解除模块注册时调用
-            </summary>
-        </member>
-        <member name="T:IFramework.Modules.ECS.ExcuteSystem`1">
-            <summary>
-            处理系统
-            </summary>
-            <typeparam name="TEntity"></typeparam>
-        </member>
-        <member name="M:IFramework.Modules.ECS.ExcuteSystem`1.#ctor(IFramework.Modules.ECS.ECSModule)">
-            <summary>
-            ctor
-            </summary>
-            <param name="module"></param>
-        </member>
-        <member name="M:IFramework.Modules.ECS.ExcuteSystem`1.GetEntitys">
-            <summary>
-            获取所有实体（模块内）
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Modules.ECS.ExcuteSystem`1.Fitter(`0)">
-            <summary>
-            适配
-            </summary>
-            <param name="entity"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.Modules.ECS.ExcuteSystem`1.Excute(`0)">
-            <summary>
-            操作合法实体
-            </summary>
-            <param name="entity"></param>
-        </member>
-        <member name="M:IFramework.Modules.ECS.ExcuteSystem`1.OnModuleDispose">
-            <summary>
-            模块释放时
-            </summary>
-        </member>
-        <member name="T:IFramework.Modules.ECS.IComponent">
-            <summary>
-            组件
-            </summary>
-        </member>
-        <member name="T:IFramework.Modules.ECS.IExcuteSystem">
-            <summary>
-            处理系统
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.ECS.IExcuteSystem.Excute">
-            <summary>
-            处理
-            </summary>
-        </member>
-        <member name="M:IFramework.Modules.ECS.IExcuteSystem.OnModuleDispose">
-            <summary>
-            模块释放时
-            </summary>
         </member>
         <member name="T:IFramework.Modules.FrameworkModule">
             <summary>
@@ -2125,6 +2177,24 @@
             </summary>
             <param name="value"></param>
         </member>
+        <member name="T:IFramework.OnEnvironmentInitAttribute">
+            <summary>
+            框架初始化时候调用被标记的静态类
+            </summary>
+        </member>
+        <member name="P:IFramework.OnEnvironmentInitAttribute.type">
+            <summary>
+            配合初始化的版本 0，
+            默认初始化，其他自行规定，用于区分环境，
+            一般某个环境特有的静态类和环境编号一致
+            </summary>
+        </member>
+        <member name="M:IFramework.OnEnvironmentInitAttribute.#ctor(IFramework.EnvironmentType)">
+            <summary>
+            Ctor
+            </summary>
+            <param name="type"></param>
+        </member>
         <member name="T:IFramework.IRecyclable">
             <summary>
             可回收
@@ -2335,6 +2405,23 @@
             <summary>
             数据重置时
             </summary>
+        </member>
+        <member name="T:IFramework.ScriptVersionUpdateAttribute">
+            <summary>
+            代码升级说明
+            </summary>
+        </member>
+        <member name="F:IFramework.ScriptVersionUpdateAttribute.description">
+            <summary>
+            描述
+            </summary>
+        </member>
+        <member name="M:IFramework.ScriptVersionUpdateAttribute.#ctor(System.Int32,System.String)">
+            <summary>
+            ctor
+            </summary>
+            <param name="version"></param>
+            <param name="description"></param>
         </member>
         <member name="T:IFramework.Serialization.DataTable.DataExplainer">
             <summary>
@@ -2974,77 +3061,6 @@
         <member name="M:IFramework.Utility.Verifier.Crc32.HashFinal">
             在加密流对象处理完最后的数据后完成哈希计算。
         </member>
-        <member name="T:IFramework.FrameworkVersionAttribute">
-            <summary>
-             框架代码版本默认有 1
-            </summary>
-        </member>
-        <member name="P:IFramework.FrameworkVersionAttribute.version">
-            <summary>
-            版本
-            </summary>
-        </member>
-        <member name="M:IFramework.FrameworkVersionAttribute.#ctor(System.Int32)">
-            <summary>
-            Ctor
-            </summary>
-            <param name="version"></param>
-        </member>
-        <member name="T:IFramework.DescriptionAttribute">
-            <summary>
-            描述
-            </summary>
-        </member>
-        <member name="F:IFramework.DescriptionAttribute.description">
-            <summary>
-            描述
-            </summary>
-        </member>
-        <member name="M:IFramework.DescriptionAttribute.#ctor(System.String)">
-            <summary>
-            ctor
-            </summary>
-        </member>
-        <member name="T:IFramework.DependenceAttribute">
-            <summary>
-            依赖描述
-            </summary>
-        </member>
-        <member name="F:IFramework.DependenceAttribute.type">
-            <summary>
-            types
-            </summary>
-        </member>
-        <member name="M:IFramework.DependenceAttribute.#ctor(System.Type)">
-            <summary>
-            ctor
-            </summary>
-            <param name="type"></param>
-        </member>
-        <member name="M:IFramework.DependenceAttribute.#ctor(System.Type,System.String)">
-            <summary>
-            ctor
-            </summary>
-            <param name="type"></param>
-            <param name="description"></param>
-        </member>
-        <member name="T:IFramework.ScriptVersionUpdateAttribute">
-            <summary>
-            代码升级说明
-            </summary>
-        </member>
-        <member name="F:IFramework.ScriptVersionUpdateAttribute.description">
-            <summary>
-            描述
-            </summary>
-        </member>
-        <member name="M:IFramework.ScriptVersionUpdateAttribute.#ctor(System.Int32,System.String)">
-            <summary>
-            ctor
-            </summary>
-            <param name="version"></param>
-            <param name="description"></param>
-        </member>
         <member name="T:IFramework.Framework">
             <summary>
             框架入口
@@ -3128,9 +3144,6 @@
             </summary>
             <param name="action">方法</param>
             <param name=" envType"></param>
-        </member>
-        <member name="T:IFramework.FrameworkContainer.Tuple`2">
-            http://stackoverflow.com/questions/1171812/multi-key-dictionary-in-c
         </member>
         <member name="T:IFramework.Pool.IPoolObjectOwner">
             <summary>
@@ -3870,19 +3883,6 @@
         <member name="T:IFramework.IEventArgs">
             <summary>
             框架内传递的所有消息的基类
-            </summary>
-        </member>
-        <member name="T:IFramework.FrameworkArgs">
-            <summary>
-            可回收接口
-            </summary>
-            <summary>
-            可回收消息基类
-            </summary>
-        </member>
-        <member name="P:IFramework.FrameworkArgs.argsDirty">
-            <summary>
-            消息是否可用
             </summary>
         </member>
         <member name="T:IFramework.LockWait">

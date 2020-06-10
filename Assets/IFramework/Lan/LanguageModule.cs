@@ -12,12 +12,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace IFramework
+namespace IFramework.Language
 {
-    public interface ILanPairGroup
-    {
-        List<LanPair> Load();
-    }
     public class LanguageModule : FrameworkModule
     {
         public class LanObserver : IDisposable
@@ -141,6 +137,6 @@ namespace IFramework
             _lanPairs.Clear();
             _lanObservers.Clear();
         }
-      
+
     }
 }

@@ -6,15 +6,22 @@
  *Description:    IFramework
  *History:        2018.11--
 *********************************************************************************/
-using UnityEngine;
-using System;
+using IFramework.Serialization;
+using System.Collections.Generic;
+
 namespace IFramework.Language
 {
-    [Serializable]
-    public class LanPair
+    public class JsonGroup : ILanPairGroup
     {
-        public SystemLanguage lan;
-        public string key;
-        public string value;
+        private List<LanPair> _group;
+
+        public JsonGroup(string json)
+        {
+            _group = Json.ToObject<List<LanPair>>(json);
+        }
+        public List<LanPair> Load()
+        {
+            return _group;
+        }
     }
 }
