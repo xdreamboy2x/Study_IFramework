@@ -126,6 +126,7 @@ namespace IFramework.Language
             LanObserver observer = new LanObserver(this, key, fallback, autoStart);
             return observer;
         }
+        public override int priority { get { return 90; } }
 
         protected override void Awake()
         {

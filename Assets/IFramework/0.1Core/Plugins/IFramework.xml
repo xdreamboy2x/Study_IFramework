@@ -751,6 +751,11 @@
             </summary>
             <param name="dispose"></param>
         </member>
+        <member name="P:IFramework.Modules.FrameworkModule.priority">
+            <summary>
+            优先级（越大释放越早释放）
+            </summary>
+        </member>
         <member name="P:IFramework.Modules.FrameworkModule.moudeType">
             <summary>
             模块类型

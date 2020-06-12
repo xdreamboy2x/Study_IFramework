@@ -135,6 +135,8 @@ namespace IFramework.UI
     {
 
         private IGroups _groups;
+        public override int priority { get { return 80; } }
+
         protected override void Awake()
         {
             InitTransform();
