@@ -49,16 +49,16 @@ namespace IFramework.AB
                 base.OnGUI(position);
                 this.BeginArea(position)
                         .Label("BuildSetting")
-                        .Label("", new GUIStyle("IN Title"), GUILayout.Height(5))
+                        .Label("", GUIStyles.Get("IN Title"), GUILayout.Height(5))
                         .Label("Build  Target:")
                         .Label(EditorUserBuildSettings.activeBuildTarget.ToString())
-                        .Label("", new GUIStyle("IN Title"), GUILayout.Height(5))
+                        .Label("", GUIStyles.Get("IN Title"), GUILayout.Height(5))
                         .Label("AssetBundle OutPath:")
                         .Label("Assets/../AssetBundles")
-                        .Label("", new GUIStyle("IN Title"), GUILayout.Height(5))
+                        .Label("", GUIStyles.Get("IN Title"), GUILayout.Height(5))
                         .Label("Manifest FilePath:")
                         .Label(ABTool.ManifestPath)
-                        .Label("", new GUIStyle("IN Title"), GUILayout.Height(5))
+                        .Label("", GUIStyles.Get("IN Title"), GUILayout.Height(5))
                         .Space(10)
                         .Label("LoadSetting In Editor")
                         .Pan(()=> {
@@ -185,10 +185,10 @@ namespace IFramework.AB
             {
                 tableViewCalc.Calc(position, new Vector2(position.x, position.y + lineHeight), ScrollPos, lineHeight, DirCollect.DirCollectItems.Count, Setting);
                 if (Event.current.type == EventType.Repaint)
-                    new GUIStyle(EntryBackodd).Draw(tableViewCalc.position, false, false, false, false);
+                    GUIStyles.Get(EntryBackodd).Draw(tableViewCalc.position, false, false, false, false);
 
                 bool tog = true;
-                this.Toggle(tableViewCalc.titleRow.position, ref tog, new GUIStyle(TitleStyle))
+                this.Toggle(tableViewCalc.titleRow.position, ref tog, GUIStyles.Get(TitleStyle))
                     .LabelField(tableViewCalc.titleRow[CollectType].position, CollectType)
                     .LabelField(tableViewCalc.titleRow[BundleName].position, BundleName)
                     .LabelField(tableViewCalc.titleRow[SearchPath].position, SearchPath);
@@ -595,7 +595,7 @@ namespace IFramework.AB
                                 if (asset.AssetBundles.Count == 1)
                                     this.Label(ABBContentTable.rows[i][CrossRef].position, EditorGUIUtility.IconContent("Collab"));
                                 else
-                                    this.Label(ABBContentTable.rows[i][CrossRef].position, asset.AssetBundles.Count.ToString(), new GUIStyle("CN CountBadge"));
+                                    this.Label(ABBContentTable.rows[i][CrossRef].position, asset.AssetBundles.Count.ToString(), GUIStyles.Get("CN CountBadge"));
                             });
 
                         if (e.modifiers == EventModifiers.Control &&

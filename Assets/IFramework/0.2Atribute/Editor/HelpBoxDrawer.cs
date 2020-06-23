@@ -18,7 +18,7 @@ namespace IFramework
         {
             get
             {
-                var style = new GUIStyle("HelpBox");
+                var style = GUIStyles.Get("HelpBox");
                 var content = new GUIContent(HelpBoxAttribute.message);
                 return Mathf.Max(style.CalcHeight(content, Screen.width - (HelpBoxAttribute.messageType != MessageType.None ? 53 : 21)), 40);
             }       

@@ -24,16 +24,32 @@ namespace IFramework.Language
 
         private class Styles
         {
+            public static GUIStyle EntryBackodd = "CN EntryBackodd";
+            public static GUIStyle EntryBackEven = "CN EntryBackEven";
             public static GUIStyle Title = "IN BigTitle";
             public static GUIStyle TitleTxt = "IN BigTitle Inner";
             public static GUIStyle BoldLabel = EditorStyles.boldLabel;
             public static GUIStyle toolbarButton = EditorStyles.toolbarButton;
             public static GUIStyle toolbar = EditorStyles.toolbar;
-            public static GUIStyle Fold = new GUIStyle(GUI.skin.FindStyle("ToolbarDropDown"));
+            public static GUIStyle Fold = GUIStyles.Get("ToolbarDropDown");
             public static GUIStyle FoldOut = EditorStyles.foldout;
             public static GUIStyle CloseBtn = "WinBtnClose";
+            public static GUIStyle minus = "OL Minus";
             public static GUIStyle BG = "box";
-
+            public static GUIStyle box = "box";
+            public static GUIStyle in_title = new GUIStyle("IN Title") { fixedHeight = 20 + 5 };
+            public static GUIStyle settingsHeader = "SettingsHeader";
+            public static GUIStyle header = "DD HeaderStyle";
+            public static GUIStyle toolbarSeachTextFieldPopup = "ToolbarSeachTextFieldPopup";
+            public static GUIStyle searchTextField = new GUIStyle("ToolbarTextField")
+            {
+                margin = new RectOffset(0, 0, 2, 0)
+            };
+            public static GUIStyle searchCancelButton = "ToolbarSeachCancelButton";
+            public static GUIStyle searchCancelButtonEmpty = "ToolbarSeachCancelButtonEmpty";
+            public static GUIStyle foldout = "Foldout";
+            public static GUIStyle ToolbarDropDown = "ToolbarDropDown";
+            public static GUIStyle selectionRect = "SelectionRect";
 
             static Styles()
             {
@@ -44,20 +60,16 @@ namespace IFramework.Language
         {
 
             public static GUIContent CreateViewTitle = new GUIContent("Create", EditorGUIUtility.IconContent("tree_icon_leaf").image);
-            public static GUIContent GroupByLanViewTitle = new GUIContent("GroupByLan", EditorGUIUtility.IconContent("d_tree_icon_frond").image);
-            public static GUIContent GroupByKeyViewTitle = new GUIContent("GroupByKey", EditorGUIUtility.IconContent("d_tree_icon_frond").image);
+            public static GUIContent GroupTitle = new GUIContent("Group", EditorGUIUtility.IconContent("d_tree_icon_frond").image);
             public static GUIContent CopyBtn = new GUIContent("C", "Copy");
             public static GUIContent OK = EditorGUIUtility.IconContent("vcs_add");
             public static GUIContent Warnning = EditorGUIUtility.IconContent("console.warnicon.sml");
 
         }
         private const string CreateViewNmae = "CreateView";
-        private const string GroupByKeyNmae = "GroupByKey";
-        private const string GroupByLanNmae = "GroupByLan";
+        private const string Group = "Group";
         private CreateView createView = new CreateView();
-        private GroupByLanView groupByLanView = new GroupByLanView();
-        private GroupByKeyView groupByKeyView = new GroupByKeyView();
-
+        private GroupView group = new GroupView();
         [SerializeField]
         private bool mask = true;
         private Color maskColor = new Color(0.2f, 0.2f, 0.2f, 0.2f);
@@ -91,8 +103,6 @@ namespace IFramework.Language
 
             }
             protected abstract void DrawContent(Rect rect);
-
-
         }
     }
     public partial class LanWindow : EditorWindow
@@ -116,13 +126,10 @@ namespace IFramework.Language
                 lanGroup = ScriptableObj.Load<LanGroup>(stoPath);
             else
                 lanGroup = ScriptableObj.Create<LanGroup>(stoPath);
-            Fresh();
         }
         private void UpdateLanGroup()
         {
             ScriptableObj.Update(lanGroup);
-            //LanGroup = ScriptableObj.Load<LanGroup>(stoPath);
-            Fresh();
         }
         private void OnDisable()
         {
@@ -160,9 +167,9 @@ namespace IFramework.Language
             };
             if (string.IsNullOrEmpty(tmpLayout))
             {
-                for (int i = 1; i <= 3; i++)
+                for (int i = 1; i <= 2; i++)
                 {
-                    string userdata = i == 1 ? "GroupByLan" : i == 2 ? "GroupByKey" : "CreateView";
+                    string userdata = i == 1 ? "Group" :  "CreateView";
                     SubWinTree.TreeLeaf L = sunwin.CreateLeaf(new GUIContent(userdata));
                     L.userData = userdata;
                     sunwin.DockLeaf(L, SubWinTree.DockType.Left);
@@ -172,14 +179,10 @@ namespace IFramework.Language
             {
                 sunwin.DeSerialize(tmpLayout);
             }
-            sunwin[GroupByKeyNmae].titleContent = new GUIContent(GroupByKeyNmae);
-            sunwin[GroupByLanNmae].titleContent = new GUIContent(GroupByLanNmae);
-            sunwin[CreateViewNmae].titleContent = new GUIContent(CreateViewNmae);
-            sunwin[GroupByKeyNmae].minSize = new Vector2(250, 250);
-            sunwin[GroupByLanNmae].minSize = new Vector2(250, 250);
+            sunwin[Group].titleContent = new GUIContent(Group);
+            sunwin[Group].minSize = new Vector2(250, 250);
             sunwin[CreateViewNmae].minSize = new Vector2(300, 300);
-            sunwin[GroupByKeyNmae].paintDelegate += groupByKeyView.OnGUI;
-            sunwin[GroupByLanNmae].paintDelegate += groupByLanView.OnGUI;
+            sunwin[Group].paintDelegate += group.OnGUI;
             sunwin[CreateViewNmae].paintDelegate += createView.OnGUI;
 
 
@@ -209,21 +212,6 @@ namespace IFramework.Language
             }
         }
 
-        private Dictionary<string, List<LanPair>> keyDic;
-        private Dictionary<SystemLanguage, List<LanPair>> lanDic;
-
-        private void Fresh()
-        {
-            keyDic = lanPairs.GroupBy(lanPair => { return lanPair.key; }, (key, list) => { return new { key, list }; })
-                             .ToDictionary((v) => { return v.key; }, (v) => { return v.list.ToList(); });
-            lanDic = lanPairs.GroupBy(lanPair => { return lanPair.lan; }, (key, list) => { return new { key, list }; })
-                            .ToDictionary((v) => { return v.key; }, (v) => { return v.list.ToList(); });
-        }
-        private void DeletePairsByLan(SystemLanguage lan)
-        {
-            lanGroup.DeletePairsByLan(lan);
-            UpdateLanGroup();
-        }
         private void DeletePairsByKey(string key)
         {
             lanGroup.DeletePairsByKey(key);
@@ -331,7 +319,6 @@ namespace IFramework.Language
                     }
                 }
             }
-            Fresh();
             UpdateLanGroup();
         }
         private void WriteJson(string path)
@@ -366,12 +353,18 @@ namespace IFramework.Language
                     }
                 }
             }
-            Fresh();
             UpdateLanGroup();
         }
         private bool IsKeyInUse(string key)
         {
-            return keyDic.ContainsKey(key);
+            for (int i = 0; i < lanPairs.Count; i++)
+            {
+                if (lanPairs[i].key==key)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
         [Serializable]
         private class CreateView : LanwindowItem
@@ -554,7 +547,7 @@ namespace IFramework.Language
                 if (keyFoldon)
                 {
                     this.DrawScrollView(() => {
-                        window.lanKeys.ForEach((key) => {
+                        window.lanKeys.ForEach((index,key) => {
                             if (key.ToLower().Contains(keySearchStr.ToLower()))
                             {
                                 this.BeginHorizontal(Styles.BG)
@@ -592,9 +585,9 @@ namespace IFramework.Language
                 {
                     private class Styles
                     {
-                        public static GUIStyle SearchTextFieldStyle = new GUIStyle("ToolbarSeachTextField");
-                        public static GUIStyle SearchCancelButtonStyle = new GUIStyle("SearchCancelButton");
-                        public static GUIStyle SearchCancelButtonEmptyStyle = new GUIStyle("SearchCancelButtonEmpty");
+                        public static GUIStyle SearchTextFieldStyle = GUIStyles.Get("ToolbarSeachTextField");
+                        public static GUIStyle SearchCancelButtonStyle = GUIStyles.Get("SearchCancelButton");
+                        public static GUIStyle SearchCancelButtonEmptyStyle = GUIStyles.Get("SearchCancelButtonEmpty");
                     }
 
                     public string OnGUI(Rect position, string value)
@@ -857,211 +850,181 @@ namespace IFramework.Language
             }
         }
         [Serializable]
-        private class GroupByLanView : LanwindowItem
+        private class GroupView : LanwindowItem
         {
-            protected override GUIContent titleContent { get { return Contents.GroupByLanViewTitle; } }
-            public GroupByLanView()
+            protected override GUIContent titleContent { get { return  Contents.GroupTitle; } }
+            private TableViewCalculator _table = new TableViewCalculator();
+           
+            private Vector2 _scroll;
+            private const string key = "Key";
+            private const string lan = "Language";
+            private const string value = "Value";
+            private const string minnus = "minnus";
+            private enum SearchType
             {
-                SearchField = new SearchFieldDrawer();
-                SearchField.onValueChange += (str) =>
-                {
-                    searchStr = str;
-
-                };
+                Key, Language, Value
             }
-            [SerializeField] private Vector2 scroll;
-
-            private SearchFieldDrawer SearchField;
-            [SerializeField] private string searchStr = string.Empty;
-
-            private void Calc()
+            private SearchType _searchType;
+            private string _search;
+            private const float lineHeight = 20;
+            private ListViewCalculator.ColumnSetting[] setting
             {
-                while (items.Count < window.lanDic.Count) items.Add(new GroupByLanViewItem());
-                while (items.Count > window.lanDic.Count) items.RemoveAt(items.Count - 1);
-                int index = 0;
-                foreach (var item in window.lanDic)
+                get
                 {
-                    items[index].Lan = item.Key;
-                    items[index].lanPairs = item.Value;
-                    index++;
+                    return new ListViewCalculator.ColumnSetting[] {
+                        new ListViewCalculator.ColumnSetting()
+                        {
+                            width=20,
+                            name=minnus,
+
+                        },
+                         new ListViewCalculator.ColumnSetting()
+                        {
+                            width=100,
+                            name=lan,
+                        },
+                        new ListViewCalculator.ColumnSetting()
+                        {
+                            width=100,
+                            name=key,
+                        },
+                          new ListViewCalculator.ColumnSetting()
+                        {
+                            width=100,
+                            name=value,
+
+                        }
+
+                    };
                 }
             }
-
             protected override void DrawContent(Rect rect)
             {
-                Calc();
-                this.DrawArea(() => {
-                    this.Label("");
-                    SearchField.OnGUI(GUILayoutUtility.GetLastRect());
-                    this.Space(5);
-                    this.DrawScrollView(() => {
-                        items.ForEach((item) => {
-                            if (item.Lan.ToString().ToLower().Contains(searchStr.ToLower()))
-                            {
-                                item.OnGUI(Rect.zero);
-                                this.Space(3);
-                            }
-                        });
-                    }, ref scroll);
-                }, rect.Zoom(AnchorType.MiddleCenter, -20));
-            }
-
-            [SerializeField]
-            private List<GroupByLanViewItem> items = new List<GroupByLanViewItem>();
-            [Serializable]
-            private class GroupByLanViewItem : ILayoutGUIDrawer
-            {
-                private float smallBtnSize = 20;
-
-                public SystemLanguage Lan;
-                public List<LanPair> lanPairs;
-                [SerializeField] private bool foldon;
-                public void OnGUI(Rect position)
+                var rs = rect.Zoom( AnchorType.MiddleCenter,-10).Split(SplitType.Horizontal, 30, 4);
+                GUILayout.BeginArea(rs[0]);
+                GUILayout.BeginHorizontal();
+                _searchType = (SearchType)EditorGUILayout.EnumPopup(_searchType, Styles.toolbarSeachTextFieldPopup, GUILayout.Width(10 + 5));
+                _search = GUILayout.TextField(_search, Styles.searchTextField, GUILayout.Width(rs[0].width-40));
+                if (string.IsNullOrEmpty(_search))
                 {
-                    Rect rect;
-                    this.DrawHorizontal(() => {
-                        this.Label(string.Format("{0}", Lan.ToString(), lanPairs.Count), GUILayout.Width(100));
-                        this.EBeginHorizontal(out rect, Styles.Fold, GUILayout.Height(smallBtnSize))
-                                .Foldout(ref foldon, lanPairs.Count.ToString(), true)
-                                .Button(() => { window.DeletePairsByLan(Lan); }, string.Empty, Styles.CloseBtn, GUILayout.Width(smallBtnSize), GUILayout.Height(smallBtnSize));
-                        this.EEndHorizontal();
-
-                    });
-
-                    if (foldon)
+                    GUILayout.Label("", Styles.searchCancelButtonEmpty);
+                }
+                else
+                {
+                    if (GUILayout.Button("", Styles.searchCancelButton))
                     {
-                        this.DrawScrollView(() => {
-
-                            lanPairs.ForEach((pair) => {
-                                this.DrawHorizontal(() => {
-                                    this.Space(110);
-                                    this.DrawVertical(() => {
-                                        this.BeginHorizontal()
-                                                .FlexibleSpace()
-                                                .Button(() => {  window.DeleteLanPair(pair); }, string.Empty, Styles.CloseBtn, GUILayout.Width(smallBtnSize), GUILayout.Height(smallBtnSize))
-                                            .EndHorizontal()
-                                            .BeginHorizontal()
-                                                .Label(new GUIContent(string.Format("Key  \t{0}", pair.key), pair.key))
-                                                .Button(() => {  GUIUtility.systemCopyBuffer = pair.key; }, Contents.CopyBtn, GUILayout.Width(smallBtnSize))
-                                            .EndHorizontal()
-                                            .BeginHorizontal()
-                                                .Label(new GUIContent(string.Format("Val   \t{0}", pair.value), pair.value))
-                                                .Button(() => {  GUIUtility.systemCopyBuffer = pair.value; }, Contents.CopyBtn, GUILayout.Width(smallBtnSize))
-                                            .EndHorizontal();
-                                    }, Styles.BG);
-                                });
-
-                            });
-
-                        }, ref scroll);
-
+                        _search = string.Empty;
                     }
                 }
-                [SerializeField] private Vector2 scroll;
+                GUILayout.EndHorizontal();
+                GUILayout.EndArea();
 
-            }
-        }
-        [Serializable]
-        private class GroupByKeyView : LanwindowItem
-        {
-            protected override GUIContent titleContent { get { return Contents.GroupByKeyViewTitle; } }
-            [SerializeField] private Vector2 scroll;
-            public GroupByKeyView()
-            {
-                SearchField = new SearchFieldDrawer();
-                SearchField.onValueChange += (str) =>
-                {
-                    searchStr = str;
-                };
-            }
-            private SearchFieldDrawer SearchField;
-            [SerializeField] private string searchStr = string.Empty;
-            private void Calc()
-            {
-                while (items.Count < window.keyDic.Count) items.Add(new GroupByKeyViewItem());
-                while (items.Count > window.keyDic.Count) items.RemoveAt(items.Count - 1);
-                int index = 0;
-                foreach (var item in window.keyDic)
-                {
-                    items[index].lanPairs = item.Value;
-                    items[index].key = item.Key;
-                    ++index;
-                }
-            }
 
-            protected override void DrawContent(Rect rect)
-            {
-                Calc();
-                this.DrawArea(() => {
-                    this.Label("");
-                    SearchField.OnGUI(GUILayoutUtility.GetLastRect());
-                    this.Space(5);
-                    this.DrawScrollView(() => {
-                        items.ForEach((item) => {
-                            if (item.key.ToLower().Contains(searchStr.ToLower()))
-                            {
-                                item.OnGUI(Rect.zero);
-                                this.Space(3);
-                            }
-                        });
-                    }, ref scroll);
-                }, rect.Zoom(AnchorType.MiddleCenter, -20));
-            }
-
-            [SerializeField]
-            private List<GroupByKeyViewItem> items = new List<GroupByKeyViewItem>();
-
-            [Serializable]
-            private class GroupByKeyViewItem : ILayoutGUIDrawer
-            {
-                private float smallBtnSize = 20;
-                private float describeWidth = 60;
-
-                public string key;
-                public List<LanPair> lanPairs;
-                [SerializeField] private bool foldon;
-                public void OnGUI(Rect position)
-                {
-                    this.DrawHorizontal(() => {
-                        this.Label(new GUIContent(key, "Key"), GUILayout.Width(100));
-                        Rect rect;
-                        this.EBeginHorizontal(out rect, Styles.Fold, GUILayout.Height(smallBtnSize))
-                            .Foldout(ref foldon, string.Format("{1}", key, lanPairs.Count), true)
-                            .Button(() => {  GUIUtility.systemCopyBuffer = key; }, Contents.CopyBtn, GUILayout.Width(smallBtnSize), GUILayout.Height(16))
-                            .Button(() => {  window.DeletePairsByKey(key); }, string.Empty, Styles.CloseBtn, GUILayout.Width(smallBtnSize), GUILayout.Height(smallBtnSize));
-                        this.EEndHorizontal();
-                    });
-                    if (foldon)
+                var ws = window.lanPairs.FindAll((w) => {
+                    if (string.IsNullOrEmpty(_search))
+                        return true;
+                    switch (_searchType)
                     {
-                        this.DrawScrollView(() => {
-                            lanPairs.ForEach((pair) => {
-                                this.DrawHorizontal(() => {
-                                    this.Space(120);
-                                    this.DrawVertical(() => {
-                                        this.BeginHorizontal()
-                                               .FlexibleSpace()
-                                               .Button(() => {window.DeleteLanPair(pair); }, string.Empty, Styles.CloseBtn, GUILayout.Width(smallBtnSize), GUILayout.Height(smallBtnSize))
-                                            .EndHorizontal()
-                                            .BeginHorizontal()
-                                                .Label("Lan", GUILayout.Width(describeWidth));
-                                        GUI.enabled = false;
-                                        EditorGUILayout.EnumPopup(pair.lan);
-                                        GUI.enabled = true;
-                                        this.EndHorizontal()
-                                            .BeginHorizontal()
-                                             .Label("Lan", GUILayout.Width(describeWidth))
-                                             .Label(new GUIContent(pair.value, pair.value))
-                                             .Button(() => {  GUIUtility.systemCopyBuffer = pair.value; }, Contents.CopyBtn, GUILayout.Width(smallBtnSize))
-                                         .EndHorizontal();
-                                    }, Styles.BG);
-                                });
+                        case SearchType.Key:
+                            return w.key.ToLower().Contains(_search.ToLower());
+                        case SearchType.Language:
+                            return w.lan.ToString().ToLower().Contains(_search.ToLower());
+                        case SearchType.Value:
+                            return w.value.ToLower().Contains(_search.ToLower());
+                    }
+                    return true;
+                    }).ToArray();
+                _table.Calc(rs[1], new Vector2(rs[1].x, rs[1].y + lineHeight), _scroll, lineHeight, ws.Length, setting);
+                this.LabelField(_table.titleRow.position, "", Styles.Title)
+                    .LabelField(_table.titleRow[key].position, key)
+                    .LabelField(_table.titleRow[lan].position, lan)
+                    .LabelField(_table.titleRow[value].position, value);
+                Event e = Event.current;
+                this.DrawScrollView(() => {
 
+                    for (int i = _table.firstVisibleRow; i < _table.lastVisibleRow+1; i++)
+                    {
+                        if (e.modifiers == EventModifiers.Control &&
+                               e.button == 0 && e.clickCount == 1 &&
+                               _table.rows[i].position.Contains(e.mousePosition))
+                        {
+                            _table.ControlSelectRow(i);
+                            window.Repaint();
+                        }
+                        else if (e.modifiers == EventModifiers.Shift &&
+                                        e.button == 0 && e.clickCount == 1 &&
+                                        _table.rows[i].position.Contains(e.mousePosition))
+                        {
+                            _table.ShiftSelectRow(i);
+                            window.Repaint();
+                        }
+                        else if (e.button == 0 && e.clickCount == 1 &&
+                                        _table.rows[i].position.Contains(e.mousePosition)
+                                      /*  && ListView.viewPosition.Contains(Event.current.mousePosition) */)
+                        {
+                            _table.SelectRow(i);
+                            window.Repaint();
+                        }
+                        if (e.button == 0 && e.clickCount == 1 &&
+              (!_table.view.Contains(e.mousePosition) ||
+                  (_table.view.Contains(e.mousePosition) &&
+                   !_table.content.Contains(e.mousePosition))))
+                        {
+                            _table.SelectNone();
+                            window.Repaint();
+                        }
+
+                        if (e.button == 1 && e.clickCount == 1 &&
+                        _table.content.Contains(e.mousePosition))
+                        {
+                            GenericMenu menu = new GenericMenu();
+                            menu.AddItem(new GUIContent("Delete"), false, () => {
+                                for (int j = _table.rows.Count - 1; j >= 0; j--)
+                                {
+                                    if (_table.rows[j].selected)
+                                        window.DeleteLanPair(ws[j]);
+                                }
+                                window.UpdateLanGroup();
                             });
 
-                        }, ref scroll);
+                            menu.ShowAsContext();
+                            if (e.type != EventType.Layout)
+                                e.Use();
+
+                        }
+
+
+                        GUIStyle style = i % 2 == 0 ? Styles.EntryBackEven : Styles.EntryBackodd;
+                        if (Event.current.type == EventType.Repaint)
+                            style.Draw(_table.rows[i].position, false, false, _table.rows[i].selected, false);
+
+                        this.Pan(() => {
+                            EditorGUI.EnumPopup(_table.rows[i][lan].position, ws[i].lan);
+
+                        })
+                        .Button(() => {
+                            window.DeleteLanPair(ws[i]);
+
+                        }, _table.rows[i][minnus].position,"",Styles.minus)
+                             .LabelField(_table.rows[i][key].position, ws[i].key)
+                             .LabelField(_table.rows[i][value].position, ws[i].value);
                     }
+                }, _table.view, ref _scroll, _table.content, false, false);
+                Handles.color = Color.black;
+                for (int i = 0; i < _table.titleRow.columns.Count; i++)
+                {
+                    var item = _table.titleRow.columns[i];
+
+                    if (i != 0)
+                        Handles.DrawAAPolyLine(1, new Vector3(item.position.x,
+                                                                item.position.y,
+                                                                0),
+                                                  new Vector3(item.position.x,
+                                                                item.position.y + item.position.height - 2,
+                                                                0));
                 }
-                [SerializeField] private Vector2 scroll;
+                _table.position.DrawOutLine(2, Color.black);
+                Handles.color = Color.white;
             }
         }
     }

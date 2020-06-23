@@ -127,35 +127,35 @@ namespace IFramework
                 }
             }
 
-            Skin.Styles.Add(new GUIStyle("CN Box"));
-            Skin.Styles.Add(new GUIStyle("Button"));
-            Skin.Styles.Add(new GUIStyle("CN CountBadge"));
-            Skin.Styles.Add(new GUIStyle("ToolbarButton"));
-            Skin.Styles.Add(new GUIStyle("Toolbar"));
-            Skin.Styles.Add(new GUIStyle("CN EntryInfo"));
-            Skin.Styles.Add(new GUIStyle("CN EntryWarn"));
-            Skin.Styles.Add(new GUIStyle("CN EntryError"));
-            Skin.Styles.Add(new GUIStyle("CN EntryBackEven") );
-            Skin.Styles.Add(new GUIStyle("CN EntryBackodd"));
-            Skin.Styles.Add(new GUIStyle("CN Message"));
-            Skin.Styles.Add(new GUIStyle("CN StatusError"));
-            Skin.Styles.Add(new GUIStyle("CN StatusWarn"));
-            Skin.Styles.Add(new GUIStyle("CN StatusInfo"));
+            Skin.Styles.Add(GUIStyles.Get("CN Box"));
+            Skin.Styles.Add(GUIStyles.Get("Button"));
+            Skin.Styles.Add(GUIStyles.Get("CN CountBadge"));
+            Skin.Styles.Add(GUIStyles.Get("ToolbarButton"));
+            Skin.Styles.Add(GUIStyles.Get("Toolbar"));
+            Skin.Styles.Add(GUIStyles.Get("CN EntryInfo"));
+            Skin.Styles.Add(GUIStyles.Get("CN EntryWarn"));
+            Skin.Styles.Add(GUIStyles.Get("CN EntryError"));
+            Skin.Styles.Add(GUIStyles.Get("CN EntryBackEven") );
+            Skin.Styles.Add(GUIStyles.Get("CN EntryBackodd"));
+            Skin.Styles.Add(GUIStyles.Get("CN Message"));
+            Skin.Styles.Add(GUIStyles.Get("CN StatusError"));
+            Skin.Styles.Add(GUIStyles.Get("CN StatusWarn"));
+            Skin.Styles.Add(GUIStyles.Get("CN StatusInfo"));
    
-            Skin.Styles.Add(new GUIStyle("LODBlackBox"));
-            Skin.Styles.Add(new GUIStyle("GameViewBackground"));
-            Skin.Styles.Add(new GUIStyle("WindowBackground"));
-            Skin.Styles.Add(new GUIStyle("MiniToolbarButton"));
-            Skin.Styles.Add(new GUIStyle("dockarea"));
-            Skin.Styles.Add(new GUIStyle("hostview"));
-            Skin.Styles.Add(new GUIStyle("dragtabdropwindow"));
-            Skin.Styles.Add(new GUIStyle("PaneOptions"));
-            Skin.Styles.Add(new GUIStyle("SelectionRect"));
-            Skin.Styles.Add(new GUIStyle("window"));
-            Skin.Styles.Add(new GUIStyle("WindowBottomResize"));
-            Skin.Styles.Add(new GUIStyle("dragtab"));
-            Skin.Styles.Add(new GUIStyle("IN LockButton"));
-            Skin.Styles.Add(new GUIStyle("WinBtnClose"));
+            Skin.Styles.Add(GUIStyles.Get("LODBlackBox"));
+            Skin.Styles.Add(GUIStyles.Get("GameViewBackground"));
+            Skin.Styles.Add(GUIStyles.Get("WindowBackground"));
+            Skin.Styles.Add(GUIStyles.Get("MiniToolbarButton"));
+            Skin.Styles.Add(GUIStyles.Get("dockarea"));
+            Skin.Styles.Add(GUIStyles.Get("hostview"));
+            Skin.Styles.Add(GUIStyles.Get("dragtabdropwindow"));
+            Skin.Styles.Add(GUIStyles.Get("PaneOptions"));
+            Skin.Styles.Add(GUIStyles.Get("SelectionRect"));
+            Skin.Styles.Add(GUIStyles.Get("window"));
+            Skin.Styles.Add(GUIStyles.Get("WindowBottomResize"));
+            Skin.Styles.Add(GUIStyles.Get("dragtab"));
+            Skin.Styles.Add(GUIStyles.Get("IN LockButton"));
+            Skin.Styles.Add(GUIStyles.Get("WinBtnClose"));
            
             foreach (GUIStyle item in GUI.skin)
             {

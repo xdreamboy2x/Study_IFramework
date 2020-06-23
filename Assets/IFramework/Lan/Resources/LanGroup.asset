@@ -12,3 +12,60 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 677964c2dacd2814f8af8c85b9fccd6d, type: 3}
   m_Name: LanGroup
   m_EditorClassIdentifier: 
+  lanPairs:
+  - lan: 29
+    key: 1231321
+    value: 1132132
+  - lan: 15
+    key: dasdas
+    value: 1132132
+  - lan: 22
+    key: dasdas
+    value: 1132132
+  - lan: 10
+    key: dasdas
+    value: 1132132
+  - lan: 28
+    key: dasdas
+    value: 1132132
+  - lan: 28
+    key: dsadas
+    value: 1132132
+  - lan: 21
+    key: dsadas
+    value: 1132132eqwe
+  - lan: 21
+    key: dasdas
+    value: 1132132eqweqe
+  - lan: 13
+    key: qq
+    value: 1132132eqweqe
+  - lan: 32
+    key: qq
+    value: 1132132eqweqe
+  - lan: 12
+    key: qq
+    value: 1132132eqweqe
+  - lan: 8
+    key: qq
+    value: 1132132eqweqe
+  - lan: 41
+    key: qq
+    value: 1132132eqweqe
+  - lan: 6
+    key: qq
+    value: 1132132eqweqe
+  - lan: 7
+    key: qq
+    value: 1132132eqweqe
+  - lan: 32
+    key: qqq
+    value: 1132132eqweqe
+  - lan: 30
+    key: qqq
+    value: 1132132eqweqe
+  keys:
+  - dsadas
+  - dasdas
+  - qq
+  - qqq

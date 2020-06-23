@@ -102,9 +102,9 @@ namespace IFramework
             {
                 private class Styles
                 {
-                    public static GUIStyle SearchTextFieldStyle = new GUIStyle("ToolbarSeachTextField");
-                    public static GUIStyle SearchCancelButtonStyle = new GUIStyle("SearchCancelButton");
-                    public static GUIStyle SearchCancelButtonEmptyStyle = new GUIStyle("SearchCancelButtonEmpty");
+                    public static GUIStyle SearchTextFieldStyle = GUIStyles.Get("ToolbarSeachTextField");
+                    public static GUIStyle SearchCancelButtonStyle = GUIStyles.Get("SearchCancelButton");
+                    public static GUIStyle SearchCancelButtonEmptyStyle = GUIStyles.Get("SearchCancelButtonEmpty");
                 }
 
                 public string OnGUI(Rect position, string value)

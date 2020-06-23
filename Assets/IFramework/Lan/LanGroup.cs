@@ -12,8 +12,8 @@ namespace IFramework.Language
 {
     public class LanGroup:ScriptableObject
 	{
-        [ReadOnly] public readonly List<LanPair> lanPairs = new List<LanPair>();
-        [ReadOnly] public readonly List<string> keys = new List<string>();
+        [ReadOnly] public List<LanPair> lanPairs = new List<LanPair>();
+        [ReadOnly] public List<string> keys = new List<string>();
 
         public void DeletePairsByLan(SystemLanguage lan)
         {

@@ -21,7 +21,7 @@ namespace IFramework
             get
             {
                
-                var style = new GUIStyle("Button");
+                var style = GUIStyles.Get("Button");
                 return style.lineHeight*2;
             }
         }

@@ -21,7 +21,7 @@ namespace IFramework
             get {
                 if (barText==null)
                 {
-                    barText = new GUIStyle(BarTextStyle);
+                    barText = GUIStyles.Get(BarTextStyle);
                     barText.alignment = TextAnchor.MiddleCenter;
                 }
                 return barText;
@@ -32,7 +32,7 @@ namespace IFramework
         {
             get
             {
-                var style = new GUIStyle("ProgressBarBar");
+                var style = GUIStyles.Get("ProgressBarBar");
                 var content = new GUIContent(Bar.Text);
                 return Mathf.Max(style.CalcHeight(content, Screen.width - 53), Bar.MinbarHeight);
             }

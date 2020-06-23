@@ -115,5 +115,10 @@ namespace IFramework.GUITool
         {
             _listView.SelectAll();
         }
+
+        public void Calc(Rect rect, Vector2 vector2, object scroll, float lineHeight, int v, ListViewCalculator.ColumnSetting[] setting)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

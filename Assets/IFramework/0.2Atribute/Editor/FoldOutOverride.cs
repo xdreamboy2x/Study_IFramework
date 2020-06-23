@@ -70,7 +70,7 @@ namespace IFramework
 
         public override void OnInspectorGUI()
         {
-            style = new GUIStyle("foldout");
+            style = GUIStyles.Get("foldout");
             style.overflow = new RectOffset(-10, 0, 3, 0);
             style.padding = new RectOffset(25, 0, -3, 0);
             serializedObject.Update();

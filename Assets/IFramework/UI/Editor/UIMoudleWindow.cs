@@ -36,9 +36,9 @@ namespace IFramework.UI
             public static GUIStyle BoldLabel = EditorStyles.boldLabel;
             public static GUIStyle toolbarButton = EditorStyles.toolbarButton;
             public static GUIStyle toolbar = EditorStyles.toolbar;
-            public static GUIStyle searchField = GUI.skin.FindStyle("ToolbarSeachTextField");
-            public static GUIStyle cancelBtn = GUI.skin.FindStyle("ToolbarSeachCancelButton");
-            public static GUIStyle Fold = new GUIStyle(GUI.skin.FindStyle("ToolbarDropDown"));
+            public static GUIStyle searchField = GUIStyles.Get("ToolbarSeachTextField");
+            public static GUIStyle cancelBtn = GUIStyles.Get("ToolbarSeachCancelButton");
+            public static GUIStyle Fold = GUIStyles.Get("ToolbarDropDown");
             public static GUIStyle FoldOut = EditorStyles.foldout;
 
             static Styles()
@@ -67,9 +67,9 @@ namespace IFramework.UI
             {
                 private class Styles
                 {
-                    public static GUIStyle SearchTextFieldStyle = new GUIStyle("ToolbarSeachTextField");
-                    public static GUIStyle SearchCancelButtonStyle = new GUIStyle("SearchCancelButton");
-                    public static GUIStyle SearchCancelButtonEmptyStyle = new GUIStyle("SearchCancelButtonEmpty");
+                    public static GUIStyle SearchTextFieldStyle = GUIStyles.Get("ToolbarSeachTextField");
+                    public static GUIStyle SearchCancelButtonStyle = GUIStyles.Get("SearchCancelButton");
+                    public static GUIStyle SearchCancelButtonEmptyStyle = GUIStyles.Get("SearchCancelButtonEmpty");
                 }
 
                 public string OnGUI(Rect position, string value)
