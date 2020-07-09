@@ -272,11 +272,9 @@ namespace IFramework.UI
             }
         }
 
-
         public UIPanel Get(Type type, string name, string path = "", UIPanelLayer layer = UIPanelLayer.Common)
         {
             //if (UICache.Count > 0) ClearCache(arg);
-
             if (current != null && current.PanelName == name && current.GetType() == type)
                 return current;
             var panel = _groups.FindPanel(name);

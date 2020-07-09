@@ -98,8 +98,8 @@ function Awake()
 	disposeEvent=Delegate()
 	
 	IFramework.Framework.BindEnvUpdate(Update,Game.env)
-	require("Custom.FixCsharp")
-	require("Custom.GameLogic")
+	require("Project.FixCsharp")
+	require("Project.GameLogic")
 end
 
 

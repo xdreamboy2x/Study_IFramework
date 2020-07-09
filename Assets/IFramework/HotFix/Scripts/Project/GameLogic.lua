@@ -3,7 +3,7 @@ Log.L(0,"Start Game Logic ")
 local _group=require("UI.LuaGroups")()
 local _uimodule=  Game.unityModules.UI
 
-_uimodule:SetGroups(_group:SetMap(require("Custom.UI.UIMap_MVVM")))
+_uimodule:SetGroups(_group:SetMap(require("Project.UI.UIMap_MVVM")))
 
 
 Using("IFramework.Tweens.TweenEx")

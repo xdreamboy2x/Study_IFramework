@@ -21,7 +21,7 @@ function LuaGroups:ctor()
 		return rawget(self.groups,name)
 	end
 end
---map: {name={ViewType=77,VMType=66},}
+--map: { { Name = "**",ViewType =require("****"), VMType=require("***")},}
 function LuaGroups:SetMap(map)
 	if map == nil then
 		error("map could not be null ")
@@ -58,16 +58,18 @@ function LuaGroups:OnDispose()
 end
 
 function LuaGroups:OnSubscribe(panel)
-	local panelType=panel:GetType()
+	local name = panel.name
+
 	local vvmType 
+
 	for i, v in pairs(self.map) do
-		if v.PanelType==panelType then
+		if v.Name==name then
 			vvmType=v
 			break
 		end
 	end
 	if(vvmType==nil) then
-		error("not find vvm type with Type : "..panelType)
+		error("not find vvm type with Name :"..name)
 		return
 	end
 	if rawget(self.groups,panel.name) ~=nil then
