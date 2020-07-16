@@ -323,11 +323,11 @@ namespace IFramework.Language
         }
         private void WriteJson(string path)
         {
-            path.WriteText(Json.ToJsonString(lanPairs), Encoding.UTF8);
+            path.WriteText(JsonUtility.ToJson(lanPairs), Encoding.UTF8);
         }
         private void ReadJson(string path)
         {
-            List<LanPair> ps = Json.ToObject<List<LanPair>>(path.ReadText(Encoding.UTF8))
+            List<LanPair> ps = JsonUtility.FromJson<List<LanPair>>(path.ReadText(Encoding.UTF8))
                .Distinct()
                .ToList().FindAll((p) => { return !string.IsNullOrEmpty(p.key) && !string.IsNullOrEmpty(p.value); });
             if (ps == null || ps.Count == 0) return;

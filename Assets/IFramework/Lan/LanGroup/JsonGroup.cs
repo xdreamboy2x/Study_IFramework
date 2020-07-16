@@ -17,7 +17,7 @@ namespace IFramework.Language
 
         public JsonGroup(string json)
         {
-            _group = Json.ToObject<List<LanPair>>(json);
+            _group = UnityEngine.JsonUtility.FromJson<List<LanPair>>(json);
         }
         public List<LanPair> Load()
         {
