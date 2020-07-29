@@ -83,8 +83,10 @@ namespace IFramework
         {
             UnityEngine.Debug.Log("FrameworkPath   right?   " + frameworkPath);
             Framework.InitEnv("IFramework_Editor", envType).InitWithAttribute();
-
-            quitting += Framework.env0.Dispose;
+            UnityEditor.Compilation.CompilationPipeline.assemblyCompilationStarted += (str) => {
+                Framework.env0.Dispose();
+                UnityEngine.Debug.Log("EditorEnv Dispose"); 
+            };
             update += Framework.env0.Update;
             Framework.env0.modules.Coroutine = Framework.env0.modules.CreateModule<CoroutineModule>();
 

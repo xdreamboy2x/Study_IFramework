@@ -6,11 +6,8 @@
  *Description:    Description
  *History:        2019-12-11--
 *********************************************************************************/
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using IFramework;
-using IFramework.Inject;
+using IFramework.Injection;
 using UnityEngine;
 
 namespace IFramework_Demo

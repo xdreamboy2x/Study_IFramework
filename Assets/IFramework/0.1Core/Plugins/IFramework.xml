@@ -42,19 +42,6 @@
             ctor
             </summary>
         </member>
-        <member name="T:IFramework.FrameworkArgs">
-            <summary>
-            可回收接口
-            </summary>
-            <summary>
-            可回收消息基类
-            </summary>
-        </member>
-        <member name="P:IFramework.FrameworkArgs.argsDirty">
-            <summary>
-            消息是否可用
-            </summary>
-        </member>
         <member name="T:IFramework.EnvironmentType">
             <summary>
             环境类型
@@ -90,6 +77,104 @@
             环境4
             </summary>
         </member>
+        <member name="T:IFramework.IRecyclable">
+            <summary>
+            可回收
+            </summary>
+        </member>
+        <member name="M:IFramework.IRecyclable.Recyle">
+            <summary>
+            回收
+            </summary>
+        </member>
+        <member name="M:IFramework.IRecyclable.ResetData">
+            <summary>
+            数据重置
+            </summary>
+        </member>
+        <member name="P:IFramework.IRecyclable.recyled">
+            <summary>
+            是否被回收了
+            </summary>
+        </member>
+        <member name="T:IFramework.RecyclableObjectCollection">
+            <summary>
+            可回收集合
+            </summary>
+        </member>
+        <member name="M:IFramework.RecyclableObjectCollection.#ctor">
+            <summary>
+            ctor
+            </summary>
+        </member>
+        <member name="M:IFramework.RecyclableObjectCollection.Get(System.Type,IFramework.IEventArgs)">
+            <summary>
+            获取一个实例
+            </summary>
+            <param name="type"></param>
+            <param name="arg"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.RecyclableObjectCollection.Get``1(IFramework.IEventArgs)">
+            <summary>
+            获取一个实例
+            </summary>
+            <typeparam name="Object"></typeparam>
+            <param name="arg"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.RecyclableObjectCollection.Set(System.Type,IFramework.RecyclableObject,IFramework.IEventArgs)">
+            <summary>
+            回收一个实例
+            </summary>
+            <param name="type"></param>
+            <param name="t"></param>
+            <param name="arg"></param>
+        </member>
+        <member name="M:IFramework.RecyclableObjectCollection.Set``1(``0,IFramework.IEventArgs)">
+            <summary>
+            回收一个实例
+            </summary>
+            <typeparam name="Object"></typeparam>
+            <param name="t"></param>
+            <param name="arg"></param>
+        </member>
+        <member name="M:IFramework.RecyclableObjectCollection.GetFromMemory(System.Guid,IFramework.RecyclableObject@)">
+            <summary>
+            获取没有回收的实例
+            </summary>
+            <param name="id"></param>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.RecyclableObjectCollection.Recyle(System.Guid)">
+            <summary>
+            回收一个运行中的实例
+            </summary>
+        </member>
+        <member name="M:IFramework.RecyclableObjectCollection.RecyleAll">
+            <summary>
+            回收所有运行中的实例
+            </summary>
+        </member>
+        <member name="M:IFramework.RecyclableObjectCollection.Dispose">
+            <summary>
+            释放
+            </summary>
+        </member>
+        <member name="T:IFramework.FrameworkArgs">
+            <summary>
+            可回收接口
+            </summary>
+            <summary>
+            可回收消息基类
+            </summary>
+        </member>
+        <member name="P:IFramework.FrameworkArgs.argsDirty">
+            <summary>
+            消息是否可用
+            </summary>
+        </member>
         <member name="T:IFramework.FrameworkEnvironment">
             <summary>
             框架运行环境
@@ -118,6 +203,11 @@
         <member name="P:IFramework.FrameworkEnvironment.cycleCollection">
             <summary>
             IRecyclable 实例的环境容器
+            </summary>
+        </member>
+        <member name="P:IFramework.FrameworkEnvironment.bindHandler">
+            <summary>
+            数据绑定器
             </summary>
         </member>
         <member name="P:IFramework.FrameworkEnvironment.container">
@@ -200,7 +290,7 @@
             </summary>
             <param name="version"></param>
         </member>
-        <member name="T:IFramework.Inject.FrameworkContainer.Tuple`2">
+        <member name="T:IFramework.Injection.FrameworkContainer.Tuple`2">
             http://stackoverflow.com/questions/1171812/multi-key-dictionary-in-c
         </member>
         <member name="T:IFramework.Modules.ECS.IEntity">
@@ -1297,14 +1387,14 @@
             <param name="param"></param>
             <returns></returns>
         </member>
-        <member name="T:IFramework.Modules.MVVM.IDataModel">
-            <summary>
-            数据
-            </summary>
-        </member>
         <member name="T:IFramework.Modules.MVVM.EmptyDataModel">
             <summary>
             空数据模型
+            </summary>
+        </member>
+        <member name="T:IFramework.Modules.MVVM.IDataModel">
+            <summary>
+            数据
             </summary>
         </member>
         <member name="T:IFramework.Modules.MVVM.MVVMGroup">
@@ -2047,6 +2137,113 @@
             刷新
             </summary>
         </member>
+        <member name="T:IFramework.BindableObject">
+            <summary>
+            绑定对象
+            </summary>
+        </member>
+        <member name="M:IFramework.BindableObject.#ctor">
+            <summary>
+            ctor
+            </summary>
+        </member>
+        <member name="M:IFramework.BindableObject.Subscribe(System.String,System.Action{System.String,System.Object})">
+            <summary>
+            注册监听
+            </summary>
+            <param name="propertyName"></param>
+            <param name="listener"></param>
+        </member>
+        <member name="M:IFramework.BindableObject.UnSubscribe(System.String,System.Action{System.String,System.Object})">
+            <summary>
+            移除监听
+            </summary>
+            <param name="propertyName"></param>
+            <param name="listener"></param>
+        </member>
+        <member name="M:IFramework.BindableObject.GetProperty``1(``0@,System.String)">
+            <summary>
+            获取属性
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="property"></param>
+            <param name="propertyName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.BindableObject.SetProperty``1(``0@,``0,System.String)">
+            <summary>
+            设置属性
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="property"></param>
+            <param name="value"></param>
+            <param name="propertyName"></param>
+        </member>
+        <member name="M:IFramework.BindableObject.OnDispose">
+            <summary>
+            释放
+            </summary>
+        </member>
+        <member name="T:IFramework.BindableObjectHandler">
+            <summary>
+            绑定器
+            </summary>
+        </member>
+        <member name="M:IFramework.BindableObjectHandler.BindProperty``1(System.Action{``0},System.Func{``0})">
+            <summary>
+            绑定
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="setter"></param>
+            <param name="getter"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.BindableObjectHandler.PublishProperty``1(``0,System.String)">
+            <summary>
+            发布变化
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="value"></param>
+            <param name="propertyName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IFramework.BindableObjectHandler.UnBind">
+            <summary>
+            解绑全部
+            </summary>
+        </member>
+        <member name="M:IFramework.BindableObjectHandler.UnBind(IFramework.BindableObject)">
+            <summary>
+            按照对象解绑
+            </summary>
+            <param name="_object"></param>
+        </member>
+        <member name="M:IFramework.BindableObjectHandler.UnBind(System.String)">
+            <summary>
+            按照名字解绑
+            </summary>
+            <param name="propertyName"></param>
+        </member>
+        <member name="M:IFramework.BindableObjectHandler.UnBind(IFramework.BindableObject,System.String)">
+            <summary>
+            解绑
+            </summary>
+            <param name="_object"></param>
+            <param name="propertyName"></param>
+        </member>
+        <member name="M:IFramework.BindableObjectHandler.UnBind(IFramework.BindableObject,System.Type,System.String)">
+            <summary>
+            解绑
+            </summary>
+            <param name="_object"></param>
+            <param name="type"></param>
+            <param name="propertyName"></param>
+        </member>
+        <member name="M:IFramework.BindableObjectHandler.OnDispose">
+            <summary>
+            释放
+            </summary>
+        </member>
         <member name="T:IFramework.ObservableObject">
             <summary>
             可观测 Object
@@ -2100,6 +2297,24 @@
             释放时
             </summary>
         </member>
+        <member name="T:IFramework.OnEnvironmentInitAttribute">
+            <summary>
+            框架初始化时候调用被标记的静态类
+            </summary>
+        </member>
+        <member name="P:IFramework.OnEnvironmentInitAttribute.type">
+            <summary>
+            配合初始化的版本 0，
+            默认初始化，其他自行规定，用于区分环境，
+            一般某个环境特有的静态类和环境编号一致
+            </summary>
+        </member>
+        <member name="M:IFramework.OnEnvironmentInitAttribute.#ctor(IFramework.EnvironmentType)">
+            <summary>
+            Ctor
+            </summary>
+            <param name="type"></param>
+        </member>
         <member name="T:IFramework.ObservableObjectHandler">
             <summary>
             ObservableObject 注册监听Helper
@@ -2142,6 +2357,11 @@
             <param name="_object"> ObservableObject </param>
             <param name="propertyName"> 属性名称 </param>
         </member>
+        <member name="M:IFramework.ObservableObjectHandler.OnDispose">
+            <summary>
+            释放
+            </summary>
+        </member>
         <member name="T:IFramework.ObservableValue`1">
             <summary>
             可观测树值
@@ -2181,24 +2401,6 @@
             方便书写，缩减代码
             </summary>
             <param name="value"></param>
-        </member>
-        <member name="T:IFramework.OnEnvironmentInitAttribute">
-            <summary>
-            框架初始化时候调用被标记的静态类
-            </summary>
-        </member>
-        <member name="P:IFramework.OnEnvironmentInitAttribute.type">
-            <summary>
-            配合初始化的版本 0，
-            默认初始化，其他自行规定，用于区分环境，
-            一般某个环境特有的静态类和环境编号一致
-            </summary>
-        </member>
-        <member name="M:IFramework.OnEnvironmentInitAttribute.#ctor(IFramework.EnvironmentType)">
-            <summary>
-            Ctor
-            </summary>
-            <param name="type"></param>
         </member>
         <member name="T:IFramework.BaseTypePool`1">
             <summary>
@@ -2385,96 +2587,6 @@
             获取第一个元素
             </summary>
             <returns></returns>
-        </member>
-        <member name="T:IFramework.Pool.IPoolObjectOwner">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="T:IFramework.IRecyclable">
-            <summary>
-            可回收
-            </summary>
-        </member>
-        <member name="M:IFramework.IRecyclable.Recyle">
-            <summary>
-            回收
-            </summary>
-        </member>
-        <member name="M:IFramework.IRecyclable.ResetData">
-            <summary>
-            数据重置
-            </summary>
-        </member>
-        <member name="P:IFramework.IRecyclable.recyled">
-            <summary>
-            是否被回收了
-            </summary>
-        </member>
-        <member name="T:IFramework.RecyclableObjectCollection">
-            <summary>
-            可回收集合
-            </summary>
-        </member>
-        <member name="M:IFramework.RecyclableObjectCollection.#ctor">
-            <summary>
-            ctor
-            </summary>
-        </member>
-        <member name="M:IFramework.RecyclableObjectCollection.Get(System.Type,IFramework.IEventArgs)">
-            <summary>
-            获取一个实例
-            </summary>
-            <param name="type"></param>
-            <param name="arg"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.RecyclableObjectCollection.Get``1(IFramework.IEventArgs)">
-            <summary>
-            获取一个实例
-            </summary>
-            <typeparam name="Object"></typeparam>
-            <param name="arg"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.RecyclableObjectCollection.Set(System.Type,IFramework.RecyclableObject,IFramework.IEventArgs)">
-            <summary>
-            回收一个实例
-            </summary>
-            <param name="type"></param>
-            <param name="t"></param>
-            <param name="arg"></param>
-        </member>
-        <member name="M:IFramework.RecyclableObjectCollection.Set``1(``0,IFramework.IEventArgs)">
-            <summary>
-            回收一个实例
-            </summary>
-            <typeparam name="Object"></typeparam>
-            <param name="t"></param>
-            <param name="arg"></param>
-        </member>
-        <member name="M:IFramework.RecyclableObjectCollection.GetFromMemory(System.Guid,IFramework.RecyclableObject@)">
-            <summary>
-            获取没有回收的实例
-            </summary>
-            <param name="id"></param>
-            <param name="obj"></param>
-            <returns></returns>
-        </member>
-        <member name="M:IFramework.RecyclableObjectCollection.Recyle(System.Guid)">
-            <summary>
-            回收一个运行中的实例
-            </summary>
-        </member>
-        <member name="M:IFramework.RecyclableObjectCollection.RecyleAll">
-            <summary>
-            回收所有运行中的实例
-            </summary>
-        </member>
-        <member name="M:IFramework.RecyclableObjectCollection.Dispose">
-            <summary>
-            释放
-            </summary>
         </member>
         <member name="T:IFramework.RecyclableObject">
             <summary>
