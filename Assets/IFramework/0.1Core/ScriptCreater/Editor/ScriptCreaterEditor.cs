@@ -26,7 +26,7 @@ namespace IFramework
         private static ScriptCreater _scriptCreater;
         private void OnEnable()
         {
-            originScriptPath = EditorEnv.corePath.CombinePath(@"ScriptCreater/Editor/FormatScript.txt");
+            originScriptPath = EditorEnv.formatScriptsPath.CombinePath(@"ScriptCreaterFormatScript.txt");
             _scriptCreater = this.target as ScriptCreater;
         }
       

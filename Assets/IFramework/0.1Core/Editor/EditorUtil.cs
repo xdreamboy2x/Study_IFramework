@@ -15,7 +15,7 @@ using IFramework.Utility;
 
 namespace IFramework
 {
-    public class EditorUtil
+    class EditorUtil
 	{
         [MenuItem("IFramework/Tool/Copy Path")]
         public static void CopyAssetPath()
@@ -28,13 +28,13 @@ namespace IFramework
             GUIUtility.systemCopyBuffer = path;
         }
         [MenuItem("IFramework/Editor/Quit")]
-        public static void Quit2()
+        public static void Quit()
         {
           //  Environment.Exit(0);
             EditorApplication.Exit(0);
         }
         [MenuItem("IFramework/Editor/ReOpen")]
-        public static void ReOpen2()
+        public static void ReOpen()
         {
             EditorApplication.OpenProject(Application.dataPath.CombinePath("../"));
         }
@@ -104,49 +104,6 @@ namespace IFramework
             GameObject.DestroyImmediate(goClone);
             return prefab;
         }
-
-        //[MenuItem("IFramework/Editor/Quit")]
-        //public static void Quit()
-        //{
-        //    Process.GetCurrentProcess().Kill();
-        //}
-        //[MenuItem("IFramework/Editor/ReOpen")]
-        //public static void ReOpen()
-        //{
-        //    string unityPath = Process.GetCurrentProcess().MainModule.FileName;
-        //    string assetPath = Application.dataPath.GetDirPath();
-        //    string batPath = EditorEnv.CoreEditorPath.CombinePath(@"ReStart.bat").ToAbsPath();
-        //    int processId = Process.GetCurrentProcess().Id;
-        //    CreatReStartBat(batPath);
-        //    ProcessUtil.CreateProcess(batPath, string.Format("\"{0}\" \"{1}\" ", unityPath, assetPath, unityPath.Length));
-        //    Process.GetCurrentProcess().Kill(); 
-        //}
-       //private static  void CreatReStartBat(string batPath)
-       // {
-       //     if (File.Exists(batPath)) return;
-       //     using (FileStream fs = new FileStream(batPath, FileMode.OpenOrCreate))
-       //     {
-       //         using (StreamWriter sw = new StreamWriter(fs))
-       //         {
-       //             fs.Lock(0, fs.Length);
-       //             sw.WriteLine("@echo off");
-
-       //             sw.WriteLine("set unityPath=%~1%");
-       //             sw.WriteLine("set projectPath=%~2%");
-       //             sw.WriteLine("for /f \"delims = \"\" tokens = 1\" %%v in ( %unityPath% ) do ( set unityPath=%%v )");
-       //             sw.WriteLine("for /f \"delims = \"\" tokens = 1\" %%v in ( %projectPath% ) do ( set projectPath=%%v )");
-       //             sw.WriteLine("start %unityPath% -projectPath %projectPath%");
-       //             //sw.WriteLine("pause");
-       //             fs.Unlock(0, fs.Length);
-       //             sw.Flush();
-       //             fs.Flush();
-
-       //             sw.Close();
-       //             fs.Close();
-       //         }
-       //     }
-       //     AssetDatabase.Refresh();
-       // }
     }
 
 }

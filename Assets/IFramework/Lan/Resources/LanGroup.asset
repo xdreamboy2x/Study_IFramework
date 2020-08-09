@@ -13,9 +13,6 @@ MonoBehaviour:
   m_Name: LanGroup
   m_EditorClassIdentifier: 
   lanPairs:
-  - lan: 29
-    key: 1231321
-    value: 1132132
   - lan: 15
     key: dasdas
     value: 1132132

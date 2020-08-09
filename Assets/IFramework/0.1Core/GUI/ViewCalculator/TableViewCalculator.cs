@@ -25,7 +25,7 @@ namespace IFramework.GUITool
         public int firstVisibleRow { get { return _listView.firstVisibleRow; } }
         public int lastVisibleRow { get { return _listView.lastVisibleRow; } }
         public float titleRowOffsetY = 0.2f;
-        public List<ListViewCalculator.Row> welectedRows { get { return _listView.selectedRows; } }
+        public List<ListViewCalculator.Row> selectedRows { get { return _listView.selectedRows; } }
 
 
         public void Calc(Rect position, Vector2 contentOffset, Vector2 scroll, float rowHeight, int rowCount, ListViewCalculator.ColumnSetting[] setting)

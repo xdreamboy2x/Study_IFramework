@@ -9,6 +9,8 @@
 using UnityEditor;
 using IFramework.Modules.Coroutine;
 using System;
+using UnityEditor.Compilation;
+using System.IO;
 
 namespace IFramework
 {
@@ -54,42 +56,45 @@ namespace IFramework
         public static string utilPath { get { return frameworkPath.CombinePath(_relativeUtilPath); } }
         public static string corePath { get { return frameworkPath.CombinePath(_relativeCorePath); } }
         public static string coreEditorPath { get { return frameworkPath.CombinePath(_relativeCoreEditorPath); } }
-
-
+        public static string memoryPath
+        {
+            get
+            {
+                string path = "Assets/../" + frameworkName+"EditorMemory";
+                if (!Directory.Exists(path))
+                    Directory.CreateDirectory(path);
+                return path;
+            }
+        }
+        public static string formatScriptsPath
+        {
+            get
+            {
+                string path = Path.Combine(memoryPath,"Scripts");
+                if (!Directory.Exists(path))
+                    Directory.CreateDirectory(path);
+                return path;
+            }
+        }
 
 
 
         public static event EditorApplication.CallbackFunction update { add { EditorApplication.update += value; } remove { EditorApplication.update -= value; } }
         public static event EditorApplication.CallbackFunction delayCall { add { EditorApplication.delayCall += value; } remove { EditorApplication.delayCall -= value; } }
-        public static event EditorApplication.CallbackFunction searchChanged { add { EditorApplication.searchChanged += value; } remove { EditorApplication.searchChanged -= value; } }
-        public static event EditorApplication.CallbackFunction modifierKeysChanged { add { EditorApplication.modifierKeysChanged += value; } remove { EditorApplication.modifierKeysChanged -= value; } }
-        public static event EditorApplication.SerializedPropertyCallbackFunction contextualPropertyMenu { add { EditorApplication.contextualPropertyMenu += value; } remove { EditorApplication.contextualPropertyMenu -= value; } }
-
-        public static event Func<bool> wantsToQuit { add { EditorApplication.wantsToQuit += value; } remove { EditorApplication.wantsToQuit -= value; } }
-        public static event Action quitting { add { EditorApplication.quitting += value; } remove { EditorApplication.quitting -= value; } }
-
-        public static event Action<PlayModeStateChange> playModeStateChanged { add { EditorApplication.playModeStateChanged += value; } remove { EditorApplication.playModeStateChanged -= value; } }
-        public static event Action<PauseState> pauseStateChanged { add { EditorApplication.pauseStateChanged += value; } remove { EditorApplication.pauseStateChanged -= value; } }
-
-
-        public static event EditorApplication.ProjectWindowItemCallback projectWindowItemOnGUI { add { EditorApplication.projectWindowItemOnGUI += value; } remove { EditorApplication.projectWindowItemOnGUI -= value; } }
         public static event EditorApplication.HierarchyWindowItemCallback hierarchyWindowItemOnGUI { add { EditorApplication.hierarchyWindowItemOnGUI += value; } remove { EditorApplication.hierarchyWindowItemOnGUI -= value; } }
-        public static event Action projectChanged { add { EditorApplication.projectChanged += value; } remove { EditorApplication.projectChanged -= value; } }
-        public static event Action hierarchyChanged { add { EditorApplication.hierarchyChanged += value; } remove { EditorApplication.hierarchyChanged -= value; } }
-
+        public static event Action<string> assemblyCompilationStarted { add { CompilationPipeline.assemblyCompilationStarted += value; } remove { CompilationPipeline.assemblyCompilationStarted -= value; } }
 
         [InitializeOnLoadMethod]
         static void EditorEnvInit()
         {
             UnityEngine.Debug.Log("FrameworkPath   right?   " + frameworkPath);
             Framework.InitEnv("IFramework_Editor", envType).InitWithAttribute();
-            UnityEditor.Compilation.CompilationPipeline.assemblyCompilationStarted += (str) => {
+            assemblyCompilationStarted += (str) => {
                 Framework.env0.Dispose();
                 UnityEngine.Debug.Log("EditorEnv Dispose"); 
             };
             update += Framework.env0.Update;
             Framework.env0.modules.Coroutine = Framework.env0.modules.CreateModule<CoroutineModule>();
-
 #if UNITY_2018_1_OR_NEWER
             PlayerSettings.allowUnsafeCode = true;
 #else

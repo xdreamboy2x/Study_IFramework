@@ -41,7 +41,7 @@ namespace IFramework
             }
         }
         private static string newScriptName = "newScript.cs";
-        private static string originScriptPath = EditorEnv.corePath.CombinePath(@"ScriptCreater/Simple/Editor/CSharpScript.txt");
+        private static string originScriptPath = EditorEnv.formatScriptsPath.CombinePath("AuthorCharpScript.txt");
 
         [MenuItem("Assets/IFramework/CSharpScript")]
         public static void CreateUIBase()

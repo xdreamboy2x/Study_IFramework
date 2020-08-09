@@ -654,7 +654,7 @@ namespace IFramework.AB
                 {
                     GenericMenu menu = new GenericMenu();
                     menu.AddItem(new GUIContent("Delete"), false, () => {
-                        ABBContentTable.welectedRows.ReverseForEach((row) =>
+                        ABBContentTable.selectedRows.ReverseForEach((row) =>
                         {
                             window.RemoveAsset(ChossedABB.assetNames[row.rowID], ChossedABB.assetBundleName);
                         });
