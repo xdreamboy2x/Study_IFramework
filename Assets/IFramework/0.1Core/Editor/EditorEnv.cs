@@ -21,6 +21,8 @@ namespace IFramework
         private const string _relativeUtilPath = "UTil";
         private const string _relativeEditorPath = "UTil/Editor";
         private static string _fpath;
+
+
         public const EnvironmentType envType = EnvironmentType.Ev0;
         public static FrameworkEnvironment env { get { return Framework.env0; } }
         public static FrameworkModules moudules { get { return env.modules; } }
@@ -53,7 +55,6 @@ namespace IFramework
             }
         }
         public static string editorPath { get { return frameworkPath.CombinePath(_relativeEditorPath); } }
-        public static string utilPath { get { return frameworkPath.CombinePath(_relativeUtilPath); } }
         public static string corePath { get { return frameworkPath.CombinePath(_relativeCorePath); } }
         public static string coreEditorPath { get { return frameworkPath.CombinePath(_relativeCoreEditorPath); } }
         public static string memoryPath

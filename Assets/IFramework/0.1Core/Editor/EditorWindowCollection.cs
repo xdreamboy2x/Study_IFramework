@@ -110,9 +110,9 @@ namespace IFramework
             Handles.color = Color.white;
 
             string windowName = "";
-            for (int j = _table.selectedRows.Count - 1; j >= 0; j--)
+            for (int j = _table.rows.Count - 1; j >= 0; j--)
             {
-                if (_table.selectedRows[j].selected)
+                if (_table.rows[j].selected)
                 {
                     windowName = fitterWindows[j].searchName;
                     break;
