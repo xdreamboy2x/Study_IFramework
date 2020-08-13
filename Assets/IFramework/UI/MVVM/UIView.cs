@@ -12,8 +12,7 @@ using UnityEngine.UI;
 
 namespace IFramework.UI
 {
-
-    public abstract class UIView : View, IUIModuleEventListenner
+    public abstract class UIView : View, IViewStateEventHandler
     {
         public enum ViewState
         {
@@ -35,42 +34,30 @@ namespace IFramework.UI
 
         protected void BindText(Text text, Func<object> getter)
         {
-            handler.BindProperty(() => { text.text = getter().ToString(); });
+            handler.BindProperty(() => {
+                string tmp = getter().ToString();
+                if (tmp!=text.text)
+                {
+                    text.text = tmp;
+                }});
         }
         protected void BindSlider(Slider slider, Func<float> getter)
         {
-            handler.BindProperty(() => { slider.value = getter(); });
+            handler.BindProperty(() => {
+                float tmp = getter();
+                if (slider.value!=tmp)
+                {
+                    slider.value = tmp;
+                } });
         }
         protected void BindToogle(Toggle toggle, Func<bool> getter)
         {
-            handler.BindProperty(() => { toggle.isOn = getter(); });
-        }
-
-
-        void IUIModuleEventListenner.OnLoad()
-        {
-            _lastState = ViewState.Load;
-            OnLoad();
-        }
-        void IUIModuleEventListenner.OnTop(UIEventArgs arg)
-        {
-            _lastState = ViewState.Top;
-            OnTop(arg);
-        }
-        void IUIModuleEventListenner.OnPress(UIEventArgs arg)
-        {
-            _lastState = ViewState.Press;
-            OnPress(arg);
-        }
-        void IUIModuleEventListenner.OnPop(UIEventArgs arg)
-        {
-            _lastState = ViewState.Pop;
-            OnPop(arg);
-        }
-        void IUIModuleEventListenner.OnClear()
-        {
-            _lastState = ViewState.Clear;
-            OnClear();
+            handler.BindProperty(() => {
+                bool tmp = getter();
+                if (tmp!=toggle.isOn)
+                {
+                    toggle.isOn = tmp;
+                }});
         }
 
         protected abstract void OnLoad();
@@ -78,10 +65,35 @@ namespace IFramework.UI
         protected abstract void OnPress(UIEventArgs arg);
         protected abstract void OnPop(UIEventArgs arg);
         protected abstract void OnClear();
+
+        void IViewStateEventHandler.OnLoad()
+        {
+            _lastState = ViewState.Load;
+            OnLoad();
+        }
+        void IViewStateEventHandler.OnTop(UIEventArgs arg)
+        {
+            _lastState = ViewState.Top;
+            OnTop(arg);
+        }
+        void IViewStateEventHandler.OnPress(UIEventArgs arg)
+        {
+            _lastState = ViewState.Press;
+            OnPress(arg);
+        }
+        void IViewStateEventHandler.OnPop(UIEventArgs arg)
+        {
+            _lastState = ViewState.Pop;
+            OnPop(arg);
+        }
+        void IViewStateEventHandler.OnClear()
+        {
+            _lastState = ViewState.Clear;
+            OnClear();
+        }
     }
     public abstract class UIView<VM, Panel> : UIView where VM : UIViewModel where Panel : UIPanel
     {
-
         public VM Tcontext { get { return this.context as VM; } }
         public Panel Tpanel { get { return this.panel as Panel; } }
     }

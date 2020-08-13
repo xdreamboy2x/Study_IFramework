@@ -9,9 +9,21 @@
 using UnityEngine;
 namespace IFramework.UI
 {
+    public enum UILayer
+    {
+        BGBG,               //非常BG
+        Background,         //BG
+        AnimationUnderPage, //背景动画
+        Common,             //普通
+        AnimationOnPage,    //上层动画
+        PopUp,              //弹框
+        Guide,              //引导
+        Toast,              //对话框
+        Top,                //Top
+        TopTop,             //非常Top
+    }
     public abstract class UIPanel : MonoBehaviour
     {
-        public UIPanelLayer PanelLayer { get; set; }
-        public virtual string PanelName  { get { return this.name; } set { this.name = value; } }
+        public UILayer layer { get; set; }
     }
 }

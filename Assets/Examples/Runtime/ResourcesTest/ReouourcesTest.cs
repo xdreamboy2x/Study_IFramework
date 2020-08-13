@@ -6,7 +6,7 @@
  *Description:    IFramework
  *History:        2018.11--
 *********************************************************************************/
-using IFramework.Modules.Resources;
+
 using UnityEngine;
 using IFramework;
 namespace IFramework_Demo
@@ -16,14 +16,14 @@ namespace IFramework_Demo
 	{
         private void Start()
         {
-            Game.env.modules.Resources = Game.env.modules.CreateModule<ResourceModule>();
-            var res= Game.env.modules.Resources.Load<TextAsset,ResourcesLoader<TextAsset>>("RS","txt","txt", null, null);
-            Game.env.modules.Resources.trick = 10;
-            Log.L(res.Tvalue.text);
-            var res1 = Game.env.modules.Resources.Load<TextAsset, ResourcesLoader<TextAsset>>("RS", "txt", "txt", null, null);
+            //Game.env.modules.Resources = Game.env.modules.CreateModule<ResourceModule>();
+            //var res= Game.env.modules.Resources.Load<TextAsset,ResourcesLoader<TextAsset>>("RS","txt","txt", null, null);
+            //Game.env.modules.Resources.trick = 10;
+            //Log.L(res.Tvalue.text);
+            //var res1 = Game.env.modules.Resources.Load<TextAsset, ResourcesLoader<TextAsset>>("RS", "txt", "txt", null, null);
 
-            res.Release();
-            res.Release();
+            //res.Release();
+            //res.Release();
 
         }
     }

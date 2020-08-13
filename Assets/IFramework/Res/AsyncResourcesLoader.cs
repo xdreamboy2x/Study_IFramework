@@ -8,18 +8,20 @@
 *********************************************************************************/
 using System;
 
-namespace IFramework.Modules.Resources
+namespace IFramework.Resource
 {
+
+
     public class AsyncResourcesLoader<T> : AsyncResourceLoader<T> where T : UnityEngine.Object
     {
         private UnityEngine.ResourceRequest _request;
-        protected override float _progress
+        public override float progress
         {
             get
             {
                 if (_request!=null)
                     return _request.progress;
-                if (_isdone)
+                if (isdone)
                     return 1;
                 return 0;
             }
@@ -30,8 +32,8 @@ namespace IFramework.Modules.Resources
             {
                var _request = UnityEngine.Resources.LoadAsync<T>(path);
                 _request.completed += (ops) => {
-                    _isdone = true;
-                    Tresource.value = _request.asset as T;
+                    isdone = true;
+                    Tresource.Tvalue = _request.asset as T;
                 };
             }
             catch (Exception e)
@@ -42,10 +44,10 @@ namespace IFramework.Modules.Resources
         }
         protected override void OnUnLoad()
         {
-            if (Tresource.value != null)
+            if (Tresource.Tvalue != null)
             {
                 UnityEngine.Resources.UnloadAsset(Tresource.Tvalue);
-                Tresource.value = default(T);
+                Tresource.Tvalue = default(T);
             }
             _request = null;
         }

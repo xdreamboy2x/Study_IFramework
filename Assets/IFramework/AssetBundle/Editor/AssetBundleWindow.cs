@@ -14,6 +14,7 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 using IFramework.Serialization;
+using IFramework.GUITool.HorizontalMenuToorbar;
 
 namespace IFramework.AB
 {
@@ -84,13 +85,13 @@ namespace IFramework.AB
         }
         private class DirCollectWindow : AssetBundleWindowBase, ILayoutGUIDrawer, IRectGUIDrawer
         {
-            public class AssetChooseWindow : IFPopupWindow, IRectGUIDrawer, ILayoutGUIDrawer
+            public class AssetChooseWindow : PopupWindowContent, IRectGUIDrawer, ILayoutGUIDrawer
             {
                 public ABDirCollectItem.ABSubFile assetinfo;
-                public AssetChooseWindow() { this.windowSize = new Vector2(200, 300); }
+                //public AssetChooseWindow() { this.windowSize = new Vector2(200, 300); }
                 public override void OnGUI(Rect rect)
                 {
-                    base.OnGUI(rect);
+                    //base.OnGUI(rect);
                     if (assetinfo == null) return;
                     this.DrawScrollView(() => {
                         Draw(assetinfo, 0);

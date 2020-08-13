@@ -14,6 +14,35 @@ using UnityEngine.UI;
 
 namespace IFramework.UI
 {
+    public class UIEventArgs : FrameworkArgs
+    {
+        public enum Code
+        {
+            GoBack, GoForward, Push
+        }
+        public Code code;
+        public UIPanel popPanel;
+        public UIPanel curPanel;
+        public UIPanel pressPanel;
+        protected override void OnDataReset()
+        {
+            popPanel = null;
+            curPanel = null;
+            pressPanel = null;
+        }
+    }
+
+    public interface IGroups : IDisposable
+    {
+        UIPanel FindPanel(string name);
+        void InvokeViewState(UIEventArgs arg);
+        void Subscribe(UIPanel panel);
+        void UnSubscribe(UIPanel panel);
+    }
+    public interface IPanelLoader
+    {
+        UIPanel Load(Type type, string name, UILayer layer = UILayer.Common, string path = "");
+    }
     public partial class UIModule
     {
         public Canvas Canvas { get; private set; }
@@ -65,36 +94,36 @@ namespace IFramework.UI
         }
         public void SetParent(UIPanel ui, bool isLast = true, int index = -1)
         {
-            switch (ui.PanelLayer)
+            switch (ui.layer)
             {
-                case UIPanelLayer.BGBG:
+                case UILayer.BGBG:
                     BGBG.SetChildWithIndex(ui.transform, !isLast ? index : BGBG.childCount);
                     break;
-                case UIPanelLayer.Background:
+                case UILayer.Background:
                     Background.SetChildWithIndex(ui.transform, !isLast ? index : Background.childCount);
                     break;
-                case UIPanelLayer.AnimationUnderPage:
+                case UILayer.AnimationUnderPage:
                     AnimationUnderPage.SetChildWithIndex(ui.transform, !isLast ? index : AnimationUnderPage.childCount);
                     break;
-                case UIPanelLayer.Common:
+                case UILayer.Common:
                     Common.SetChildWithIndex(ui.transform, !isLast ? index : Common.childCount);
                     break;
-                case UIPanelLayer.AnimationOnPage:
+                case UILayer.AnimationOnPage:
                     AnimationOnPage.SetChildWithIndex(ui.transform, !isLast ? index : AnimationOnPage.childCount);
                     break;
-                case UIPanelLayer.PopUp:
+                case UILayer.PopUp:
                     PopUp.SetChildWithIndex(ui.transform, !isLast ? index : PopUp.childCount);
                     break;
-                case UIPanelLayer.Guide:
+                case UILayer.Guide:
                     Guide.SetChildWithIndex(ui.transform, !isLast ? index : Guide.childCount);
                     break;
-                case UIPanelLayer.Toast:
+                case UILayer.Toast:
                     Toast.SetChildWithIndex(ui.transform, !isLast ? index : Toast.childCount);
                     break;
-                case UIPanelLayer.Top:
+                case UILayer.Top:
                     Top.SetChildWithIndex(ui.transform, !isLast ? index : Top.childCount);
                     break;
-                case UIPanelLayer.TopTop:
+                case UILayer.TopTop:
                     TopTop.SetChildWithIndex(ui.transform, !isLast ? index : TopTop.childCount);
                     break;
                 default:
@@ -112,9 +141,9 @@ namespace IFramework.UI
         public Stack<UIPanel> memory;
         public int stackCount { get { return stack.Count; } }
         public int memoryCount { get { return memory.Count; } }
-        public bool IsInStack(UIPanel panel) { return stack.Contains(panel); }
-        public bool IsInMemory(UIPanel panel) { return memory.Contains(panel); }
-        public bool IsInUse(UIPanel panel) { return IsInMemory(panel) || IsInStack(panel); }
+        public bool ExistInStack(UIPanel panel) { return stack.Contains(panel); }
+        public bool ExistInMemory(UIPanel panel) { return memory.Contains(panel); }
+        public bool Exist(UIPanel panel) { return ExistInMemory(panel) || ExistInStack(panel); }
         public UIPanel current
         {
             get
@@ -133,46 +162,37 @@ namespace IFramework.UI
     }
     public partial class UIModule : FrameworkModule
     {
-
         private IGroups _groups;
         public override int priority { get { return 80; } }
 
         protected override void Awake()
         {
             InitTransform();
-
             stack = new Stack<UIPanel>();
             memory = new Stack<UIPanel>();
             _loaders = new List<IPanelLoader>();
-
         }
         protected override void OnDispose()
         {
-
             stack.Clear();
             memory.Clear();
             _loaders.Clear();
-
             if (_groups != null)
                 _groups.Dispose();
             if (Canvas != null)
                 GameObject.Destroy(Canvas.gameObject);
         }
 
-
-
         public void AddLoader(IPanelLoader loader)
         {
             _loaders.Add(loader);
         }
-
         public void SetGroups(IGroups groups)
         {
             this._groups = groups;
         }
 
-
-        public UIPanel Load(Type type, string path, UIPanelLayer layer, string name)
+        public UIPanel Load(Type type, string name, UILayer layer = UILayer.Common, string path = "")
         {
             if (_groups == null)
                 throw new Exception("Please Set ModuleType First");
@@ -184,31 +204,28 @@ namespace IFramework.UI
             }
             for (int i = 0; i < _loaders.Count; i++)
             {
-                var result = _loaders[i].Load(type, path, name, layer);
+                var result = _loaders[i].Load(type, name, layer, path);
                 if (result == null) continue;
-
                 ui = result;
                 ui = GameObject.Instantiate(ui);
-                ui.PanelLayer = layer;
+                ui.layer = layer;
                 SetParent(ui);
-                ui.PanelName = name;
+                ui.name = name;
                 ui.GetComponent<RectTransform>().sizeDelta = Vector2.zero;
                 _groups.Subscribe(ui);
-
                 return ui;
             }
             Log.E(string.Format("NO ui Type: {0}  Path: {1}  Layer: {2}  Name: {3}", type, path, layer, name));
             return ui;
         }
-        public T Load<T>(string path, string name, UIPanelLayer layer) where T : UIPanel
+        public T Load<T>(string name, UILayer layer = UILayer.Common, string path = "") where T : UIPanel
         {
-            return (T)Load(typeof(T), path, layer, name);
+            return (T)Load(typeof(T), name, layer, path);
         }
-        public bool HaveLoadPanel(string panelName)
+        public bool HaveLoad(string panelName)
         {
             return _groups.FindPanel(panelName) != null;
         }
-
 
         public void Push(UIPanel ui)
         {
@@ -217,9 +234,8 @@ namespace IFramework.UI
             if (stackCount > 0)
                 arg.pressPanel = current;
             arg.curPanel = ui;
-
             stack.Push(ui);
-            InvokeUIModuleEventListenner(arg);
+            InvokeViewState(arg);
             arg.Recyle();
             if (memory.Count > 0) ClearCache();
         }
@@ -227,15 +243,13 @@ namespace IFramework.UI
         {
             UIEventArgs arg = UIEventArgs.Allocate<UIEventArgs>(this.container.env.envType);
             arg.code = UIEventArgs.Code.GoForward;
-
             if (memoryCount <= 0) return;
             if (stackCount > 0)
                 arg.pressPanel = current;
-
             var ui = memory.Pop();
             arg.curPanel = ui;
             stack.Push(ui);
-            InvokeUIModuleEventListenner(arg);
+            InvokeViewState(arg);
             arg.Recyle();
         }
         public void GoBack()
@@ -243,49 +257,44 @@ namespace IFramework.UI
             UIEventArgs arg = UIEventArgs.Allocate<UIEventArgs>(this.container.env.envType);
             arg.code = UIEventArgs.Code.GoBack;
             if (stackCount <= 0) return;
-
             var ui = stack.Pop();
             arg.popPanel = ui;
             memory.Push(ui);
-
             if (stackCount > 0)
                 arg.curPanel = current;
-            InvokeUIModuleEventListenner(arg);
+            InvokeViewState(arg);
             arg.Recyle();
-
         }
-        private void InvokeUIModuleEventListenner(UIEventArgs arg)
-        {
-            _groups.InvokeUIModuleEventListenner(arg);
-        }
-
-
         public void ClearCache()
         {
             while (memory.Count != 0)
             {
                 UIPanel p = memory.Pop();
-                if (p != null && !IsInStack(p))
+                if (p != null && !ExistInStack(p))
                 {
                     _groups.UnSubscribe(p);
                 }
             }
         }
+        private void InvokeViewState(UIEventArgs arg)
+        {
+            _groups.InvokeViewState(arg);
+        }
 
-        public UIPanel Get(Type type, string name, string path = "", UIPanelLayer layer = UIPanelLayer.Common)
+        public UIPanel Get(Type type, string name, UILayer layer = UILayer.Common, string path = "")
         {
             //if (UICache.Count > 0) ClearCache(arg);
-            if (current != null && current.PanelName == name && current.GetType() == type)
+            if (current != null && current.name == name && current.GetType() == type)
                 return current;
             var panel = _groups.FindPanel(name);
             if (panel == null)
-                panel = Load(type, path, layer, name);
+                panel = Load(type, name, layer, path);
             Push(panel);
             return panel;
         }
-        public T Get<T>(string name, string path = "", UIPanelLayer layer = UIPanelLayer.Common) where T : UIPanel
+        public T Get<T>(string name, UILayer layer = UILayer.Common, string path = "") where T : UIPanel
         {
-            return (T)Get(typeof(T), name, path, layer);
+            return (T)Get(typeof(T), name, layer, path);
         }
     }
 }

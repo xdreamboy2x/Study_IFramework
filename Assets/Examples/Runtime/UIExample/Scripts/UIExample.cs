@@ -15,34 +15,33 @@ using IFramework.UI;
 
 namespace IFramework_Demo
 {
-    [RequireComponent(typeof(Game))]
 	public class UIExample : MonoBehaviour, IPanelLoader
     {
         UIModule module;
         private void Start()
         {
-            module = Framework.env1.modules.FindModule<UIModule>();
+            Framework.InitEnv("Game_RT",  EnvironmentType.Ev1).InitWithAttribute();
+            module = Framework.env1.modules.CreateModule<UIModule>();
             module.AddLoader(this);
-            //module.SetGroups(new Groups(UIMap_MVVM.map));
-        }
-
-        public UIPanel Load(Type type, string path, string name, UIPanelLayer layer)
-        {
-            GameObject go = Resources.Load<GameObject>(path);
-            return go.GetComponent<UIPanel>();
+            module.SetGroups(new MvvmGroups(UIMap_MVVM.map));
         }
 
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.Q))
             {
-                module.Get<Panel01>("Panel01", "Panel01");
+                module.Get<Panel01>("Panel01");
             }
             if (Input.GetKeyDown(KeyCode.W))
             {
-                module.Get<Panel02>("Panel02",  "Panel02");
+                module.Get<Panel02>("Panel02");
             }
         }
-        
+
+        public UIPanel Load(Type type, string name, UILayer layer = UILayer.Common, string path = "")
+        {
+            GameObject go = Resources.Load<GameObject>(name);
+            return go.GetComponent<UIPanel>();
+        }
     }
 }

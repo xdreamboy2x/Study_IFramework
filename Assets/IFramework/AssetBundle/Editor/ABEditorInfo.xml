@@ -25,7 +25,7 @@
               <name>Logo</name>
               <fileType>ValidFile</fileType>
               <SubFiles />
-              <Selected>true</Selected>
+              <Selected>false</Selected>
             </ABSubFile>
             <ABSubFile>
               <isOpen>false</isOpen>
@@ -33,7 +33,7 @@
               <name>tx</name>
               <fileType>ValidFile</fileType>
               <SubFiles />
-              <Selected>true</Selected>
+              <Selected>false</Selected>
             </ABSubFile>
             <ABSubFile>
               <isOpen>false</isOpen>
@@ -41,10 +41,10 @@
               <name>UnityLogo</name>
               <fileType>ValidFile</fileType>
               <SubFiles />
-              <Selected>true</Selected>
+              <Selected>false</Selected>
             </ABSubFile>
           </SubFiles>
-          <Selected>true</Selected>
+          <Selected>false</Selected>
         </subAsset>
       </ABDirCollectItem>
     </DirCollectItems>

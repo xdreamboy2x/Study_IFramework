@@ -8,7 +8,7 @@
 *********************************************************************************/
 using System;
 
-namespace IFramework.Modules.Resources
+namespace IFramework.Resource
 {
 
     public class AssetDataBaseLoader<T> : ResourceLoader<T> where T : UnityEngine.Object
@@ -17,7 +17,7 @@ namespace IFramework.Modules.Resources
         {
             try
             {
-                Tresource.value = UnityEditor.AssetDatabase.LoadAssetAtPath<T>(path);
+                Tresource.Tvalue = UnityEditor.AssetDatabase.LoadAssetAtPath<T>(path);
             }
             catch (Exception e)
             {
@@ -25,16 +25,16 @@ namespace IFramework.Modules.Resources
             }
             finally
             {
-                _isdone = true;
-                _progress = 1;
+                isdone = true;
+                progress = 1;
             }
         }
         protected override void OnUnLoad()
         {
-            if (Tresource.value != null)
+            if (Tresource.Tvalue != null)
             {
                 UnityEngine.Resources.UnloadAsset(Tresource.Tvalue);
-                Tresource.value = default(T);
+                Tresource.Tvalue = default(T);
             }
         }
     }

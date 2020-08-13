@@ -47,7 +47,7 @@ namespace IFramework.Lua
 
       
 
-        public void InvokeUIModuleEventListenner(UIEventArgs arg)
+        public void InvokeViewState(UIEventArgs arg)
         {
             if (onInvokeListeners != null)
             {

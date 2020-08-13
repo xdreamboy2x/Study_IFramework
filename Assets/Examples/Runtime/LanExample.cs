@@ -15,7 +15,7 @@ namespace IFramework_Demo
     [RequireComponent(typeof(Game))]
     public class LanExample:MonoBehaviour
 	{
-        class TestLoader : ILanPairGroup
+        class TestLoader 
         {
             public List<LanPair> Load()
             {
@@ -43,7 +43,7 @@ namespace IFramework_Demo
         private void Start()
         {
             mou = Framework.env1.modules.CreateModule<LanguageModule>();
-            mou.Load(new TestLoader());
+            mou.Load(new TestLoader().Load());
             observer= mou.CreatObserver(key, SystemLanguage.English).ObserveEvent((lan, val) => { Log.E(val); });
         }
         int index;

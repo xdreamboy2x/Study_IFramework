@@ -18,7 +18,6 @@ using IFramework.Serialization;
 
 namespace IFramework.UI
 {
-
     [EditorWindowCache("IFramework.UIModule")]
 	public partial class UIMoudleWindow:EditorWindow,ILayoutGUIDrawer
 	{
@@ -322,7 +321,6 @@ namespace IFramework.UI
         }
         public class UIMoudleWindowTab : ILayoutGUIDrawer
         {
-
             public virtual string name { get; }
             public virtual void OnGUI() { }
             public virtual void OnEnable() { }
@@ -356,10 +354,8 @@ namespace IFramework.UI
 
             public override void OnEnable()
             {
-                searcher = new SearchFieldDrawer()
-                {
-                    value = searchText_module
-                };
+                searcher = new SearchFieldDrawer("", null, 0);
+
                 searcher.onEndEdit += (str) =>
                 {
                     searchText_module = str;
@@ -441,9 +437,9 @@ namespace IFramework.UI
                                                 .Space(10)
                                                 .EBeginHorizontal(out rect, EditorStyles.toolbar)
                                                     .Space(10)
-                                                    .Label(o[i].PanelName)
+                                                    .Label(o[i].name)
                                                     .Label(o[i].GetType().ToString(), GUILayout.MaxWidth(typeWith))
-                                                    .Label(o[i].PanelLayer.ToString(), GUILayout.Width(paneltypeWith))
+                                                    .Label(o[i].layer.ToString(), GUILayout.Width(paneltypeWith))
                                                 .EEndHorizontal()
                                                 .Pan(() =>
                                                 {
@@ -480,9 +476,9 @@ namespace IFramework.UI
                                                 .Space(10)
                                                 .EBeginHorizontal(out rect, EditorStyles.toolbar)
                                                     .Space(10)
-                                                    .Label(o[i].PanelName)
+                                                    .Label(o[i].name)
                                                     .Label(o[i].GetType().ToString(), GUILayout.MaxWidth(typeWith))
-                                                    .Label(o[i].PanelLayer.ToString(), GUILayout.Width(paneltypeWith))
+                                                    .Label(o[i].layer.ToString(), GUILayout.Width(paneltypeWith))
                                                 .EEndHorizontal()
                                                 .Pan(() =>
                                                 {
@@ -506,20 +502,20 @@ namespace IFramework.UI
             private bool FitCanShow(UIPanel panel)
             {
                 bool canshow = false;
-                switch (panel.PanelLayer)
+                switch (panel.layer)
                 {
-                    case UIPanelLayer.BGBG: canshow = ShowBGBG; break;
-                    case UIPanelLayer.Background: canshow = ShowBackGround; break;
-                    case UIPanelLayer.AnimationUnderPage: canshow = ShowAnimationUnderPage; break;
-                    case UIPanelLayer.Common: canshow = ShowCommon; break;
-                    case UIPanelLayer.AnimationOnPage: canshow = ShowAnimationOnPage; break;
-                    case UIPanelLayer.PopUp: canshow = ShowPop; break;
-                    case UIPanelLayer.Guide: canshow = ShowGuide; break;
-                    case UIPanelLayer.Toast: canshow = ShowToast; break;
-                    case UIPanelLayer.Top: canshow = ShowTop; break;
-                    case UIPanelLayer.TopTop: canshow = ShowTopTop; break;
+                    case UILayer.BGBG: canshow = ShowBGBG; break;
+                    case UILayer.Background: canshow = ShowBackGround; break;
+                    case UILayer.AnimationUnderPage: canshow = ShowAnimationUnderPage; break;
+                    case UILayer.Common: canshow = ShowCommon; break;
+                    case UILayer.AnimationOnPage: canshow = ShowAnimationOnPage; break;
+                    case UILayer.PopUp: canshow = ShowPop; break;
+                    case UILayer.Guide: canshow = ShowGuide; break;
+                    case UILayer.Toast: canshow = ShowToast; break;
+                    case UILayer.Top: canshow = ShowTop; break;
+                    case UILayer.TopTop: canshow = ShowTopTop; break;
                 }
-                canshow &= panel.PanelName.ToLower().Contains(searchTxt_panel.ToLower());
+                canshow &= panel.name.ToLower().Contains(searchTxt_panel.ToLower());
                 return canshow;
             }
             private void TestButton()
@@ -575,7 +571,11 @@ namespace IFramework.UI
 
             public override void OnEnable()
             {
-                genpath = EditorEnv.frameworkPath.CombinePath("UI/Editor/Gen");
+                genpath = EditorEnv.memoryPath.CombinePath("UI");
+                if (!Directory.Exists(genpath))
+                {
+                    Directory.CreateDirectory(genpath);
+                }
             }
             private int hashID;
             private bool DropdownButton(int id, Rect position, GUIContent content)
