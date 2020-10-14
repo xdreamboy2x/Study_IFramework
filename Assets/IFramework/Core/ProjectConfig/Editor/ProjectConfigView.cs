@@ -6,7 +6,6 @@
  *Description:    IFramework
  *History:        2018.11--
 *********************************************************************************/
-using IFramework.GUITool;
 using UnityEditor;
 using UnityEditor.Callbacks;
 using UnityEngine;
@@ -14,7 +13,7 @@ using UnityEngine;
 namespace IFramework
 {
     [CustomEditor(typeof(ProjectConfigInfo))]
-    class ProjectConfigView : Editor, ILayoutGUIDrawer
+    class ProjectConfigView : Editor
     {
         private static bool isEnable;
         private void OnEnable()
@@ -43,8 +42,11 @@ namespace IFramework
             GUI.enabled = false;
             base.OnInspectorGUI();
             GUI.enabled = true;
-            this.Space(10)
-                .Button(ProjectConfigWindow.ShowWindow, "Open");
+            GUILayout.Space(10);
+            if (GUILayout.Button("Open"))
+            {
+                ProjectConfigWindow.ShowWindow();
+            }
         }
     }
 }

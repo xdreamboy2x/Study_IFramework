@@ -34,10 +34,10 @@ namespace XLua
 				translator.RegisterPushAndGetAndUpdate<UnityEngine.Ray>(translator.PushUnityEngineRay, translator.Get, translator.UpdateUnityEngineRay);
 				translator.RegisterPushAndGetAndUpdate<UnityEngine.Bounds>(translator.PushUnityEngineBounds, translator.Get, translator.UpdateUnityEngineBounds);
 				translator.RegisterPushAndGetAndUpdate<UnityEngine.Ray2D>(translator.PushUnityEngineRay2D, translator.Get, translator.UpdateUnityEngineRay2D);
-				translator.RegisterPushAndGetAndUpdate<IFramework.Lua.Pedding>(translator.PushIFrameworkLuaPedding, translator.Get, translator.UpdateIFrameworkLuaPedding);
-				translator.RegisterPushAndGetAndUpdate<IFramework.Lua.MyStruct>(translator.PushIFrameworkLuaMyStruct, translator.Get, translator.UpdateIFrameworkLuaMyStruct);
+				translator.RegisterPushAndGetAndUpdate<IFramework.Hotfix.Lua.Pedding>(translator.PushIFrameworkHotfixLuaPedding, translator.Get, translator.UpdateIFrameworkHotfixLuaPedding);
+				translator.RegisterPushAndGetAndUpdate<IFramework.Hotfix.Lua.MyStruct>(translator.PushIFrameworkHotfixLuaMyStruct, translator.Get, translator.UpdateIFrameworkHotfixLuaMyStruct);
 				translator.RegisterPushAndGetAndUpdate<Tutorial.TestEnum>(translator.PushTutorialTestEnum, translator.Get, translator.UpdateTutorialTestEnum);
-				translator.RegisterPushAndGetAndUpdate<IFramework.Lua.MyEnum>(translator.PushIFrameworkLuaMyEnum, translator.Get, translator.UpdateIFrameworkLuaMyEnum);
+				translator.RegisterPushAndGetAndUpdate<IFramework.Hotfix.Lua.MyEnum>(translator.PushIFrameworkHotfixLuaMyEnum, translator.Get, translator.UpdateIFrameworkHotfixLuaMyEnum);
 				translator.RegisterPushAndGetAndUpdate<Tutorial.DerivedClass.TestEnumInner>(translator.PushTutorialDerivedClassTestEnumInner, translator.Get, translator.UpdateTutorialDerivedClassTestEnumInner);
 			
 			}
@@ -575,37 +575,37 @@ namespace XLua
             }
         }
         
-        int IFrameworkLuaPedding_TypeID = -1;
-        public void PushIFrameworkLuaPedding(RealStatePtr L, IFramework.Lua.Pedding val)
+        int IFrameworkHotfixLuaPedding_TypeID = -1;
+        public void PushIFrameworkHotfixLuaPedding(RealStatePtr L, IFramework.Hotfix.Lua.Pedding val)
         {
-            if (IFrameworkLuaPedding_TypeID == -1)
+            if (IFrameworkHotfixLuaPedding_TypeID == -1)
             {
 			    bool is_first;
-                IFrameworkLuaPedding_TypeID = getTypeId(L, typeof(IFramework.Lua.Pedding), out is_first);
+                IFrameworkHotfixLuaPedding_TypeID = getTypeId(L, typeof(IFramework.Hotfix.Lua.Pedding), out is_first);
 				
             }
 			
-            IntPtr buff = LuaAPI.xlua_pushstruct(L, 1, IFrameworkLuaPedding_TypeID);
+            IntPtr buff = LuaAPI.xlua_pushstruct(L, 1, IFrameworkHotfixLuaPedding_TypeID);
             if (!CopyByValue.Pack(buff, 0, val))
             {
-                throw new Exception("pack fail fail for IFramework.Lua.Pedding ,value="+val);
+                throw new Exception("pack fail fail for IFramework.Hotfix.Lua.Pedding ,value="+val);
             }
 			
         }
 		
-        public void Get(RealStatePtr L, int index, out IFramework.Lua.Pedding val)
+        public void Get(RealStatePtr L, int index, out IFramework.Hotfix.Lua.Pedding val)
         {
 		    LuaTypes type = LuaAPI.lua_type(L, index);
             if (type == LuaTypes.LUA_TUSERDATA )
             {
-			    if (LuaAPI.xlua_gettypeid(L, index) != IFrameworkLuaPedding_TypeID)
+			    if (LuaAPI.xlua_gettypeid(L, index) != IFrameworkHotfixLuaPedding_TypeID)
 				{
-				    throw new Exception("invalid userdata for IFramework.Lua.Pedding");
+				    throw new Exception("invalid userdata for IFramework.Hotfix.Lua.Pedding");
 				}
 				
                 IntPtr buff = LuaAPI.lua_touserdata(L, index);if (!CopyByValue.UnPack(buff, 0, out val))
                 {
-                    throw new Exception("unpack fail for IFramework.Lua.Pedding");
+                    throw new Exception("unpack fail for IFramework.Hotfix.Lua.Pedding");
                 }
             }
 			else if (type ==LuaTypes.LUA_TTABLE)
@@ -614,24 +614,24 @@ namespace XLua
 			}
             else
             {
-                val = (IFramework.Lua.Pedding)objectCasters.GetCaster(typeof(IFramework.Lua.Pedding))(L, index, null);
+                val = (IFramework.Hotfix.Lua.Pedding)objectCasters.GetCaster(typeof(IFramework.Hotfix.Lua.Pedding))(L, index, null);
             }
         }
 		
-        public void UpdateIFrameworkLuaPedding(RealStatePtr L, int index, IFramework.Lua.Pedding val)
+        public void UpdateIFrameworkHotfixLuaPedding(RealStatePtr L, int index, IFramework.Hotfix.Lua.Pedding val)
         {
 		    
             if (LuaAPI.lua_type(L, index) == LuaTypes.LUA_TUSERDATA)
             {
-			    if (LuaAPI.xlua_gettypeid(L, index) != IFrameworkLuaPedding_TypeID)
+			    if (LuaAPI.xlua_gettypeid(L, index) != IFrameworkHotfixLuaPedding_TypeID)
 				{
-				    throw new Exception("invalid userdata for IFramework.Lua.Pedding");
+				    throw new Exception("invalid userdata for IFramework.Hotfix.Lua.Pedding");
 				}
 				
                 IntPtr buff = LuaAPI.lua_touserdata(L, index);
                 if (!CopyByValue.Pack(buff, 0,  val))
                 {
-                    throw new Exception("pack fail for IFramework.Lua.Pedding ,value="+val);
+                    throw new Exception("pack fail for IFramework.Hotfix.Lua.Pedding ,value="+val);
                 }
             }
 			
@@ -641,37 +641,37 @@ namespace XLua
             }
         }
         
-        int IFrameworkLuaMyStruct_TypeID = -1;
-        public void PushIFrameworkLuaMyStruct(RealStatePtr L, IFramework.Lua.MyStruct val)
+        int IFrameworkHotfixLuaMyStruct_TypeID = -1;
+        public void PushIFrameworkHotfixLuaMyStruct(RealStatePtr L, IFramework.Hotfix.Lua.MyStruct val)
         {
-            if (IFrameworkLuaMyStruct_TypeID == -1)
+            if (IFrameworkHotfixLuaMyStruct_TypeID == -1)
             {
 			    bool is_first;
-                IFrameworkLuaMyStruct_TypeID = getTypeId(L, typeof(IFramework.Lua.MyStruct), out is_first);
+                IFrameworkHotfixLuaMyStruct_TypeID = getTypeId(L, typeof(IFramework.Hotfix.Lua.MyStruct), out is_first);
 				
             }
 			
-            IntPtr buff = LuaAPI.xlua_pushstruct(L, 25, IFrameworkLuaMyStruct_TypeID);
+            IntPtr buff = LuaAPI.xlua_pushstruct(L, 25, IFrameworkHotfixLuaMyStruct_TypeID);
             if (!CopyByValue.Pack(buff, 0, val))
             {
-                throw new Exception("pack fail fail for IFramework.Lua.MyStruct ,value="+val);
+                throw new Exception("pack fail fail for IFramework.Hotfix.Lua.MyStruct ,value="+val);
             }
 			
         }
 		
-        public void Get(RealStatePtr L, int index, out IFramework.Lua.MyStruct val)
+        public void Get(RealStatePtr L, int index, out IFramework.Hotfix.Lua.MyStruct val)
         {
 		    LuaTypes type = LuaAPI.lua_type(L, index);
             if (type == LuaTypes.LUA_TUSERDATA )
             {
-			    if (LuaAPI.xlua_gettypeid(L, index) != IFrameworkLuaMyStruct_TypeID)
+			    if (LuaAPI.xlua_gettypeid(L, index) != IFrameworkHotfixLuaMyStruct_TypeID)
 				{
-				    throw new Exception("invalid userdata for IFramework.Lua.MyStruct");
+				    throw new Exception("invalid userdata for IFramework.Hotfix.Lua.MyStruct");
 				}
 				
                 IntPtr buff = LuaAPI.lua_touserdata(L, index);if (!CopyByValue.UnPack(buff, 0, out val))
                 {
-                    throw new Exception("unpack fail for IFramework.Lua.MyStruct");
+                    throw new Exception("unpack fail for IFramework.Hotfix.Lua.MyStruct");
                 }
             }
 			else if (type ==LuaTypes.LUA_TTABLE)
@@ -680,24 +680,24 @@ namespace XLua
 			}
             else
             {
-                val = (IFramework.Lua.MyStruct)objectCasters.GetCaster(typeof(IFramework.Lua.MyStruct))(L, index, null);
+                val = (IFramework.Hotfix.Lua.MyStruct)objectCasters.GetCaster(typeof(IFramework.Hotfix.Lua.MyStruct))(L, index, null);
             }
         }
 		
-        public void UpdateIFrameworkLuaMyStruct(RealStatePtr L, int index, IFramework.Lua.MyStruct val)
+        public void UpdateIFrameworkHotfixLuaMyStruct(RealStatePtr L, int index, IFramework.Hotfix.Lua.MyStruct val)
         {
 		    
             if (LuaAPI.lua_type(L, index) == LuaTypes.LUA_TUSERDATA)
             {
-			    if (LuaAPI.xlua_gettypeid(L, index) != IFrameworkLuaMyStruct_TypeID)
+			    if (LuaAPI.xlua_gettypeid(L, index) != IFrameworkHotfixLuaMyStruct_TypeID)
 				{
-				    throw new Exception("invalid userdata for IFramework.Lua.MyStruct");
+				    throw new Exception("invalid userdata for IFramework.Hotfix.Lua.MyStruct");
 				}
 				
                 IntPtr buff = LuaAPI.lua_touserdata(L, index);
                 if (!CopyByValue.Pack(buff, 0,  val))
                 {
-                    throw new Exception("pack fail for IFramework.Lua.MyStruct ,value="+val);
+                    throw new Exception("pack fail for IFramework.Hotfix.Lua.MyStruct ,value="+val);
                 }
             }
 			
@@ -791,81 +791,81 @@ namespace XLua
             }
         }
         
-        int IFrameworkLuaMyEnum_TypeID = -1;
-		int IFrameworkLuaMyEnum_EnumRef = -1;
+        int IFrameworkHotfixLuaMyEnum_TypeID = -1;
+		int IFrameworkHotfixLuaMyEnum_EnumRef = -1;
         
-        public void PushIFrameworkLuaMyEnum(RealStatePtr L, IFramework.Lua.MyEnum val)
+        public void PushIFrameworkHotfixLuaMyEnum(RealStatePtr L, IFramework.Hotfix.Lua.MyEnum val)
         {
-            if (IFrameworkLuaMyEnum_TypeID == -1)
+            if (IFrameworkHotfixLuaMyEnum_TypeID == -1)
             {
 			    bool is_first;
-                IFrameworkLuaMyEnum_TypeID = getTypeId(L, typeof(IFramework.Lua.MyEnum), out is_first);
+                IFrameworkHotfixLuaMyEnum_TypeID = getTypeId(L, typeof(IFramework.Hotfix.Lua.MyEnum), out is_first);
 				
-				if (IFrameworkLuaMyEnum_EnumRef == -1)
+				if (IFrameworkHotfixLuaMyEnum_EnumRef == -1)
 				{
-				    Utils.LoadCSTable(L, typeof(IFramework.Lua.MyEnum));
-				    IFrameworkLuaMyEnum_EnumRef = LuaAPI.luaL_ref(L, LuaIndexes.LUA_REGISTRYINDEX);
+				    Utils.LoadCSTable(L, typeof(IFramework.Hotfix.Lua.MyEnum));
+				    IFrameworkHotfixLuaMyEnum_EnumRef = LuaAPI.luaL_ref(L, LuaIndexes.LUA_REGISTRYINDEX);
 				}
 				
             }
 			
-			if (LuaAPI.xlua_tryget_cachedud(L, (int)val, IFrameworkLuaMyEnum_EnumRef) == 1)
+			if (LuaAPI.xlua_tryget_cachedud(L, (int)val, IFrameworkHotfixLuaMyEnum_EnumRef) == 1)
             {
 			    return;
 			}
 			
-            IntPtr buff = LuaAPI.xlua_pushstruct(L, 4, IFrameworkLuaMyEnum_TypeID);
+            IntPtr buff = LuaAPI.xlua_pushstruct(L, 4, IFrameworkHotfixLuaMyEnum_TypeID);
             if (!CopyByValue.Pack(buff, 0, (int)val))
             {
-                throw new Exception("pack fail fail for IFramework.Lua.MyEnum ,value="+val);
+                throw new Exception("pack fail fail for IFramework.Hotfix.Lua.MyEnum ,value="+val);
             }
 			
-			LuaAPI.lua_getref(L, IFrameworkLuaMyEnum_EnumRef);
+			LuaAPI.lua_getref(L, IFrameworkHotfixLuaMyEnum_EnumRef);
 			LuaAPI.lua_pushvalue(L, -2);
 			LuaAPI.xlua_rawseti(L, -2, (int)val);
 			LuaAPI.lua_pop(L, 1);
 			
         }
 		
-        public void Get(RealStatePtr L, int index, out IFramework.Lua.MyEnum val)
+        public void Get(RealStatePtr L, int index, out IFramework.Hotfix.Lua.MyEnum val)
         {
 		    LuaTypes type = LuaAPI.lua_type(L, index);
             if (type == LuaTypes.LUA_TUSERDATA )
             {
-			    if (LuaAPI.xlua_gettypeid(L, index) != IFrameworkLuaMyEnum_TypeID)
+			    if (LuaAPI.xlua_gettypeid(L, index) != IFrameworkHotfixLuaMyEnum_TypeID)
 				{
-				    throw new Exception("invalid userdata for IFramework.Lua.MyEnum");
+				    throw new Exception("invalid userdata for IFramework.Hotfix.Lua.MyEnum");
 				}
 				
                 IntPtr buff = LuaAPI.lua_touserdata(L, index);
 				int e;
                 if (!CopyByValue.UnPack(buff, 0, out e))
                 {
-                    throw new Exception("unpack fail for IFramework.Lua.MyEnum");
+                    throw new Exception("unpack fail for IFramework.Hotfix.Lua.MyEnum");
                 }
-				val = (IFramework.Lua.MyEnum)e;
+				val = (IFramework.Hotfix.Lua.MyEnum)e;
                 
             }
             else
             {
-                val = (IFramework.Lua.MyEnum)objectCasters.GetCaster(typeof(IFramework.Lua.MyEnum))(L, index, null);
+                val = (IFramework.Hotfix.Lua.MyEnum)objectCasters.GetCaster(typeof(IFramework.Hotfix.Lua.MyEnum))(L, index, null);
             }
         }
 		
-        public void UpdateIFrameworkLuaMyEnum(RealStatePtr L, int index, IFramework.Lua.MyEnum val)
+        public void UpdateIFrameworkHotfixLuaMyEnum(RealStatePtr L, int index, IFramework.Hotfix.Lua.MyEnum val)
         {
 		    
             if (LuaAPI.lua_type(L, index) == LuaTypes.LUA_TUSERDATA)
             {
-			    if (LuaAPI.xlua_gettypeid(L, index) != IFrameworkLuaMyEnum_TypeID)
+			    if (LuaAPI.xlua_gettypeid(L, index) != IFrameworkHotfixLuaMyEnum_TypeID)
 				{
-				    throw new Exception("invalid userdata for IFramework.Lua.MyEnum");
+				    throw new Exception("invalid userdata for IFramework.Hotfix.Lua.MyEnum");
 				}
 				
                 IntPtr buff = LuaAPI.lua_touserdata(L, index);
                 if (!CopyByValue.Pack(buff, 0,  (int)val))
                 {
-                    throw new Exception("pack fail for IFramework.Lua.MyEnum ,value="+val);
+                    throw new Exception("pack fail for IFramework.Hotfix.Lua.MyEnum ,value="+val);
                 }
             }
 			
@@ -1018,16 +1018,16 @@ namespace XLua
 				translator.PushUnityEngineRay2D(L, array[index]);
 				return true;
 			}
-			else if (type == typeof(IFramework.Lua.Pedding[]))
+			else if (type == typeof(IFramework.Hotfix.Lua.Pedding[]))
 			{
-			    IFramework.Lua.Pedding[] array = obj as IFramework.Lua.Pedding[];
-				translator.PushIFrameworkLuaPedding(L, array[index]);
+			    IFramework.Hotfix.Lua.Pedding[] array = obj as IFramework.Hotfix.Lua.Pedding[];
+				translator.PushIFrameworkHotfixLuaPedding(L, array[index]);
 				return true;
 			}
-			else if (type == typeof(IFramework.Lua.MyStruct[]))
+			else if (type == typeof(IFramework.Hotfix.Lua.MyStruct[]))
 			{
-			    IFramework.Lua.MyStruct[] array = obj as IFramework.Lua.MyStruct[];
-				translator.PushIFrameworkLuaMyStruct(L, array[index]);
+			    IFramework.Hotfix.Lua.MyStruct[] array = obj as IFramework.Hotfix.Lua.MyStruct[];
+				translator.PushIFrameworkHotfixLuaMyStruct(L, array[index]);
 				return true;
 			}
 			else if (type == typeof(Tutorial.TestEnum[]))
@@ -1036,10 +1036,10 @@ namespace XLua
 				translator.PushTutorialTestEnum(L, array[index]);
 				return true;
 			}
-			else if (type == typeof(IFramework.Lua.MyEnum[]))
+			else if (type == typeof(IFramework.Hotfix.Lua.MyEnum[]))
 			{
-			    IFramework.Lua.MyEnum[] array = obj as IFramework.Lua.MyEnum[];
-				translator.PushIFrameworkLuaMyEnum(L, array[index]);
+			    IFramework.Hotfix.Lua.MyEnum[] array = obj as IFramework.Hotfix.Lua.MyEnum[];
+				translator.PushIFrameworkHotfixLuaMyEnum(L, array[index]);
 				return true;
 			}
 			else if (type == typeof(Tutorial.DerivedClass.TestEnumInner[]))
@@ -1102,15 +1102,15 @@ namespace XLua
 				translator.Get(L, obj_idx, out array[array_idx]);
 				return true;
 			}
-			else if (type == typeof(IFramework.Lua.Pedding[]))
+			else if (type == typeof(IFramework.Hotfix.Lua.Pedding[]))
 			{
-			    IFramework.Lua.Pedding[] array = obj as IFramework.Lua.Pedding[];
+			    IFramework.Hotfix.Lua.Pedding[] array = obj as IFramework.Hotfix.Lua.Pedding[];
 				translator.Get(L, obj_idx, out array[array_idx]);
 				return true;
 			}
-			else if (type == typeof(IFramework.Lua.MyStruct[]))
+			else if (type == typeof(IFramework.Hotfix.Lua.MyStruct[]))
 			{
-			    IFramework.Lua.MyStruct[] array = obj as IFramework.Lua.MyStruct[];
+			    IFramework.Hotfix.Lua.MyStruct[] array = obj as IFramework.Hotfix.Lua.MyStruct[];
 				translator.Get(L, obj_idx, out array[array_idx]);
 				return true;
 			}
@@ -1120,9 +1120,9 @@ namespace XLua
 				translator.Get(L, obj_idx, out array[array_idx]);
 				return true;
 			}
-			else if (type == typeof(IFramework.Lua.MyEnum[]))
+			else if (type == typeof(IFramework.Hotfix.Lua.MyEnum[]))
 			{
-			    IFramework.Lua.MyEnum[] array = obj as IFramework.Lua.MyEnum[];
+			    IFramework.Hotfix.Lua.MyEnum[] array = obj as IFramework.Hotfix.Lua.MyEnum[];
 				translator.Get(L, obj_idx, out array[array_idx]);
 				return true;
 			}

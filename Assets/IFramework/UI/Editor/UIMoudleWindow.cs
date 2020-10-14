@@ -23,16 +23,16 @@ namespace IFramework.UI
 	{
         private class Contents
         {
-            public static GUIContent BGBG = new GUIContent("BGBG", "BGBG");
+            public static GUIContent BGBG = new GUIContent("BBG", "BelowBackground");
             public static GUIContent BackGround = new GUIContent("BG", "BackGround");
-            public static GUIContent AUP = new GUIContent("AUP", "AnimationUnderPage");
+            public static GUIContent AUP = new GUIContent("BA", "BelowAnimation");
             public static GUIContent Common = new GUIContent("Com", "Common");
-            public static GUIContent AOP = new GUIContent("AOP", "AnimationOnPage");
-            public static GUIContent Popup = new GUIContent("Pop", "Popup");
+            public static GUIContent AOP = new GUIContent("AA", "AboveAnimation");
+            public static GUIContent Popup = new GUIContent("Pop", "Pop");
             public static GUIContent Guide = new GUIContent("Guide", "Guide");
             public static GUIContent Toast = new GUIContent("Toast", "Toast");
             public static GUIContent Top = new GUIContent("Top", "Top");
-            public static GUIContent TopTop = new GUIContent("TopTop", "TopTop");
+            public static GUIContent TopTop = new GUIContent("ATop", "AboveTop");
         }
         private class Styles
         {
@@ -504,16 +504,16 @@ namespace IFramework.UI
                 bool canshow = false;
                 switch (panel.layer)
                 {
-                    case UILayer.BGBG: canshow = ShowBGBG; break;
+                    case UILayer.BelowBackground: canshow = ShowBGBG; break;
                     case UILayer.Background: canshow = ShowBackGround; break;
-                    case UILayer.AnimationUnderPage: canshow = ShowAnimationUnderPage; break;
+                    case UILayer.BelowAnimation: canshow = ShowAnimationUnderPage; break;
                     case UILayer.Common: canshow = ShowCommon; break;
-                    case UILayer.AnimationOnPage: canshow = ShowAnimationOnPage; break;
-                    case UILayer.PopUp: canshow = ShowPop; break;
+                    case UILayer.AboveAnimation: canshow = ShowAnimationOnPage; break;
+                    case UILayer.Pop: canshow = ShowPop; break;
                     case UILayer.Guide: canshow = ShowGuide; break;
                     case UILayer.Toast: canshow = ShowToast; break;
                     case UILayer.Top: canshow = ShowTop; break;
-                    case UILayer.TopTop: canshow = ShowTopTop; break;
+                    case UILayer.AboveTop: canshow = ShowTopTop; break;
                 }
                 canshow &= panel.name.ToLower().Contains(searchTxt_panel.ToLower());
                 return canshow;
@@ -621,7 +621,7 @@ namespace IFramework.UI
                         rect.DrawOutLine(2, Color.black);
                     if (rect.Contains(Event.current.mousePosition))
                     {
-                        var drag = DragAndDropUtil.Drag(Event.current, rect);
+                        var drag = EditorTools.DragAndDropTool.Drag(Event.current, rect);
                         if (drag.compelete && drag.enterArera && drag.paths.Length == 1)
                         {
                             string path = drag.paths[0];
@@ -731,7 +731,7 @@ namespace IFramework.UI
                             rect.DrawOutLine(2, Color.black);
                         if (rect.Contains(Event.current.mousePosition))
                         {
-                            var drag = DragAndDropUtil.Drag(Event.current, rect);
+                            var drag = EditorTools.DragAndDropTool.Drag(Event.current, rect);
                             if (drag.compelete && drag.enterArera && drag.paths.Length == 1)
                             {
                                 string path = drag.paths[0];

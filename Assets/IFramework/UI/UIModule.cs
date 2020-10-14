@@ -45,86 +45,106 @@ namespace IFramework.UI
     }
     public partial class UIModule
     {
-        public Canvas Canvas { get; private set; }
-        private RectTransform UIRoot;
-        public RectTransform BGBG { get; private set; }
-        public RectTransform Background { get; private set; }
-        public RectTransform AnimationUnderPage { get; private set; }
-        public RectTransform Common { get; private set; }
-        public RectTransform AnimationOnPage { get; private set; }
-        public RectTransform PopUp { get; private set; }
-        public RectTransform Guide { get; private set; }
-        public RectTransform Toast { get; private set; }
-        public RectTransform Top { get; private set; }
-        public RectTransform TopTop { get; private set; }
-        public RectTransform UICamera { get; private set; }
+        public Canvas canvas { get; private set; }
+        private RectTransform root;
+        public RectTransform belowBackground { get; private set; }
+        public RectTransform background { get; private set; }
+        public RectTransform belowAnimation { get; private set; }
+        public RectTransform common { get; private set; }
+        public RectTransform aboveAnimation { get; private set; }
+        public RectTransform pop { get; private set; }
+        public RectTransform guide { get; private set; }
+        public RectTransform toast { get; private set; }
+        public RectTransform top { get; private set; }
+        public RectTransform aboveTop { get; private set; }
+        public RectTransform camera { get; private set; }
         private RectTransform InitTransform(string name)
         {
             GameObject go = new GameObject(name);
             RectTransform rect = go.AddComponent<RectTransform>();
-            rect.SetParent(Canvas.transform);
+            rect.SetParent(canvas.transform);
             rect.anchorMin = Vector2.zero;
             rect.anchorMax = Vector2.one;
             rect.localPosition = Vector3.zero;
             rect.sizeDelta = Vector3.zero;
             return rect;
         }
-        private void InitTransform()
+
+
+
+
+        public void CreateCanvas()
         {
-            UIRoot = new GameObject(name).AddComponent<RectTransform>();
-            Canvas = UIRoot.gameObject.AddComponent<Canvas>();
-            UIRoot.gameObject.AddComponent<CanvasScaler>();
-            UIRoot.gameObject.AddComponent<GraphicRaycaster>();
-            Canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-            BGBG = InitTransform("BGBG");
-            Background = InitTransform("Background");
-            AnimationUnderPage = InitTransform("AnimationUnderPage");
-            Common = InitTransform("Common");
-            AnimationOnPage = InitTransform("AnimationOnPage");
-            PopUp = InitTransform("PopUp");
-            Guide = InitTransform("Guide");
-            Toast = InitTransform("Toast");
-            Top = InitTransform("Top");
-            TopTop = InitTransform("TopTop");
-            UICamera = InitTransform("UICamera");
+            root = new GameObject(name).AddComponent<RectTransform>();
+            canvas = root.gameObject.AddComponent<Canvas>();
+            root.gameObject.AddComponent<CanvasScaler>();
+            root.gameObject.AddComponent<GraphicRaycaster>();
+            canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+            belowBackground = InitTransform("belowBackground");
+            background = InitTransform("background");
+            belowAnimation = InitTransform("belowAnimation");
+            common = InitTransform("common");
+            aboveAnimation = InitTransform("aboveAnimation");
+            pop = InitTransform("pop");
+            guide = InitTransform("Guide");
+            toast = InitTransform("Toast");
+            top = InitTransform("Top");
+            aboveTop = InitTransform("aboveTop");
+            camera = InitTransform("UICamera");
+        }
+        public void SetCanvas(Canvas canvas)
+        {
+            root = canvas.GetComponent<RectTransform>();
+            this.canvas = canvas;
+            belowBackground = InitTransform("BGBG");
+            background = InitTransform("Background");
+            belowAnimation = InitTransform("AnimationUnderPage");
+            common = InitTransform("Common");
+            aboveAnimation = InitTransform("AnimationOnPage");
+            pop = InitTransform("PopUp");
+            guide = InitTransform("Guide");
+            toast = InitTransform("Toast");
+            top = InitTransform("Top");
+            aboveTop = InitTransform("TopTop");
+            camera = InitTransform("UICamera");
         }
         public void SetCamera(Camera ca, bool isLast = true, int index = -1)
         {
-            UICamera.SetChildWithIndex(ca.transform, !isLast ? index : UICamera.childCount);
+            camera.SetChildWithIndex(ca.transform, !isLast ? index : camera.childCount);
         }
-        public void SetParent(UIPanel ui, bool isLast = true, int index = -1)
+        public void SetLayer(UIPanel ui, bool isLast = true, int index = -1)
         {
             switch (ui.layer)
             {
-                case UILayer.BGBG:
-                    BGBG.SetChildWithIndex(ui.transform, !isLast ? index : BGBG.childCount);
+                case UILayer.BelowBackground:
+                    belowBackground.SetChildWithIndex(ui.transform, !isLast ? index : belowBackground.childCount);
                     break;
                 case UILayer.Background:
-                    Background.SetChildWithIndex(ui.transform, !isLast ? index : Background.childCount);
+                    background.SetChildWithIndex(ui.transform, !isLast ? index : background.childCount);
                     break;
-                case UILayer.AnimationUnderPage:
-                    AnimationUnderPage.SetChildWithIndex(ui.transform, !isLast ? index : AnimationUnderPage.childCount);
+                case UILayer.BelowAnimation:
+                    belowAnimation.SetChildWithIndex(ui.transform, !isLast ? index : belowAnimation.childCount);
                     break;
                 case UILayer.Common:
-                    Common.SetChildWithIndex(ui.transform, !isLast ? index : Common.childCount);
+                    common.SetChildWithIndex(ui.transform, !isLast ? index : common.childCount);
                     break;
-                case UILayer.AnimationOnPage:
-                    AnimationOnPage.SetChildWithIndex(ui.transform, !isLast ? index : AnimationOnPage.childCount);
+                case UILayer.AboveAnimation:
+                    aboveAnimation.SetChildWithIndex(ui.transform, !isLast ? index : aboveAnimation.childCount);
                     break;
-                case UILayer.PopUp:
-                    PopUp.SetChildWithIndex(ui.transform, !isLast ? index : PopUp.childCount);
+                case UILayer.Pop:
+                    pop.SetChildWithIndex(ui.transform, !isLast ? index : pop.childCount);
                     break;
                 case UILayer.Guide:
-                    Guide.SetChildWithIndex(ui.transform, !isLast ? index : Guide.childCount);
+                    guide.SetChildWithIndex(ui.transform, !isLast ? index : guide.childCount);
                     break;
                 case UILayer.Toast:
-                    Toast.SetChildWithIndex(ui.transform, !isLast ? index : Toast.childCount);
+                    toast.SetChildWithIndex(ui.transform, !isLast ? index : toast.childCount);
                     break;
                 case UILayer.Top:
-                    Top.SetChildWithIndex(ui.transform, !isLast ? index : Top.childCount);
+                    top.SetChildWithIndex(ui.transform, !isLast ? index : top.childCount);
                     break;
-                case UILayer.TopTop:
-                    TopTop.SetChildWithIndex(ui.transform, !isLast ? index : TopTop.childCount);
+                case UILayer.AboveTop:
+                    aboveTop.SetChildWithIndex(ui.transform, !isLast ? index : aboveTop.childCount);
                     break;
                 default:
                     break;
@@ -167,7 +187,6 @@ namespace IFramework.UI
 
         protected override void Awake()
         {
-            InitTransform();
             stack = new Stack<UIPanel>();
             memory = new Stack<UIPanel>();
             _loaders = new List<IPanelLoader>();
@@ -179,8 +198,8 @@ namespace IFramework.UI
             _loaders.Clear();
             if (_groups != null)
                 _groups.Dispose();
-            if (Canvas != null)
-                GameObject.Destroy(Canvas.gameObject);
+            if (canvas != null)
+                GameObject.Destroy(canvas.gameObject);
         }
 
         public void AddLoader(IPanelLoader loader)
@@ -209,7 +228,7 @@ namespace IFramework.UI
                 ui = result;
                 ui = GameObject.Instantiate(ui);
                 ui.layer = layer;
-                SetParent(ui);
+                SetLayer(ui);
                 ui.name = name;
                 ui.GetComponent<RectTransform>().sizeDelta = Vector2.zero;
                 _groups.Subscribe(ui);

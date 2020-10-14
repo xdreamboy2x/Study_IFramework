@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using UnityEngine;
 namespace IFramework_Demo
 {
-    [RequireComponent(typeof(Game))]
+
     public class LanExample:MonoBehaviour
 	{
         class TestLoader 
@@ -42,7 +42,7 @@ namespace IFramework_Demo
         LanguageModule mou;
         private void Start()
         {
-            mou = Framework.env1.modules.CreateModule<LanguageModule>();
+            mou = Framework.env0.modules.CreateModule<LanguageModule>();
             mou.Load(new TestLoader().Load());
             observer= mou.CreatObserver(key, SystemLanguage.English).ObserveEvent((lan, val) => { Log.E(val); });
         }

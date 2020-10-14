@@ -51,7 +51,7 @@ namespace IFramework
                     rect.DrawOutLine(2, Color.black);
                     EditorGUI.LabelField(rect, _scriptCreater.CreatePath);
                     if (!rect.Contains(Event.current.mousePosition)) return;
-                    var info = DragAndDropUtil.Drag(Event.current, rect);
+                    var info = EditorTools.DragAndDropTool.Drag(Event.current, rect);
                     if (info.paths.Length > 0 && info.compelete && info.enterArera && info.paths[0].IsDirectory())
                         _scriptCreater.CreatePath = info.paths[0];
                 })
@@ -68,7 +68,7 @@ namespace IFramework
                             rect.DrawOutLine(2, Color.black);
                             EditorGUI.LabelField(rect, _scriptCreater.prefabDirectory);
                             if (!rect.Contains(Event.current.mousePosition)) return;
-                            var info = DragAndDropUtil.Drag(Event.current, rect);
+                            var info = EditorTools.DragAndDropTool.Drag(Event.current, rect);
                             if (info.paths.Length > 0 && info.compelete && info.enterArera && info.paths[0].IsDirectory())
                                 _scriptCreater.prefabDirectory = info.paths[0];
                         });
@@ -82,7 +82,7 @@ namespace IFramework
                         if (BuildCheck())
                         {
                             Selection.objects = new Object[] { AssetDatabase.LoadAssetAtPath<Object>(_scriptCreater.CreatePath) };
-                            CopyAsset.CopyNewAsset(_scriptCreater.ScriptName.Append(".cs"), originScriptPath);
+                            CopyAsset.Copy(_scriptCreater.ScriptName.Append(".cs"), originScriptPath);
                         }
                     }
                     if (GUILayout.Button("Remove", GUILayout.Height(25)))
@@ -221,7 +221,7 @@ namespace IFramework
             //serialiedScript.Update();
             if (_scriptCreater.isCreatePrefab)
             {
-                EditorUtil.CreatePrefab(gameObj, _scriptCreater.prefabPath);
+                EditorTools.CreatePrefab(gameObj, _scriptCreater.prefabPath);
             }
 
 

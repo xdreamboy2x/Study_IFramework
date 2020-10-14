@@ -11,16 +11,16 @@ namespace IFramework.UI
 {
     public enum UILayer
     {
-        BGBG,               //非常BG
+        BelowBackground,               //非常BG
         Background,         //BG
-        AnimationUnderPage, //背景动画
+        BelowAnimation, //背景动画
         Common,             //普通
-        AnimationOnPage,    //上层动画
-        PopUp,              //弹框
+        AboveAnimation,    //上层动画
+        Pop,              //弹框
         Guide,              //引导
         Toast,              //对话框
         Top,                //Top
-        TopTop,             //非常Top
+        AboveTop,             //非常Top
     }
     public abstract class UIPanel : MonoBehaviour
     {

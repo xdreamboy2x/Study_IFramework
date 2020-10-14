@@ -15,9 +15,9 @@ using UnityEngine;
 
 namespace IFramework
 {
-    class  FormatIFrameWorkScript
+    class  FormatIFrameworkScript
     {
-        const string key = "FormatIFrameWorkScript";
+        const string key = "FormatIFrameworkScript";
 
         private class FormatIFrameWorkScriptProcessor : UnityEditor.AssetModificationProcessor
         {
@@ -43,15 +43,15 @@ namespace IFramework
         private static string newScriptName = "newScript.cs";
         private static string originScriptPath = EditorEnv.formatScriptsPath.CombinePath("AuthorCharpScript.txt");
 
-        [MenuItem("Assets/Create/IFramework/CSharpScript")]
-        public static void CreateUIBase()
+        [MenuItem("Assets/Create/IFramework/AuthorScript",priority =-1000)]
+        public static void Create()
         {
             CreateOriginIfNull();
-            CopyAsset.CopyNewAsset(newScriptName, originScriptPath);
+            CopyAsset.Copy(newScriptName, originScriptPath);
             EditorPrefs.SetBool(key, true);
         }
 
-        private static  void CreateOriginIfNull()
+        private static void CreateOriginIfNull()
         {
             if (File.Exists(originScriptPath)) return;
             using (FileStream fs = new FileStream(originScriptPath, FileMode.Create, FileAccess.Write))

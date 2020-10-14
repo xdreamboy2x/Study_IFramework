@@ -123,13 +123,13 @@ namespace IFramework.Language
         private void LoadLanGroup()
         {
             if (File.Exists(stoPath))
-                _group = ScriptableObj.Load<LanGroup>(stoPath);
+                _group = EditorTools.ScriptableObjectTool.Load<LanGroup>(stoPath);
             else
-                _group = ScriptableObj.Create<LanGroup>(stoPath);
+                _group = EditorTools.ScriptableObjectTool.Create<LanGroup>(stoPath);
         }
         private void UpdateLanGroup()
         {
-            ScriptableObj.Update(_group);
+            EditorTools.ScriptableObjectTool.Update(_group);
         }
         private void OnDisable()
         {
@@ -339,7 +339,7 @@ namespace IFramework.Language
             if (g == null) return;
             g.pairs.AddRange(_pairs);
             g.pairs.Distinct();
-            ScriptableObj.Update(g);
+            EditorTools.ScriptableObjectTool.Update(g);
         }
 
         private void WriteCsv(string path)

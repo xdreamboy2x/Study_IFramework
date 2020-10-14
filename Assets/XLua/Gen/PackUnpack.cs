@@ -539,9 +539,9 @@ namespace XLua
         }
         
 		
-		public static void UnPack(ObjectTranslator translator, RealStatePtr L, int idx, out IFramework.Lua.Pedding val)
+		public static void UnPack(ObjectTranslator translator, RealStatePtr L, int idx, out IFramework.Hotfix.Lua.Pedding val)
 		{
-		    val = new IFramework.Lua.Pedding();
+		    val = new IFramework.Hotfix.Lua.Pedding();
             int top = LuaAPI.lua_gettop(L);
 			
 			if (Utils.LoadField(L, idx, "c"))
@@ -554,7 +554,7 @@ namespace XLua
 			
 		}
 		
-        public static bool Pack(IntPtr buff, int offset, IFramework.Lua.Pedding field)
+        public static bool Pack(IntPtr buff, int offset, IFramework.Hotfix.Lua.Pedding field)
         {
             
             if(!Pack(buff, offset, field.c))
@@ -564,9 +564,9 @@ namespace XLua
             
             return true;
         }
-        public static bool UnPack(IntPtr buff, int offset, out IFramework.Lua.Pedding field)
+        public static bool UnPack(IntPtr buff, int offset, out IFramework.Hotfix.Lua.Pedding field)
         {
-            field = default(IFramework.Lua.Pedding);
+            field = default(IFramework.Hotfix.Lua.Pedding);
             
             if(!UnPack(buff, offset, out field.c))
             {
@@ -577,9 +577,9 @@ namespace XLua
         }
         
 		
-		public static void UnPack(ObjectTranslator translator, RealStatePtr L, int idx, out IFramework.Lua.MyStruct val)
+		public static void UnPack(ObjectTranslator translator, RealStatePtr L, int idx, out IFramework.Hotfix.Lua.MyStruct val)
 		{
-		    val = new IFramework.Lua.MyStruct();
+		    val = new IFramework.Hotfix.Lua.MyStruct();
             int top = LuaAPI.lua_gettop(L);
 			
 			if (Utils.LoadField(L, idx, "a"))
@@ -616,7 +616,7 @@ namespace XLua
 			
 		}
 		
-        public static bool Pack(IntPtr buff, int offset, IFramework.Lua.MyStruct field)
+        public static bool Pack(IntPtr buff, int offset, IFramework.Hotfix.Lua.MyStruct field)
         {
             
             if(!Pack(buff, offset, field.a))
@@ -641,9 +641,9 @@ namespace XLua
             
             return true;
         }
-        public static bool UnPack(IntPtr buff, int offset, out IFramework.Lua.MyStruct field)
+        public static bool UnPack(IntPtr buff, int offset, out IFramework.Hotfix.Lua.MyStruct field)
         {
-            field = default(IFramework.Lua.MyStruct);
+            field = default(IFramework.Hotfix.Lua.MyStruct);
             
             if(!UnPack(buff, offset, out field.a))
             {

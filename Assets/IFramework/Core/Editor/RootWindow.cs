@@ -513,7 +513,7 @@ namespace IFramework
 
             public static void OpenMemory()
             {
-                EditorUtil.OpenFloder(rootPath);
+                EditorTools.OpenFloder(rootPath);
             }
 
             public static void ClearMemory()
@@ -1232,7 +1232,7 @@ namespace IFramework
                 GUI.BeginClip(position);
                 var rs = new Rect(position.x, 0, position.width - 20, position.height).HorizontalSplit(position.height - 2 * lineHeight);
 
-                var fitterWindows = EditorWindowUtil.windows.FindAll((w) => { return w.searchName.ToLower().Contains(_search); }).ToArray();
+                var fitterWindows = EditorWindowTool.windows.FindAll((w) => { return w.searchName.ToLower().Contains(_search); }).ToArray();
                 _table.Calc(rs[0], new Vector2(0, lineHeight), _scroll, lineHeight, fitterWindows.Length, setting);
 
                 Event e = Event.current;
@@ -1246,7 +1246,7 @@ namespace IFramework
                 for (int i = _table.firstVisibleRow; i < _table.lastVisibleRow + 1; i++)
                 {
                     int index = i;
-                    EditorWindowUtil.EditorWindowItem window = fitterWindows[i];
+                    EditorWindowTool.EditorWindowItem window = fitterWindows[i];
                     if (e.type == EventType.Repaint)
                     {
                         GUIStyle style = index % 2 == 0 ? Styles.entryBackEven : Styles.entryBackodd;
@@ -1280,7 +1280,7 @@ namespace IFramework
                                 .FlexibleSpace()
                                     .Button(() =>
                                     {
-                                        var w = EditorWindowUtil.FindOrCreate(windowName);
+                                        var w = EditorWindowTool.FindOrCreate(windowName);
                                         if (w != null)
                                         {
                                             w.Focus();
@@ -1288,17 +1288,17 @@ namespace IFramework
                                     }, get)
                                     .Button(() =>
                                     {
-                                        var w = EditorWindowUtil.FindOrCreate(windowName);
+                                        var w = EditorWindowTool.FindOrCreate(windowName);
                                         if (w != null)
                                         {
-                                            _window.DockWindow(w, EditorWindowUtil.DockPosition.Right);
+                                            _window.DockWindow(w, EditorWindowTool.DockPosition.Right);
                                             w.Focus();
                                         }
                                     }, dock)
                                     .Button(() =>
                                     {
 
-                                        EditorWindowUtil.FindAll(windowName).ToList().ForEach((w) =>
+                                        EditorWindowTool.FindAll(windowName).ToList().ForEach((w) =>
                                         {
                                             w.Close();
                                         });
@@ -1314,9 +1314,9 @@ namespace IFramework
         }
         enum WindowType
         {
+            WindowCollection,
             UserOption,
             Pkgs,
-            WindowCollection
         }
         class Contents
         {
@@ -1389,7 +1389,7 @@ namespace IFramework
     }
     partial class RootWindow
     {
-        [MenuItem("IFramework/RootWindow")]
+        [MenuItem("IFramework/RootWindow",priority =-1000)]
         static void ShowWindow()
         {
             GetWindow<RootWindow>();
@@ -1412,6 +1412,11 @@ namespace IFramework
                 }, 20)
                 .FlexibleSpace()
                 .Label(new GUIContent(PkgKitTool.userjson.name), 100, () => { return PkgKitTool.login; });
+            __windowType= EditorTools.Prefs.GetObject<RootWindow, WindowType>("__windowType");
+        }
+        private void OnDisable()
+        {
+            EditorTools.Prefs.SetObject<RootWindow,WindowType>("__windowType",  __windowType);
         }
         private void OnGUI()
         {

@@ -14,7 +14,7 @@ using UnityEditor.ProjectWindowCallback;
 
 namespace IFramework
 {
-    class CopyAsset : Editor
+    static class CopyAsset 
     {
         class CreateAssetAction : EndNameEditAction
         {
@@ -40,11 +40,12 @@ namespace IFramework
                 return AssetDatabase.LoadAssetAtPath(pathName, typeof(Object));
             }
         }
-        public static void CopyNewAsset(string newFileName, string sourcePath)
+        public static void Copy(string newFileName, string sourcePath)
         {
             ProjectWindowUtil.StartNameEditingIfProjectWindowExists(0,
-            CreateInstance<CreateAssetAction>(),
+            ScriptableObject.CreateInstance<CreateAssetAction>(),
            /*Path.Combine(GetSelectedPath(), newFileName)*/ newFileName, null, sourcePath);
         }
     }
+
 }

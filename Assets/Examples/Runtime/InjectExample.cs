@@ -12,7 +12,6 @@ using UnityEngine;
 
 namespace IFramework_Demo
 {
-    [RequireComponent(typeof(Game))]
 
     public class InjectExample:UnityEngine.MonoBehaviour
 	{
@@ -31,8 +30,8 @@ namespace IFramework_Demo
         static INNN nnn=null;
         private void Awake()
         {
-            Framework.env1.container.RegisterInstance<INNN>(new NNN());
-            Framework.env1.container.Inject(this); 
+            Framework.env0.container.RegisterInstance<INNN>(new NNN());
+            Framework.env0.container.Inject(this); 
             nnn.ToDo();
         }
 
