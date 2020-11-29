@@ -131,7 +131,7 @@ function Awake()
 	Define("Delegate",require("Base.Classes.Delegate"))
 	Define("ObservableValue",require("Base.Classes.ObservableValue"))
 	Define("ObservableObject",require("Base.Classes.ObservableObject"))
-	Define("Game",Launcher.game)
+	Define("Game",Launcher.instance.game)
 
 
 
