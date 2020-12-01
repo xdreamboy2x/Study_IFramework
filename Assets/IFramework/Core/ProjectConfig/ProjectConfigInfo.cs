@@ -12,10 +12,6 @@ namespace IFramework
     [Serializable]
 	public class ProjectConfigInfo:UnityEngine.ScriptableObject
 	{
-
-        public int lev_L;
-        public int lev_W;
-        public int lev_E;
         public bool enable = true;
         public bool enable_L = true;
         public bool enable_W = true;

@@ -1,0 +1,48 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>E439935D-B2A2-46AE-856D-2AA408428F33</ProjectGuid>
+    <!--$guid1$-->
+    <ProjectHome>.</ProjectHome>
+    <StartupFile>
+    </StartupFile>
+    <SearchPath>
+    </SearchPath>
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="Resources\" />
+    <Folder Include="Resources\Base\" />
+    <Folder Include="Resources\Base\Classes\" />
+    <Folder Include="Resources\UI\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Resources\Base\Class.lua" />
+    <Compile Include="Resources\Base\Classes\Delegate.lua" />
+    <Compile Include="Resources\Base\Classes\ObservableObject.lua" />
+    <Compile Include="Resources\Base\Classes\ObservableValue.lua" />
+    <Compile Include="Resources\Base\Convert.lua" />
+    <Compile Include="Resources\Base\IOUtil.lua" />
+    <Compile Include="Resources\Base\Log.lua" />
+    <Compile Include="Resources\Base\MathUtil.lua" />
+    <Compile Include="Resources\Base\StringUtil.lua" />
+    <Compile Include="Resources\Base\TableUtil.lua" />
+    <Compile Include="Resources\Base\Util.lua" />
+    <Compile Include="Resources\Main.lua" />
+    <Compile Include="Resources\UI\LuaGroups.lua" />
+    <Compile Include="Resources\UI\UIView.lua" />
+    <Compile Include="Resources\UI\ViewModel.lua" />
+    <Compile Include="Resources\UI\VVMGroup.lua" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />
+</Project>

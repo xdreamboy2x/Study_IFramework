@@ -7,6 +7,7 @@
  *History:        2018.11--
 *********************************************************************************/
 using IFramework;
+using IFramework.Modules;
 using IFramework.Modules.Fsm;
 using UnityEngine;
 namespace IFramework_Demo
@@ -33,15 +34,14 @@ namespace IFramework_Demo
     public class State2 : State
     {
     }
-    [RequireComponent(typeof(Game))]
     public class FsmExample : MonoBehaviour
     {
 
-        FsmModule fsm { get { return Framework.env1.modules.Fsm; } set { Framework.env1.modules.Fsm = value; } }
+        FsmModule fsm;
         private void Start()
 
         {
-            fsm = Framework.env1.modules.CreateModule<FsmModule>();
+            fsm = FrameworkModule.CreatInstance<FsmModule>("","");
             State1 s1 = new State1();
             State2 s2 = new State2();
             fsm.SubscribeState(s1);
@@ -60,6 +60,7 @@ namespace IFramework_Demo
         }
         private void Update()
         {
+            fsm.Update();
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 fsm.SetBool("bool", false);

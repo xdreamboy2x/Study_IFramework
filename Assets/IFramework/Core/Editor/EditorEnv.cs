@@ -11,11 +11,86 @@ using IFramework.Modules.Coroutine;
 using System;
 using UnityEditor.Compilation;
 using System.IO;
+using System.Collections.Generic;
 
 namespace IFramework
 {
+
     class EditorEnv
     {
+        public interface IFileInitializer
+        {
+            void Create();
+            void Subscribe();
+        }
+        public abstract class FileInitializer : IFileInitializer
+        {
+            protected abstract List<string> directorys { get; }
+            protected abstract List<string> files { get; }
+
+            protected virtual bool CreateFile(int index, string path) { return true; }
+            protected static bool ExistFile(string path)
+            {
+                return File.Exists(path);
+            }
+            protected static bool ExistDirectory(string path)
+            {
+                return Directory.Exists(path);
+            }
+            public virtual void Create()
+            {
+                if (directorys != null)
+                {
+                    directorys.ForEach((path) =>
+                    {
+                        if (!string.IsNullOrEmpty(path) && !Directory.Exists(path))
+                        {
+                            Directory.CreateDirectory(path);
+                        }
+                    });
+                }
+                if (files != null)
+                {
+                    files.ForEach((index, path) =>
+                    {
+                        bool bo = CreateFile(index, path);
+                        if (!bo)
+                        {
+                            if (!string.IsNullOrEmpty(path) && !File.Exists(path))
+                            {
+                                File.Create(path);
+                            }
+                        }
+                    });
+                }
+            }
+
+            public void Subscribe()
+            {
+                _fileInitializers.Add(this);
+            }
+        }
+        class ProjectFloderInitializer : FileInitializer
+        {
+            protected override List<string> directorys { get {
+                    return new List<string>()
+                    {
+                        "Assets/Project",
+                        "Assets/Project/Sources",
+                        "Assets/Project/Sources/Shaders",
+                        "Assets/Project/Sources/Textures",
+                        "Assets/Project/Sources/Images",
+                        "Assets/Project/Scripts",
+                        "Assets/Project/Resources",
+                        "Assets/StreamingAssets",
+                    };
+                } }
+
+            protected override List<string> files { get { return null; } }
+        }
+
+        private static List<IFileInitializer> _fileInitializers = new List<IFileInitializer>();
+
         private const string _relativeCorePath = "Core";
         private static string _fpath;
 
@@ -83,12 +158,14 @@ namespace IFramework
         [InitializeOnLoadMethod]
         static void EditorEnvInit()
         {
+            _fileInitializers.Clear();
             UnityEngine.Debug.Log("FrameworkPath   right?   " + frameworkPath);
-            Framework.InitEnv("IFramework_Editor", envType).InitWithAttribute();
+            Framework.CreateEnv("IFramework_Editor", envType).InitWithAttribute();
             assemblyCompilationStarted += (str) => {
                 Framework.env0.Dispose();
                 UnityEngine.Debug.Log("EditorEnv Dispose"); 
             };
+
             update += Framework.env0.Update;
             Framework.env0.modules.Coroutine = Framework.env0.modules.CreateModule<CoroutineModule>();
 #if UNITY_2018_1_OR_NEWER
@@ -101,6 +178,12 @@ namespace IFramework
             AssetDatabase.Refresh();
             EditorUtil.ReOpen2();
 #endif
+            new ProjectFloderInitializer().Subscribe();
+            _fileInitializers.ForEach(f => { f.Create(); });
+
+            //if (!EditorApplication.isUpdating)
+            //    AssetDatabase.Refresh();
+
         }
     }
 

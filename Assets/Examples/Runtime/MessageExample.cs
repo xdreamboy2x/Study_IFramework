@@ -13,7 +13,6 @@ using UnityEngine;
 
 namespace IFramework_Demo
 {
-    [RequireComponent(typeof(Game))]
     public class MessageExample:MonoBehaviour,IMessagePublisher
 	{
         public interface IPub : IMessagePublisher { }
@@ -33,10 +32,10 @@ namespace IFramework_Demo
                 Log.L(string.Format("Recieve code {0} from type {1}", code,eventType)); 
             }
         }
-        MessageModule Message { get { return Framework.env1.modules.Message; } set { Framework.env1.modules.Message = value; } }
+        MessageModule Message;
         private void Start()
         {
-            Message = Framework.env1.modules.CreateModule<MessageModule>();
+            Message = MessageModule.CreatInstance<MessageModule>("","");
             Listenner listenner = new Listenner();
 
             Debug.Log(Framework.Version);

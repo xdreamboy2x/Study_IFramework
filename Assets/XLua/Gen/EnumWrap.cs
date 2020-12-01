@@ -74,25 +74,25 @@ namespace XLua.CSObjectWrap
 		}
 	}
     
-    public class IFrameworkLuaMyEnumWrap
+    public class IFrameworkHotfixLuaMyEnumWrap
     {
 		public static void __Register(RealStatePtr L)
         {
 		    ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
-		    Utils.BeginObjectRegister(typeof(IFramework.Lua.MyEnum), L, translator, 0, 0, 0, 0);
-			Utils.EndObjectRegister(typeof(IFramework.Lua.MyEnum), L, translator, null, null, null, null, null);
+		    Utils.BeginObjectRegister(typeof(IFramework.Hotfix.Lua.MyEnum), L, translator, 0, 0, 0, 0);
+			Utils.EndObjectRegister(typeof(IFramework.Hotfix.Lua.MyEnum), L, translator, null, null, null, null, null);
 			
-			Utils.BeginClassRegister(typeof(IFramework.Lua.MyEnum), L, null, 3, 0, 0);
+			Utils.BeginClassRegister(typeof(IFramework.Hotfix.Lua.MyEnum), L, null, 3, 0, 0);
 
             
-            Utils.RegisterObject(L, translator, Utils.CLS_IDX, "E1", IFramework.Lua.MyEnum.E1);
+            Utils.RegisterObject(L, translator, Utils.CLS_IDX, "E1", IFramework.Hotfix.Lua.MyEnum.E1);
             
-            Utils.RegisterObject(L, translator, Utils.CLS_IDX, "E2", IFramework.Lua.MyEnum.E2);
+            Utils.RegisterObject(L, translator, Utils.CLS_IDX, "E2", IFramework.Hotfix.Lua.MyEnum.E2);
             
 
 			Utils.RegisterFunc(L, Utils.CLS_IDX, "__CastFrom", __CastFrom);
             
-            Utils.EndClassRegister(typeof(IFramework.Lua.MyEnum), L, translator);
+            Utils.EndClassRegister(typeof(IFramework.Hotfix.Lua.MyEnum), L, translator);
         }
 		
 		[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
@@ -102,7 +102,7 @@ namespace XLua.CSObjectWrap
 			LuaTypes lua_type = LuaAPI.lua_type(L, 1);
             if (lua_type == LuaTypes.LUA_TNUMBER)
             {
-                translator.PushIFrameworkLuaMyEnum(L, (IFramework.Lua.MyEnum)LuaAPI.xlua_tointeger(L, 1));
+                translator.PushIFrameworkHotfixLuaMyEnum(L, (IFramework.Hotfix.Lua.MyEnum)LuaAPI.xlua_tointeger(L, 1));
             }
 			
             else if(lua_type == LuaTypes.LUA_TSTRING)
@@ -110,22 +110,22 @@ namespace XLua.CSObjectWrap
 
 			    if (LuaAPI.xlua_is_eq_str(L, 1, "E1"))
                 {
-                    translator.PushIFrameworkLuaMyEnum(L, IFramework.Lua.MyEnum.E1);
+                    translator.PushIFrameworkHotfixLuaMyEnum(L, IFramework.Hotfix.Lua.MyEnum.E1);
                 }
 				else if (LuaAPI.xlua_is_eq_str(L, 1, "E2"))
                 {
-                    translator.PushIFrameworkLuaMyEnum(L, IFramework.Lua.MyEnum.E2);
+                    translator.PushIFrameworkHotfixLuaMyEnum(L, IFramework.Hotfix.Lua.MyEnum.E2);
                 }
 				else
                 {
-                    return LuaAPI.luaL_error(L, "invalid string for IFramework.Lua.MyEnum!");
+                    return LuaAPI.luaL_error(L, "invalid string for IFramework.Hotfix.Lua.MyEnum!");
                 }
 
             }
 			
             else
             {
-                return LuaAPI.luaL_error(L, "invalid lua type for IFramework.Lua.MyEnum! Expect number or string, got + " + lua_type);
+                return LuaAPI.luaL_error(L, "invalid lua type for IFramework.Hotfix.Lua.MyEnum! Expect number or string, got + " + lua_type);
             }
 
             return 1;

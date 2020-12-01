@@ -13,14 +13,14 @@ using UnityEngine;
 
 namespace IFramework.Tweens
 {
-    [FrameworkVersion(22)]
+    [Version(22)]
     public abstract class TweenValue : RecyclableObject
     {
         private ValueCurve _curve = ValueCurve.linecurve;
         private float _dur;
         private SequenceNode _node;
         private float _curdur;
-        protected float delta { get { return Time.deltaTime*10; } }
+        protected float delta { get { return Time.deltaTime; } }
 
         protected event Action onCompelete;
 
@@ -28,7 +28,7 @@ namespace IFramework.Tweens
         public bool compeleted { get; private set; }
         public float dur { get { return _dur; } set { _dur = value; } }
         protected float percent { get { return (_curdur / dur).Clamp01(); } }
-
+        protected float percentDelta { get { return delta + (1 - delta) * percent; } }
 
         public void Run()
         {
@@ -70,16 +70,16 @@ namespace IFramework.Tweens
             compeleted = false;
         }
 
-        public static TweenValue<T> Get<T>(EnvironmentType envType) /*where T : struct*/
+        public static TweenValue<T> Get<T>(EnvironmentType envType) where T : struct
         {
             Type type;
-            if (map.TryGetValue(typeof(T),out type))
+            if (map.TryGetValue(typeof(T), out type))
                 return Allocate(type, envType) as TweenValue<T>;
             throw new Exception(string.Format("Do not Have TweenValue<{0}>  with Type {0}", typeof(T)));
         }
         private static Dictionary<Type, Type> map = new Dictionary<Type, Type>()
         {
-            {typeof(string),typeof(StringTweenValue) },
+            {typeof(bool),typeof(BoolTweenValue) },
             {typeof(int),typeof(IntTweenValue) },
             {typeof(float),typeof(FloatTweenValue) },
             {typeof(Vector2),typeof(Vector2TweenValue) },
@@ -91,8 +91,8 @@ namespace IFramework.Tweens
         };
     }
 
-    [FrameworkVersion(4)]
-    public abstract class TweenValue<T> : TweenValue /*where T : struct*/
+    [Version(4)]
+    public abstract class TweenValue<T> : TweenValue where T : struct
     {
         private T _cur;
         private T _end;
@@ -132,7 +132,7 @@ namespace IFramework.Tweens
         private Func<T> getter;
 
         protected T targetValue { get { return getter.Invoke(); } }
-        public virtual void Config(T start, T end, float dur,Func<T> getter, Action<T> setter, Action onCompelete)
+        public virtual void Config(T start, T end, float dur, Func<T> getter, Action<T> setter, Action onCompelete)
         {
             this._start = this._cur = start;
             this._end = end;
@@ -144,7 +144,7 @@ namespace IFramework.Tweens
         }
         protected override void OnComplete()
         {
-           // cur = end;
+            // cur = end;
         }
 
         protected override void OnDataReset()
@@ -153,45 +153,6 @@ namespace IFramework.Tweens
             _cur = _start = _end = default(T);
             setter = null;
             getter = null;
-        }
-    }
-
-    [FrameworkVersion(5)]
-    public class IntTweenValue : TweenValue<int>
-    {
-        protected override void MoveNext()
-        {
-            float f = curve.GetYWithX(percent);
-            int _cur = start.Lerp(end, f);
-            _cur = targetValue.Lerp(_cur,1- delta);
-            
-            cur = (int)_cur;
-        }
-    }
-    [FrameworkVersion(5)]
-    public class StringTweenValue : TweenValue<string>
-    {
-        protected override void MoveNext()
-        {
-            float f = curve.GetYWithX(percent);
-
-            int _cur = start.Length.Lerp(end.Length, f);
-            _cur = targetValue.Length.Lerp(_cur,1- delta);
-
-
-            int len = _cur.Clamp(0,Mathf.Max(end.Length,start.Length));
-            if (len<=0)
-            {
-                cur= string.Empty;
-            }
-            else if (len <= start.Length)
-            {
-                cur = start.Substring(0, len);
-            }
-            else
-            {
-                cur = start.Append(end.Substring(start.Length, len - start.Length-1));
-            }
         }
     }
 }

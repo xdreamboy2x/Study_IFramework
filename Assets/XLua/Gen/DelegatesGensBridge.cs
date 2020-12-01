@@ -83,7 +83,7 @@ namespace XLua
 #endif
 		}
         
-		public IFramework.Lua.MyStruct __Gen_Delegate_Imp3(IFramework.Lua.MyStruct p0)
+		public IFramework.Hotfix.Lua.MyStruct __Gen_Delegate_Imp3(IFramework.Hotfix.Lua.MyStruct p0)
 		{
 #if THREAD_SAFE || HOTFIX_ENABLE
             lock (luaEnv.luaEnvLock)
@@ -92,12 +92,12 @@ namespace XLua
                 RealStatePtr L = luaEnv.rawL;
                 int errFunc = LuaAPI.pcall_prepare(L, errorFuncRef, luaReference);
                 ObjectTranslator translator = luaEnv.translator;
-                translator.PushIFrameworkLuaMyStruct(L, p0);
+                translator.PushIFrameworkHotfixLuaMyStruct(L, p0);
                 
                 PCall(L, 1, 1, errFunc);
                 
                 
-                IFramework.Lua.MyStruct __gen_ret;translator.Get(L, errFunc + 1, out __gen_ret);
+                IFramework.Hotfix.Lua.MyStruct __gen_ret;translator.Get(L, errFunc + 1, out __gen_ret);
                 LuaAPI.lua_settop(L, errFunc - 1);
                 return  __gen_ret;
 #if THREAD_SAFE || HOTFIX_ENABLE
@@ -105,7 +105,7 @@ namespace XLua
 #endif
 		}
         
-		public IFramework.Lua.MyEnum __Gen_Delegate_Imp4(IFramework.Lua.MyEnum p0)
+		public IFramework.Hotfix.Lua.MyEnum __Gen_Delegate_Imp4(IFramework.Hotfix.Lua.MyEnum p0)
 		{
 #if THREAD_SAFE || HOTFIX_ENABLE
             lock (luaEnv.luaEnvLock)
@@ -114,12 +114,12 @@ namespace XLua
                 RealStatePtr L = luaEnv.rawL;
                 int errFunc = LuaAPI.pcall_prepare(L, errorFuncRef, luaReference);
                 ObjectTranslator translator = luaEnv.translator;
-                translator.PushIFrameworkLuaMyEnum(L, p0);
+                translator.PushIFrameworkHotfixLuaMyEnum(L, p0);
                 
                 PCall(L, 1, 1, errFunc);
                 
                 
-                IFramework.Lua.MyEnum __gen_ret;translator.Get(L, errFunc + 1, out __gen_ret);
+                IFramework.Hotfix.Lua.MyEnum __gen_ret;translator.Get(L, errFunc + 1, out __gen_ret);
                 LuaAPI.lua_settop(L, errFunc - 1);
                 return  __gen_ret;
 #if THREAD_SAFE || HOTFIX_ENABLE
@@ -259,7 +259,7 @@ namespace XLua
 #endif
 		}
         
-		public IFramework.Lua.Luac.ICalc __Gen_Delegate_Imp11(int p0, string[] p1)
+		public IFramework.Hotfix.Lua.Luac.ICalc __Gen_Delegate_Imp11(int p0, string[] p1)
 		{
 #if THREAD_SAFE || HOTFIX_ENABLE
             lock (luaEnv.luaEnvLock)
@@ -274,7 +274,7 @@ namespace XLua
                 PCall(L, 1 + (p1 == null ? 0 : p1.Length), 1, errFunc);
                 
                 
-                IFramework.Lua.Luac.ICalc __gen_ret = (IFramework.Lua.Luac.ICalc)translator.GetObject(L, errFunc + 1, typeof(IFramework.Lua.Luac.ICalc));
+                IFramework.Hotfix.Lua.Luac.ICalc __gen_ret = (IFramework.Hotfix.Lua.Luac.ICalc)translator.GetObject(L, errFunc + 1, typeof(IFramework.Hotfix.Lua.Luac.ICalc));
                 LuaAPI.lua_settop(L, errFunc - 1);
                 return  __gen_ret;
 #if THREAD_SAFE || HOTFIX_ENABLE
@@ -450,7 +450,7 @@ namespace XLua
 #endif
 		}
         
-		public UnityEngine.GameObject __Gen_Delegate_Imp19(IFramework.Lua.StructTest p0, int p1, object p2)
+		public UnityEngine.GameObject __Gen_Delegate_Imp19(IFramework.Hotfix.Lua.StructTest p0, int p1, object p2)
 		{
 #if THREAD_SAFE || HOTFIX_ENABLE
             lock (luaEnv.luaEnvLock)
@@ -474,7 +474,7 @@ namespace XLua
 #endif
 		}
         
-		public string __Gen_Delegate_Imp20(IFramework.Lua.StructTest p0)
+		public string __Gen_Delegate_Imp20(IFramework.Hotfix.Lua.StructTest p0)
 		{
 #if THREAD_SAFE || HOTFIX_ENABLE
             lock (luaEnv.luaEnvLock)
@@ -496,7 +496,7 @@ namespace XLua
 #endif
 		}
         
-		public void __Gen_Delegate_Imp21(IFramework.Lua.StructTest p0, object p1)
+		public void __Gen_Delegate_Imp21(IFramework.Hotfix.Lua.StructTest p0, object p1)
 		{
 #if THREAD_SAFE || HOTFIX_ENABLE
             lock (luaEnv.luaEnvLock)
@@ -667,39 +667,39 @@ namespace XLua
 		public override Delegate GetDelegateByType(Type type)
 		{
 		
-		    if (type == typeof(IFramework.Lua.DoSth2))
+		    if (type == typeof(IFramework.Hotfix.Lua.DoSth2))
 			{
-			    return new IFramework.Lua.DoSth2(__Gen_Delegate_Imp0);
+			    return new IFramework.Hotfix.Lua.DoSth2(__Gen_Delegate_Imp0);
 			}
 		
-		    if (type == typeof(IFramework.Lua.IntParam))
+		    if (type == typeof(IFramework.Hotfix.Lua.IntParam))
 			{
-			    return new IFramework.Lua.IntParam(__Gen_Delegate_Imp1);
+			    return new IFramework.Hotfix.Lua.IntParam(__Gen_Delegate_Imp1);
 			}
 		
-		    if (type == typeof(IFramework.Lua.Vector3Param))
+		    if (type == typeof(IFramework.Hotfix.Lua.Vector3Param))
 			{
-			    return new IFramework.Lua.Vector3Param(__Gen_Delegate_Imp2);
+			    return new IFramework.Hotfix.Lua.Vector3Param(__Gen_Delegate_Imp2);
 			}
 		
-		    if (type == typeof(IFramework.Lua.CustomValueTypeParam))
+		    if (type == typeof(IFramework.Hotfix.Lua.CustomValueTypeParam))
 			{
-			    return new IFramework.Lua.CustomValueTypeParam(__Gen_Delegate_Imp3);
+			    return new IFramework.Hotfix.Lua.CustomValueTypeParam(__Gen_Delegate_Imp3);
 			}
 		
-		    if (type == typeof(IFramework.Lua.EnumParam))
+		    if (type == typeof(IFramework.Hotfix.Lua.EnumParam))
 			{
-			    return new IFramework.Lua.EnumParam(__Gen_Delegate_Imp4);
+			    return new IFramework.Hotfix.Lua.EnumParam(__Gen_Delegate_Imp4);
 			}
 		
-		    if (type == typeof(IFramework.Lua.DecimalParam))
+		    if (type == typeof(IFramework.Hotfix.Lua.DecimalParam))
 			{
-			    return new IFramework.Lua.DecimalParam(__Gen_Delegate_Imp5);
+			    return new IFramework.Hotfix.Lua.DecimalParam(__Gen_Delegate_Imp5);
 			}
 		
-		    if (type == typeof(IFramework.Lua.ArrayAccess))
+		    if (type == typeof(IFramework.Hotfix.Lua.ArrayAccess))
 			{
-			    return new IFramework.Lua.ArrayAccess(__Gen_Delegate_Imp6);
+			    return new IFramework.Hotfix.Lua.ArrayAccess(__Gen_Delegate_Imp6);
 			}
 		
 		    if (type == typeof(System.Action))
@@ -727,9 +727,9 @@ namespace XLua
 			    return new Tutorial.CSCallLua.GetE(__Gen_Delegate_Imp10);
 			}
 		
-		    if (type == typeof(IFramework.Lua.Luac.CalcNew))
+		    if (type == typeof(IFramework.Hotfix.Lua.Luac.CalcNew))
 			{
-			    return new IFramework.Lua.Luac.CalcNew(__Gen_Delegate_Imp11);
+			    return new IFramework.Hotfix.Lua.Luac.CalcNew(__Gen_Delegate_Imp11);
 			}
 		
 		    return null;

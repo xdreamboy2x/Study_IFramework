@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 2137372041
+CRC: 1660696250
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
-      Name: assets/examples/runtime/abexample_2
+      Name: assets/examples/runtime/abexample_4
       Dependencies:
         Dependency_0: shared/assets/examples/runtime/abexample_1
     Info_1:

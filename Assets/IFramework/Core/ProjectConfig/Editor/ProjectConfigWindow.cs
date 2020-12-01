@@ -30,23 +30,20 @@ namespace IFramework
             string ProjectConfigInfoPath = EditorEnv.corePath.CombinePath("ProjectConfig/Resources/"+ ProjectConfig.configName + ".asset").ToRegularPath();
 
             if (File.Exists(ProjectConfigInfoPath))
-                Info = ScriptableObj.Load<ProjectConfigInfo>(ProjectConfigInfoPath);
+                Info = EditorTools.ScriptableObjectTool.Load<ProjectConfigInfo>(ProjectConfigInfoPath);
             else
             {
-                Info = ScriptableObj.Create<ProjectConfigInfo>(ProjectConfigInfoPath);
+                Info = EditorTools.ScriptableObjectTool.Create<ProjectConfigInfo>(ProjectConfigInfoPath);
 
                 Info.enable_L = Log.enable_L;
                 Info.enable_W = Log.enable_W;
                 Info.enable_E = Log.enable_E;
-                Info.lev_L = Log.lev_L;
-                Info.lev_W = Log.lev_W;
                 Info.enable = Log.enable;
-                Info.lev_E = Log.lev_E;
             }
         }
         private void OnDisable()
         {
-            ScriptableObj.Update(Info);
+            EditorTools.ScriptableObjectTool.Update(Info);
         }
 
         private void OnGUI()
@@ -64,9 +61,6 @@ namespace IFramework
             //.FlexibleSpace();
           
             this.Label("LogSetting",GUIStyles.Get("IN Title"))
-                .IntField("Log Lev", ref Info.lev_L)
-                .IntField("Warning Lev", ref Info.lev_W)
-                .IntField("Error Lev", ref Info.lev_E)
                 .Toggle("Enable", ref Info.enable)
                 .Pan(() =>
                 {
@@ -81,7 +75,7 @@ namespace IFramework
 
             this.BeginHorizontal()
                         .FlexibleSpace()
-                        .Button(() => { ScriptableObj.Update(Info); }, "Save")
+                        .Button(() => { EditorTools.ScriptableObjectTool.Update(Info); }, "Save")
                     .EndHorizontal();
         }
 

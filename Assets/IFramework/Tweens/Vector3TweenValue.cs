@@ -14,12 +14,10 @@ namespace IFramework.Tweens
     {
         protected override void MoveNext()
         {
-            float f = curve.GetYWithX(percent);
-            //cur = (end - start) * f + start;
-            Vector3 _cur = Vector3.Lerp(start, end, f);
-            cur = Vector3.Lerp( targetValue, _cur, delta);
+            var point = curve.GetPercent(percent);
+            Vector3 _cur = Vector3.Lerp(start, end, point.y);
+            cur = Vector3.Lerp(targetValue, _cur, percentDelta);
         }
-
     }
 
 }

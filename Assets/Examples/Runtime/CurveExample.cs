@@ -6,15 +6,13 @@
  *Description:    Description
  *History:        2020-03-03--
 *********************************************************************************/
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using IFramework;
 
 namespace IFramework_Demo
 {
-	public class CurveExample : MonoBehaviour
+    public class CurveExample : MonoBehaviour
 	{
         private ValueCurve c;
 

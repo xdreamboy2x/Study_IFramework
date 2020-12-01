@@ -20,10 +20,11 @@ namespace IFramework_Demo
         UIModule module;
         private void Start()
         {
-            Framework.InitEnv("Game_RT",  EnvironmentType.Ev1).InitWithAttribute();
+            Framework.CreateEnv("Game_RT",  EnvironmentType.Ev1).InitWithAttribute();
             module = Framework.env1.modules.CreateModule<UIModule>();
             module.AddLoader(this);
             module.SetGroups(new MvvmGroups(UIMap_MVVM.map));
+            module.CreateCanvas();
         }
 
         private void Update()

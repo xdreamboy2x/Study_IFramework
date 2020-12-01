@@ -37,22 +37,22 @@ namespace XLua.CSObjectWrap
             translator.DelayWrapLoader(typeof(Tutorial.DerivedClassExtensions), TutorialDerivedClassExtensionsWrap.__Register);
         
         
-            translator.DelayWrapLoader(typeof(IFramework.Lua.Pedding), IFrameworkLuaPeddingWrap.__Register);
+            translator.DelayWrapLoader(typeof(IFramework.Hotfix.Lua.Pedding), IFrameworkHotfixLuaPeddingWrap.__Register);
         
         
-            translator.DelayWrapLoader(typeof(IFramework.Lua.MyStruct), IFrameworkLuaMyStructWrap.__Register);
+            translator.DelayWrapLoader(typeof(IFramework.Hotfix.Lua.MyStruct), IFrameworkHotfixLuaMyStructWrap.__Register);
         
         
-            translator.DelayWrapLoader(typeof(IFramework.Lua.MyEnum), IFrameworkLuaMyEnumWrap.__Register);
+            translator.DelayWrapLoader(typeof(IFramework.Hotfix.Lua.MyEnum), IFrameworkHotfixLuaMyEnumWrap.__Register);
         
         
-            translator.DelayWrapLoader(typeof(IFramework.Lua.NoGc), IFrameworkLuaNoGcWrap.__Register);
+            translator.DelayWrapLoader(typeof(IFramework.Hotfix.Lua.NoGc), IFrameworkHotfixLuaNoGcWrap.__Register);
         
         
             translator.DelayWrapLoader(typeof(UnityEngine.WaitForSeconds), UnityEngineWaitForSecondsWrap.__Register);
         
         
-            translator.DelayWrapLoader(typeof(IFramework.Lua.BaseTest), IFrameworkLuaBaseTestWrap.__Register);
+            translator.DelayWrapLoader(typeof(IFramework.Hotfix.Lua.BaseTest), IFrameworkHotfixLuaBaseTestWrap.__Register);
         
         
             translator.DelayWrapLoader(typeof(Tutorial.DerivedClass.TestEnumInner), TutorialDerivedClassTestEnumInnerWrap.__Register);
@@ -67,11 +67,11 @@ namespace XLua.CSObjectWrap
             wrapInit0(luaenv, translator);
             
             
-            translator.AddInterfaceBridgeCreator(typeof(IFramework.Lua.IExchanger), IFrameworkLuaIExchangerBridge.__Create);
+            translator.AddInterfaceBridgeCreator(typeof(IFramework.Hotfix.Lua.IExchanger), IFrameworkHotfixLuaIExchangerBridge.__Create);
             
             translator.AddInterfaceBridgeCreator(typeof(Tutorial.CSCallLua.ItfD), TutorialCSCallLuaItfDBridge.__Create);
             
-            translator.AddInterfaceBridgeCreator(typeof(IFramework.Lua.Luac.ICalc), IFrameworkLuaLuacICalcBridge.__Create);
+            translator.AddInterfaceBridgeCreator(typeof(IFramework.Hotfix.Lua.Luac.ICalc), IFrameworkHotfixLuaLuacICalcBridge.__Create);
             
         }
         
@@ -95,169 +95,238 @@ namespace XLua
 	internal partial class InternalGlobals
     {
 	    
-		delegate IFramework.Tweens.Tween<UnityEngine.Vector3> __GEN_DELEGATE0( UnityEngine.Transform target,  UnityEngine.Vector3 end,  float dur,  IFramework.EnvironmentType env);
+		delegate IFramework.Tweens.Tween __GEN_DELEGATE0( IFramework.Tweens.Tween tween,  bool rec);
 		
-		delegate IFramework.Tweens.Tween<UnityEngine.Vector3> __GEN_DELEGATE1( UnityEngine.Transform target,  float end,  float dur,  IFramework.EnvironmentType env);
+		delegate IFramework.Tweens.Tween __GEN_DELEGATE1( IFramework.Tweens.Tween tween,  System.Action onCompelete);
 		
-		delegate IFramework.Tweens.Tween<UnityEngine.Vector3> __GEN_DELEGATE2( UnityEngine.Transform target,  float end,  float dur,  IFramework.EnvironmentType env);
+		delegate IFramework.Tweens.Tween __GEN_DELEGATE2( IFramework.Tweens.Tween tween,  int loop,  IFramework.Tweens.LoopType loopType);
 		
-		delegate IFramework.Tweens.Tween<UnityEngine.Vector3> __GEN_DELEGATE3( UnityEngine.Transform target,  float end,  float dur,  IFramework.EnvironmentType env);
+		delegate IFramework.Tweens.Tween __GEN_DELEGATE3( IFramework.Tweens.Tween tween,  IFramework.ValueCurve curve);
 		
 		delegate IFramework.Tweens.Tween<UnityEngine.Vector3> __GEN_DELEGATE4( UnityEngine.Transform target,  UnityEngine.Vector3 end,  float dur,  IFramework.EnvironmentType env);
 		
-		delegate IFramework.Tweens.Tween<UnityEngine.Vector3> __GEN_DELEGATE5( UnityEngine.Transform target,  float end,  float dur,  IFramework.EnvironmentType env);
+		delegate IFramework.Tweens.Tween<float> __GEN_DELEGATE5( UnityEngine.Transform target,  float end,  float dur,  IFramework.EnvironmentType env);
 		
-		delegate IFramework.Tweens.Tween<UnityEngine.Vector3> __GEN_DELEGATE6( UnityEngine.Transform target,  float end,  float dur,  IFramework.EnvironmentType env);
+		delegate IFramework.Tweens.Tween<float> __GEN_DELEGATE6( UnityEngine.Transform target,  float end,  float dur,  IFramework.EnvironmentType env);
 		
-		delegate IFramework.Tweens.Tween<UnityEngine.Vector3> __GEN_DELEGATE7( UnityEngine.Transform target,  float end,  float dur,  IFramework.EnvironmentType env);
+		delegate IFramework.Tweens.Tween<float> __GEN_DELEGATE7( UnityEngine.Transform target,  float end,  float dur,  IFramework.EnvironmentType env);
 		
 		delegate IFramework.Tweens.Tween<UnityEngine.Vector3> __GEN_DELEGATE8( UnityEngine.Transform target,  UnityEngine.Vector3 end,  float dur,  IFramework.EnvironmentType env);
 		
-		delegate IFramework.Tweens.Tween<UnityEngine.Vector3> __GEN_DELEGATE9( UnityEngine.Transform target,  float end,  float dur,  IFramework.EnvironmentType env);
+		delegate IFramework.Tweens.Tween<float> __GEN_DELEGATE9( UnityEngine.Transform target,  float end,  float dur,  IFramework.EnvironmentType env);
 		
-		delegate IFramework.Tweens.Tween<UnityEngine.Vector3> __GEN_DELEGATE10( UnityEngine.Transform target,  float end,  float dur,  IFramework.EnvironmentType env);
+		delegate IFramework.Tweens.Tween<float> __GEN_DELEGATE10( UnityEngine.Transform target,  float end,  float dur,  IFramework.EnvironmentType env);
 		
-		delegate IFramework.Tweens.Tween<UnityEngine.Vector3> __GEN_DELEGATE11( UnityEngine.Transform target,  float end,  float dur,  IFramework.EnvironmentType env);
+		delegate IFramework.Tweens.Tween<float> __GEN_DELEGATE11( UnityEngine.Transform target,  float end,  float dur,  IFramework.EnvironmentType env);
 		
-		delegate IFramework.Tweens.Tween<UnityEngine.Quaternion> __GEN_DELEGATE12( UnityEngine.Transform target,  UnityEngine.Quaternion end,  float dur,  IFramework.EnvironmentType env);
+		delegate IFramework.Tweens.Tween<UnityEngine.Vector3> __GEN_DELEGATE12( UnityEngine.Transform target,  UnityEngine.Vector3 end,  float dur,  IFramework.EnvironmentType env);
 		
-		delegate IFramework.Tweens.Tween<UnityEngine.Quaternion> __GEN_DELEGATE13( UnityEngine.Transform target,  UnityEngine.Vector3 end,  float dur,  IFramework.EnvironmentType env);
+		delegate IFramework.Tweens.Tween<float> __GEN_DELEGATE13( UnityEngine.Transform target,  float end,  float dur,  IFramework.EnvironmentType env);
 		
-		delegate IFramework.Tweens.Tween<UnityEngine.Quaternion> __GEN_DELEGATE14( UnityEngine.Transform target,  UnityEngine.Quaternion end,  float dur,  IFramework.EnvironmentType env);
+		delegate IFramework.Tweens.Tween<float> __GEN_DELEGATE14( UnityEngine.Transform target,  float end,  float dur,  IFramework.EnvironmentType env);
 		
-		delegate IFramework.Tweens.Tween<UnityEngine.Quaternion> __GEN_DELEGATE15( UnityEngine.Transform target,  UnityEngine.Vector3 end,  float dur,  IFramework.EnvironmentType env);
+		delegate IFramework.Tweens.Tween<float> __GEN_DELEGATE15( UnityEngine.Transform target,  float end,  float dur,  IFramework.EnvironmentType env);
 		
-		delegate IFramework.Tweens.Tween<UnityEngine.Color> __GEN_DELEGATE16( UnityEngine.Material target,  UnityEngine.Color end,  float dur,  IFramework.EnvironmentType env);
+		delegate IFramework.Tweens.Tween<UnityEngine.Quaternion> __GEN_DELEGATE16( UnityEngine.Transform target,  UnityEngine.Quaternion end,  float dur,  IFramework.EnvironmentType env);
 		
-		delegate IFramework.Tweens.Tween<UnityEngine.Color> __GEN_DELEGATE17( UnityEngine.Light target,  UnityEngine.Color end,  float dur,  IFramework.EnvironmentType env);
+		delegate IFramework.Tweens.Tween<UnityEngine.Vector3> __GEN_DELEGATE17( UnityEngine.Transform target,  UnityEngine.Vector3 end,  float dur,  IFramework.EnvironmentType env);
 		
-		delegate IFramework.Tweens.Tween<UnityEngine.Color> __GEN_DELEGATE18( UnityEngine.Camera target,  UnityEngine.Color end,  float dur,  IFramework.EnvironmentType env);
+		delegate IFramework.Tweens.Tween<UnityEngine.Quaternion> __GEN_DELEGATE18( UnityEngine.Transform target,  UnityEngine.Vector3 end,  float dur,  IFramework.EnvironmentType env);
 		
-		delegate IFramework.Tweens.Tween<UnityEngine.Color> __GEN_DELEGATE19( UnityEngine.Material target,  float end,  float dur,  IFramework.EnvironmentType env);
+		delegate IFramework.Tweens.Tween<UnityEngine.Quaternion> __GEN_DELEGATE19( UnityEngine.Transform target,  UnityEngine.Quaternion end,  float dur,  IFramework.EnvironmentType env);
 		
-		delegate IFramework.Tweens.Tween<int> __GEN_DELEGATE20( UnityEngine.UI.Text target,  int start,  int end,  float dur,  IFramework.EnvironmentType env);
+		delegate IFramework.Tweens.Tween<UnityEngine.Quaternion> __GEN_DELEGATE20( UnityEngine.Transform target,  UnityEngine.Vector3 end,  float dur,  IFramework.EnvironmentType env);
 		
-		delegate IFramework.Tweens.Tween<float> __GEN_DELEGATE21( UnityEngine.UI.Text target,  float start,  float end,  float dur,  IFramework.EnvironmentType env);
+		delegate IFramework.Tweens.Tween<UnityEngine.Color> __GEN_DELEGATE21( UnityEngine.Material target,  UnityEngine.Color end,  float dur,  IFramework.EnvironmentType env);
 		
-		delegate IFramework.Tweens.Tween<string> __GEN_DELEGATE22( UnityEngine.UI.Text target,  string start,  string end,  float dur,  IFramework.EnvironmentType env);
+		delegate IFramework.Tweens.Tween<UnityEngine.Color> __GEN_DELEGATE22( UnityEngine.UI.Graphic target,  UnityEngine.Color end,  float dur,  IFramework.EnvironmentType env);
 		
-		delegate IFramework.Tweens.Tween<float> __GEN_DELEGATE23( UnityEngine.UI.Image target,  float start,  float end,  float dur,  IFramework.EnvironmentType env);
+		delegate IFramework.Tweens.Tween<UnityEngine.Color> __GEN_DELEGATE23( UnityEngine.Light target,  UnityEngine.Color end,  float dur,  IFramework.EnvironmentType env);
 		
-		delegate bool __GEN_DELEGATE24( UnityEngine.Object o);
+		delegate IFramework.Tweens.Tween<UnityEngine.Color> __GEN_DELEGATE24( UnityEngine.Camera target,  UnityEngine.Color end,  float dur,  IFramework.EnvironmentType env);
+		
+		delegate IFramework.Tweens.Tween<float> __GEN_DELEGATE25( UnityEngine.Material target,  float end,  float dur,  IFramework.EnvironmentType env);
+		
+		delegate IFramework.Tweens.Tween<float> __GEN_DELEGATE26( UnityEngine.UI.Graphic target,  float end,  float dur,  IFramework.EnvironmentType env);
+		
+		delegate IFramework.Tweens.Tween<float> __GEN_DELEGATE27( UnityEngine.Light target,  float end,  float dur,  IFramework.EnvironmentType env);
+		
+		delegate IFramework.Tweens.Tween<float> __GEN_DELEGATE28( UnityEngine.Camera target,  float end,  float dur,  IFramework.EnvironmentType env);
+		
+		delegate IFramework.Tweens.Tween<float> __GEN_DELEGATE29( UnityEngine.CanvasGroup target,  float end,  float dur,  IFramework.EnvironmentType env);
+		
+		delegate IFramework.Tweens.Tween<int> __GEN_DELEGATE30( UnityEngine.UI.Text target,  int start,  int end,  float dur,  IFramework.EnvironmentType env);
+		
+		delegate IFramework.Tweens.Tween<int> __GEN_DELEGATE31( UnityEngine.UI.Text target,  string end,  float dur,  IFramework.EnvironmentType env);
+		
+		delegate IFramework.Tweens.Tween<float> __GEN_DELEGATE32( UnityEngine.UI.Text target,  float start,  float end,  float dur,  IFramework.EnvironmentType env);
+		
+		delegate IFramework.Tweens.Tween<float> __GEN_DELEGATE33( UnityEngine.UI.Image target,  float end,  float dur,  IFramework.EnvironmentType env);
+		
+		delegate IFramework.Tweens.Tween<float> __GEN_DELEGATE34( UnityEngine.UI.ScrollRect target,  float end,  float dur,  IFramework.EnvironmentType env);
+		
+		delegate IFramework.Tweens.Tween<float> __GEN_DELEGATE35( UnityEngine.UI.ScrollRect target,  float end,  float dur,  IFramework.EnvironmentType env);
+		
+		delegate IFramework.Tweens.Tween<bool> __GEN_DELEGATE36( UnityEngine.GameObject target,  bool end,  float dur,  IFramework.EnvironmentType env);
+		
+		delegate IFramework.Tweens.Tween<bool> __GEN_DELEGATE37( UnityEngine.Behaviour target,  bool end,  float dur,  IFramework.EnvironmentType env);
+		
+		delegate IFramework.Tweens.Tween<bool> __GEN_DELEGATE38( UnityEngine.UI.Toggle target,  bool end,  float dur,  IFramework.EnvironmentType env);
+		
+		delegate bool __GEN_DELEGATE39( UnityEngine.Object o);
 		
 	    static InternalGlobals()
 		{
 		    extensionMethodMap = new Dictionary<Type, IEnumerable<MethodInfo>>()
 			{
 			    
+				{typeof(IFramework.Tweens.Tween), new List<MethodInfo>(){
+				
+				  new __GEN_DELEGATE0(IFramework.Tweens.TweenEx.SetRecyle)
+#if UNITY_WSA && !UNITY_EDITOR
+                                      .GetMethodInfo(),
+#else
+                                      .Method,
+#endif
+				
+				  new __GEN_DELEGATE1(IFramework.Tweens.TweenEx.OnCompelete)
+#if UNITY_WSA && !UNITY_EDITOR
+                                      .GetMethodInfo(),
+#else
+                                      .Method,
+#endif
+				
+				  new __GEN_DELEGATE2(IFramework.Tweens.TweenEx.SetLoop)
+#if UNITY_WSA && !UNITY_EDITOR
+                                      .GetMethodInfo(),
+#else
+                                      .Method,
+#endif
+				
+				  new __GEN_DELEGATE3(IFramework.Tweens.TweenEx.SetCurve)
+#if UNITY_WSA && !UNITY_EDITOR
+                                      .GetMethodInfo(),
+#else
+                                      .Method,
+#endif
+				
+				}},
+				
 				{typeof(UnityEngine.Transform), new List<MethodInfo>(){
 				
-				  new __GEN_DELEGATE0(IFramework.Tweens.TweenEx.DoMove)
+				  new __GEN_DELEGATE4(IFramework.Tweens.TweenEx.DoMove)
 #if UNITY_WSA && !UNITY_EDITOR
                                       .GetMethodInfo(),
 #else
                                       .Method,
 #endif
 				
-				  new __GEN_DELEGATE1(IFramework.Tweens.TweenEx.DoMoveX)
+				  new __GEN_DELEGATE5(IFramework.Tweens.TweenEx.DoMoveX)
 #if UNITY_WSA && !UNITY_EDITOR
                                       .GetMethodInfo(),
 #else
                                       .Method,
 #endif
 				
-				  new __GEN_DELEGATE2(IFramework.Tweens.TweenEx.DoMoveY)
+				  new __GEN_DELEGATE6(IFramework.Tweens.TweenEx.DoMoveY)
 #if UNITY_WSA && !UNITY_EDITOR
                                       .GetMethodInfo(),
 #else
                                       .Method,
 #endif
 				
-				  new __GEN_DELEGATE3(IFramework.Tweens.TweenEx.DoMoveZ)
+				  new __GEN_DELEGATE7(IFramework.Tweens.TweenEx.DoMoveZ)
 #if UNITY_WSA && !UNITY_EDITOR
                                       .GetMethodInfo(),
 #else
                                       .Method,
 #endif
 				
-				  new __GEN_DELEGATE4(IFramework.Tweens.TweenEx.DoLocalMove)
+				  new __GEN_DELEGATE8(IFramework.Tweens.TweenEx.DoLocalMove)
 #if UNITY_WSA && !UNITY_EDITOR
                                       .GetMethodInfo(),
 #else
                                       .Method,
 #endif
 				
-				  new __GEN_DELEGATE5(IFramework.Tweens.TweenEx.DoLocalMoveX)
+				  new __GEN_DELEGATE9(IFramework.Tweens.TweenEx.DoLocalMoveX)
 #if UNITY_WSA && !UNITY_EDITOR
                                       .GetMethodInfo(),
 #else
                                       .Method,
 #endif
 				
-				  new __GEN_DELEGATE6(IFramework.Tweens.TweenEx.DoLocalMoveY)
+				  new __GEN_DELEGATE10(IFramework.Tweens.TweenEx.DoLocalMoveY)
 #if UNITY_WSA && !UNITY_EDITOR
                                       .GetMethodInfo(),
 #else
                                       .Method,
 #endif
 				
-				  new __GEN_DELEGATE7(IFramework.Tweens.TweenEx.DoLocalMoveZ)
+				  new __GEN_DELEGATE11(IFramework.Tweens.TweenEx.DoLocalMoveZ)
 #if UNITY_WSA && !UNITY_EDITOR
                                       .GetMethodInfo(),
 #else
                                       .Method,
 #endif
 				
-				  new __GEN_DELEGATE8(IFramework.Tweens.TweenEx.DoScale)
+				  new __GEN_DELEGATE12(IFramework.Tweens.TweenEx.DoScale)
 #if UNITY_WSA && !UNITY_EDITOR
                                       .GetMethodInfo(),
 #else
                                       .Method,
 #endif
 				
-				  new __GEN_DELEGATE9(IFramework.Tweens.TweenEx.DoScaleX)
+				  new __GEN_DELEGATE13(IFramework.Tweens.TweenEx.DoScaleX)
 #if UNITY_WSA && !UNITY_EDITOR
                                       .GetMethodInfo(),
 #else
                                       .Method,
 #endif
 				
-				  new __GEN_DELEGATE10(IFramework.Tweens.TweenEx.DoScaleY)
+				  new __GEN_DELEGATE14(IFramework.Tweens.TweenEx.DoScaleY)
 #if UNITY_WSA && !UNITY_EDITOR
                                       .GetMethodInfo(),
 #else
                                       .Method,
 #endif
 				
-				  new __GEN_DELEGATE11(IFramework.Tweens.TweenEx.DoScaleZ)
+				  new __GEN_DELEGATE15(IFramework.Tweens.TweenEx.DoScaleZ)
 #if UNITY_WSA && !UNITY_EDITOR
                                       .GetMethodInfo(),
 #else
                                       .Method,
 #endif
 				
-				  new __GEN_DELEGATE12(IFramework.Tweens.TweenEx.DoRota)
+				  new __GEN_DELEGATE16(IFramework.Tweens.TweenEx.DoRota)
 #if UNITY_WSA && !UNITY_EDITOR
                                       .GetMethodInfo(),
 #else
                                       .Method,
 #endif
 				
-				  new __GEN_DELEGATE13(IFramework.Tweens.TweenEx.DoRota)
+				  new __GEN_DELEGATE17(IFramework.Tweens.TweenEx.DoRota)
 #if UNITY_WSA && !UNITY_EDITOR
                                       .GetMethodInfo(),
 #else
                                       .Method,
 #endif
 				
-				  new __GEN_DELEGATE14(IFramework.Tweens.TweenEx.DoLocalRota)
+				  new __GEN_DELEGATE18(IFramework.Tweens.TweenEx.DoRotaFast)
 #if UNITY_WSA && !UNITY_EDITOR
                                       .GetMethodInfo(),
 #else
                                       .Method,
 #endif
 				
-				  new __GEN_DELEGATE15(IFramework.Tweens.TweenEx.DoLocalRota)
+				  new __GEN_DELEGATE19(IFramework.Tweens.TweenEx.DoLocalRota)
+#if UNITY_WSA && !UNITY_EDITOR
+                                      .GetMethodInfo(),
+#else
+                                      .Method,
+#endif
+				
+				  new __GEN_DELEGATE20(IFramework.Tweens.TweenEx.DoLocalRota)
 #if UNITY_WSA && !UNITY_EDITOR
                                       .GetMethodInfo(),
 #else
@@ -268,14 +337,32 @@ namespace XLua
 				
 				{typeof(UnityEngine.Material), new List<MethodInfo>(){
 				
-				  new __GEN_DELEGATE16(IFramework.Tweens.TweenEx.DoColor)
+				  new __GEN_DELEGATE21(IFramework.Tweens.TweenEx.DoColor)
 #if UNITY_WSA && !UNITY_EDITOR
                                       .GetMethodInfo(),
 #else
                                       .Method,
 #endif
 				
-				  new __GEN_DELEGATE19(IFramework.Tweens.TweenEx.DoAlpha)
+				  new __GEN_DELEGATE25(IFramework.Tweens.TweenEx.DoAlpha)
+#if UNITY_WSA && !UNITY_EDITOR
+                                      .GetMethodInfo(),
+#else
+                                      .Method,
+#endif
+				
+				}},
+				
+				{typeof(UnityEngine.UI.Graphic), new List<MethodInfo>(){
+				
+				  new __GEN_DELEGATE22(IFramework.Tweens.TweenEx.DoColor)
+#if UNITY_WSA && !UNITY_EDITOR
+                                      .GetMethodInfo(),
+#else
+                                      .Method,
+#endif
+				
+				  new __GEN_DELEGATE26(IFramework.Tweens.TweenEx.DoAlpha)
 #if UNITY_WSA && !UNITY_EDITOR
                                       .GetMethodInfo(),
 #else
@@ -286,7 +373,14 @@ namespace XLua
 				
 				{typeof(UnityEngine.Light), new List<MethodInfo>(){
 				
-				  new __GEN_DELEGATE17(IFramework.Tweens.TweenEx.DoColor)
+				  new __GEN_DELEGATE23(IFramework.Tweens.TweenEx.DoColor)
+#if UNITY_WSA && !UNITY_EDITOR
+                                      .GetMethodInfo(),
+#else
+                                      .Method,
+#endif
+				
+				  new __GEN_DELEGATE27(IFramework.Tweens.TweenEx.DoAlpha)
 #if UNITY_WSA && !UNITY_EDITOR
                                       .GetMethodInfo(),
 #else
@@ -297,7 +391,25 @@ namespace XLua
 				
 				{typeof(UnityEngine.Camera), new List<MethodInfo>(){
 				
-				  new __GEN_DELEGATE18(IFramework.Tweens.TweenEx.DoColor)
+				  new __GEN_DELEGATE24(IFramework.Tweens.TweenEx.DoColor)
+#if UNITY_WSA && !UNITY_EDITOR
+                                      .GetMethodInfo(),
+#else
+                                      .Method,
+#endif
+				
+				  new __GEN_DELEGATE28(IFramework.Tweens.TweenEx.DoAlpha)
+#if UNITY_WSA && !UNITY_EDITOR
+                                      .GetMethodInfo(),
+#else
+                                      .Method,
+#endif
+				
+				}},
+				
+				{typeof(UnityEngine.CanvasGroup), new List<MethodInfo>(){
+				
+				  new __GEN_DELEGATE29(IFramework.Tweens.TweenEx.DoAlpha)
 #if UNITY_WSA && !UNITY_EDITOR
                                       .GetMethodInfo(),
 #else
@@ -308,21 +420,21 @@ namespace XLua
 				
 				{typeof(UnityEngine.UI.Text), new List<MethodInfo>(){
 				
-				  new __GEN_DELEGATE20(IFramework.Tweens.TweenEx.DoText)
+				  new __GEN_DELEGATE30(IFramework.Tweens.TweenEx.DoText)
 #if UNITY_WSA && !UNITY_EDITOR
                                       .GetMethodInfo(),
 #else
                                       .Method,
 #endif
 				
-				  new __GEN_DELEGATE21(IFramework.Tweens.TweenEx.DoText)
+				  new __GEN_DELEGATE31(IFramework.Tweens.TweenEx.DoText)
 #if UNITY_WSA && !UNITY_EDITOR
                                       .GetMethodInfo(),
 #else
                                       .Method,
 #endif
 				
-				  new __GEN_DELEGATE22(IFramework.Tweens.TweenEx.DoText)
+				  new __GEN_DELEGATE32(IFramework.Tweens.TweenEx.DoText)
 #if UNITY_WSA && !UNITY_EDITOR
                                       .GetMethodInfo(),
 #else
@@ -333,7 +445,58 @@ namespace XLua
 				
 				{typeof(UnityEngine.UI.Image), new List<MethodInfo>(){
 				
-				  new __GEN_DELEGATE23(IFramework.Tweens.TweenEx.DoFillAmount)
+				  new __GEN_DELEGATE33(IFramework.Tweens.TweenEx.DoFillAmount)
+#if UNITY_WSA && !UNITY_EDITOR
+                                      .GetMethodInfo(),
+#else
+                                      .Method,
+#endif
+				
+				}},
+				
+				{typeof(UnityEngine.UI.ScrollRect), new List<MethodInfo>(){
+				
+				  new __GEN_DELEGATE34(IFramework.Tweens.TweenEx.DoNormalizedPositionX)
+#if UNITY_WSA && !UNITY_EDITOR
+                                      .GetMethodInfo(),
+#else
+                                      .Method,
+#endif
+				
+				  new __GEN_DELEGATE35(IFramework.Tweens.TweenEx.DoNormalizedPositionY)
+#if UNITY_WSA && !UNITY_EDITOR
+                                      .GetMethodInfo(),
+#else
+                                      .Method,
+#endif
+				
+				}},
+				
+				{typeof(UnityEngine.GameObject), new List<MethodInfo>(){
+				
+				  new __GEN_DELEGATE36(IFramework.Tweens.TweenEx.DoActive)
+#if UNITY_WSA && !UNITY_EDITOR
+                                      .GetMethodInfo(),
+#else
+                                      .Method,
+#endif
+				
+				}},
+				
+				{typeof(UnityEngine.Behaviour), new List<MethodInfo>(){
+				
+				  new __GEN_DELEGATE37(IFramework.Tweens.TweenEx.DoEnable)
+#if UNITY_WSA && !UNITY_EDITOR
+                                      .GetMethodInfo(),
+#else
+                                      .Method,
+#endif
+				
+				}},
+				
+				{typeof(UnityEngine.UI.Toggle), new List<MethodInfo>(){
+				
+				  new __GEN_DELEGATE38(IFramework.Tweens.TweenEx.DoToggle)
 #if UNITY_WSA && !UNITY_EDITOR
                                       .GetMethodInfo(),
 #else
@@ -344,7 +507,7 @@ namespace XLua
 				
 				{typeof(UnityEngine.Object), new List<MethodInfo>(){
 				
-				  new __GEN_DELEGATE24(IFramework.Lua.UnityEngineObjectEx.IsNull)
+				  new __GEN_DELEGATE39(IFramework.Hotfix.Lua.UnityEngineObjectEx.IsNull)
 #if UNITY_WSA && !UNITY_EDITOR
                                       .GetMethodInfo(),
 #else

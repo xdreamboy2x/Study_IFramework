@@ -18,7 +18,6 @@ namespace IFramework_Demo
         {
             string world = "Hello  World";
             Log.L(world);
-            world.Log();
             Log.W(world);
             Log.E(world);
 

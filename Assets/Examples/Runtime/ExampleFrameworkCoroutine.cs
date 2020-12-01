@@ -13,14 +13,13 @@ using UnityEngine;
 
 namespace IFramework_Demo
 {
-    [RequireComponent(typeof(Game))]
+
 
     public class ExampleFrameworkCoroutine : UnityEngine.MonoBehaviour
     {
         void Start()
         {
-            Game.env.modules.Coroutine = Game.env.modules.CreateModule<CoroutineModule>();
-            Game.env.modules.Coroutine.StartCoroutine(wait2());
+            Framework.env0.modules.Coroutine.StartCoroutine(wait2());
         }
         IEnumerator wait()
         {

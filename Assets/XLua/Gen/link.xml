@@ -4,17 +4,17 @@
 
 	<assembly fullname="Assembly-CSharp">
 	    <type fullname="IFramework.Tweens.TweenEx" preserve="all"/>
-		<type fullname="IFramework.Lua.UnityEngineObjectEx" preserve="all"/>
+		<type fullname="IFramework.Hotfix.Lua.UnityEngineObjectEx" preserve="all"/>
 		<type fullname="Tutorial.BaseClass" preserve="all"/>
 		<type fullname="Tutorial.TestEnum" preserve="all"/>
 		<type fullname="Tutorial.DerivedClass" preserve="all"/>
 		<type fullname="Tutorial.ICalc" preserve="all"/>
 		<type fullname="Tutorial.DerivedClassExtensions" preserve="all"/>
-		<type fullname="IFramework.Lua.Pedding" preserve="all"/>
-		<type fullname="IFramework.Lua.MyStruct" preserve="all"/>
-		<type fullname="IFramework.Lua.MyEnum" preserve="all"/>
-		<type fullname="IFramework.Lua.NoGc" preserve="all"/>
-		<type fullname="IFramework.Lua.BaseTest" preserve="all"/>
+		<type fullname="IFramework.Hotfix.Lua.Pedding" preserve="all"/>
+		<type fullname="IFramework.Hotfix.Lua.MyStruct" preserve="all"/>
+		<type fullname="IFramework.Hotfix.Lua.MyEnum" preserve="all"/>
+		<type fullname="IFramework.Hotfix.Lua.NoGc" preserve="all"/>
+		<type fullname="IFramework.Hotfix.Lua.BaseTest" preserve="all"/>
 		<type fullname="Tutorial.DerivedClass+TestEnumInner" preserve="all"/>
 		
 	</assembly>

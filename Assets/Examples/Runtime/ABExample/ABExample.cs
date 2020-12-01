@@ -8,32 +8,34 @@
 *********************************************************************************/
 using System.Collections;
 using UnityEngine;
-using IFramework.AB;
+using IFramework.Hotfix.AB;
+using IFramework;
 namespace IFramework_Demo
 {
 	public class ABExample:MonoBehaviour
 	{
+  
         void Start()
         {
-            //if (ABAssets.Init())
-            //{
-            //    StartCoroutine(Load());
-
-            //}
-            ABAssets.InitAsync(() =>
+            if (Assets.Init())
             {
                 StartCoroutine(Load());
-            });
+
+            }
+            //Assets.InitAsync(() =>
+            //{
+            //    StartCoroutine(Load());
+            //});
 
         }
         [SerializeField] string assetPath = "Assets/Examples/Runtime/ABExample/Logo.prefab";
         IEnumerator Load()
         {
-            var asset = ABAssets.LoadAsync<GameObject>(assetPath);
+            var asset = Assets.LoadAsync<GameObject>(assetPath);
 
             if (asset != null)
             {
-                while (!asset.IsDone)
+                while (!asset.isDone)
                 {
                     yield return 0;
                 }
@@ -49,7 +51,7 @@ namespace IFramework_Demo
 
             yield return new WaitForSeconds(11);
 
-            asset = ABAssets.Load<GameObject>(assetPath);
+            asset = Assets.Load<GameObject>(assetPath);
             if (asset != null)
             {
                 var prefab = asset.asset;

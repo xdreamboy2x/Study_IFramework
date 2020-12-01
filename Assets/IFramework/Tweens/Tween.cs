@@ -8,8 +8,6 @@
 *********************************************************************************/
 using IFramework.NodeAction;
 using System;
-using UnityEngine;
-
 
 namespace IFramework.Tweens
 {
@@ -18,8 +16,40 @@ namespace IFramework.Tweens
         ReStart,
         PingPong
     }
-    [FrameworkVersion(12)]
-    public class Tween<T> : RecyclableObject/* where T : struct*/
+    public enum TweenDirection
+    {
+        Forward,Back
+    }
+    public abstract class Tween:RecyclableObject
+    {
+        private TweenDirection _direction = TweenDirection.Forward;
+        public TweenDirection direction { get { return _direction; }protected set { _direction = value; } }
+
+        public event Action onCompelete;
+        public float dur;
+        public bool autoRecyle = true;
+        public LoopType loopType;
+        public abstract int loop { get; set; }
+        public abstract ValueCurve curve { get; set; }
+        public abstract void Run();
+        public abstract void ReStart();
+        public abstract void Rewind(float dur);
+        public abstract void Complete(bool invoke);
+
+        protected void InvokeCompelete()
+        {
+            if (onCompelete!=null)
+            {
+                onCompelete.Invoke();
+            }
+        }
+        protected override void OnDataReset()
+        {
+            onCompelete = null;
+        }
+    }
+    [Version(12)]
+    public class Tween<T> : Tween where T : struct
     {
         private TweenValue<T> _tv;
         private RepeatNode _repeat;
@@ -28,22 +58,13 @@ namespace IFramework.Tweens
         private T _cur;
         private T _end;
         private T _start;
-        private float _dur;
-        private LoopType _loopType;
-        private bool _autoRecyle = true;
         private ValueCurve _curve = ValueCurve.linecurve;
-        public event Action onCompelete;
         private Action<T> setter;
         private Func<T> getter;
         private int _loop = 1;
 
-
-
         public T end { get { return _end; } set { _end = value; } }
         public T start { get { return _start; } set { _start = value; } }
-        public float dur { get { return _dur; } set { _dur = value; } }
-        public bool autoRecyle { get { return _autoRecyle; } set { _autoRecyle = value; } }
-        public LoopType loopType { get { return _loopType; } set { _loopType = value; } }
 
         public T cur
         {
@@ -57,7 +78,7 @@ namespace IFramework.Tweens
                 }
             }
         }
-        public int loop
+        public override int loop
         {
             get
             {
@@ -74,7 +95,7 @@ namespace IFramework.Tweens
                 }
             }
         }
-        public ValueCurve curve
+        public override ValueCurve curve
         {
             get { return _curve; }
             set
@@ -92,19 +113,16 @@ namespace IFramework.Tweens
         {
             this._start = this.cur = start;
             this._end = end;
-            this._dur = dur;
+            this.dur = dur;
             this.getter = getter;
             this.setter = setter;
             SetDataDirty();
         }
 
 
-
-        private bool _startToEnd = true;
-        public void Run()
+        public override void Run()
         {
             if (recyled) return;
-
             _seq = this.Sequence(env.envType)
                 .Repeat((r) =>
                 {
@@ -123,7 +141,6 @@ namespace IFramework.Tweens
                         })
                         .OnBegin(() => {
                             if (recyled) return;
-
                             _tv = TweenValue.Get<T>(env.envType);
                             _tv.curve = curve;
                             switch (loopType)
@@ -132,26 +149,16 @@ namespace IFramework.Tweens
                                     _tv.Config(start, end, dur, getter,(value) => { cur = value; }, null);
                                     break;
                                 case LoopType.PingPong:
-                                    if (_startToEnd)
+                                    if (direction== TweenDirection.Forward)
                                     {
                                         _tv.Config(start, end, dur, getter, (value) => { cur = value; }, null);
-
-                                        _startToEnd = false;
+                                        direction =  TweenDirection.Back;
                                     }
                                     else
                                     {
-
                                         _tv.Config(end, start, dur, getter, (value) => { cur = value; }, null);
-
-                                        _startToEnd = true;
+                                        direction =  TweenDirection.Forward;
                                     }
-                                    //if (cur.Equals(start))
-                                       
-                                    //else if(cur .Equals(end))
-                                    //    _tv.Config(end, start, dur, getter, (value) => { cur = value; }, null);
-                                    //else
-                                    //    _tv.Config(start, end, dur, getter, (value) => { cur = value; }, null);
-
                                     break;
                                 default:
                                     break;
@@ -162,24 +169,23 @@ namespace IFramework.Tweens
                 }, loop)
                 .OnCompelete(() =>
                 {
-                    if (onCompelete != null)
-                        onCompelete();
+                    InvokeCompelete();
                     TryRecyleSelf();
                 })
                 .Run();
         }
 
-        public void ReStart()
+        public override void ReStart()
         {
             if (recyled) return;
-            _startToEnd = true;
+            direction = TweenDirection.Forward;
             RecycleInner();
             Run();
         }
-        public void Rewind(float dur)
+        public override void Rewind(float dur)
         {
             if (recyled) return;
-            _startToEnd = true;
+            direction = TweenDirection.Forward;
 
             RecycleInner();
 
@@ -192,14 +198,14 @@ namespace IFramework.Tweens
                 });
             _tv.Run();
         }
-        public void Complete(bool invoke)
+        public override void Complete(bool invoke)
         {
             if (recyled) return;
-            _startToEnd = true;
+            direction = TweenDirection.Forward;
 
-            if (invoke && onCompelete != null)
+            if (invoke )
             {
-                onCompelete();
+                InvokeCompelete();
             }
             TryRecyleSelf();
         }
@@ -207,18 +213,17 @@ namespace IFramework.Tweens
 
         protected override void OnDataReset()
         {
-            _startToEnd = true;
+            base.OnDataReset();
+            direction = TweenDirection.Forward;
             RecycleInner();
             _cur = _start = _end = default(T);
-            _dur = 0;
+            dur = 0;
             _loop = 1;
-            _autoRecyle = true;
+            autoRecyle = true;
             _curve = ValueCurve.linecurve;
-            _loopType = LoopType.ReStart;
+            loopType = LoopType.ReStart;
             setter = null;
             getter = null;
-            onCompelete = null;
-
         }
 
         private void TryRecyleSelf()
@@ -247,8 +252,5 @@ namespace IFramework.Tweens
                 _repeat = null;
             }
         }
-
-      
     }
-
 }

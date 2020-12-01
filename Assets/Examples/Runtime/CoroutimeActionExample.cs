@@ -7,6 +7,7 @@
  *History:        2018.11--
 *********************************************************************************/
 using IFramework;
+using IFramework.Modules;
 using IFramework.Modules.Coroutine;
 using IFramework.NodeAction;
 using System;
@@ -14,15 +15,15 @@ using UnityEngine;
 
 namespace IFramework_Demo
 {
-    [RequireComponent(typeof(Game))]
+
 
     public class CoroutimeActionExample: MonoBehaviour
     {
+        CoroutineModule mo;
         private void Start()
         {
-            Game.env.modules.Coroutine = Game.env.modules.CreateModule<CoroutineModule>();
-
-           this.Sequence( Game.envType)
+            mo = FrameworkModule.CreatInstance<CoroutineModule>("","");
+           this.Sequence( EnvironmentType.Ev0)
                 .Repeat((r) => {
                     r.Sequence((s) =>
                     {
@@ -36,8 +37,12 @@ namespace IFramework_Demo
                 .OnCompelete((ss) => { /*ss.Reset();*/ })
                 .OnDispose((ss) => { Log.L("dispose"); })
                 .OnRecyle(() => { Log.L(123132); })
-                .Run();
+                .Run(mo);
         }
-       
+        private void Update()
+        {
+            mo.Update();
+        }
+
     }
 }

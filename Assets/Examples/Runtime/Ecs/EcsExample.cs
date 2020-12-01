@@ -6,13 +6,11 @@
  *Description:    Description
  *History:        2020-02-10--
 *********************************************************************************/
-using IFramework;
+using IFramework.Modules;
 using IFramework.Modules.ECS;
-using UnityEngine;
 
 namespace IFramework_Demo
 {
-    [RequireComponent(typeof(Game))]
 
     public class EcsExample:UnityEngine.MonoBehaviour
 	{
@@ -61,10 +59,10 @@ namespace IFramework_Demo
             }
         }
 
-        private ECSModule module { get { return Framework.env1.modules.ECS; } }
+        private ECSModule module;
         private void Start()
         {
-            Framework.env1.modules.ECS = Framework.env1.modules.CreateModule<ECSModule>();
+            module = FrameworkModule.CreatInstance<ECSModule>("","");
             module.SubscribeSystem(new PlayerSystem(module));
             module.SubscribeSystem(new PCSystem(module));
 
@@ -83,6 +81,9 @@ namespace IFramework_Demo
             pcRO.go.name = "Pc";
             pcRO.go.transform.position = new UnityEngine.Vector3(0, 2, 0);
         }
-
+        private void Update()
+        {
+            module.Update();
+        }
     }
 }

@@ -42,6 +42,39 @@
             ctor
             </summary>
         </member>
+        <member name="T:IFramework.UpdateAttribute">
+            <summary>
+            代码升级说明
+            </summary>
+        </member>
+        <member name="F:IFramework.UpdateAttribute.description">
+            <summary>
+            描述
+            </summary>
+        </member>
+        <member name="M:IFramework.UpdateAttribute.#ctor(System.Int32,System.String)">
+            <summary>
+            ctor
+            </summary>
+            <param name="version"></param>
+            <param name="description"></param>
+        </member>
+        <member name="T:IFramework.VersionAttribute">
+            <summary>
+             框架代码版本默认有 1
+            </summary>
+        </member>
+        <member name="P:IFramework.VersionAttribute.version">
+            <summary>
+            版本
+            </summary>
+        </member>
+        <member name="M:IFramework.VersionAttribute.#ctor(System.Int32)">
+            <summary>
+            Ctor
+            </summary>
+            <param name="version"></param>
+        </member>
         <member name="T:IFramework.EnvironmentType">
             <summary>
             环境类型
@@ -75,6 +108,56 @@
         <member name="F:IFramework.EnvironmentType.Ev4">
             <summary>
             环境4
+            </summary>
+        </member>
+        <member name="F:IFramework.EnvironmentType.Ev5">
+            <summary>
+            环境5
+            </summary>
+        </member>
+        <member name="F:IFramework.EnvironmentType.Ev6">
+            <summary>
+            环境6
+            </summary>
+        </member>
+        <member name="F:IFramework.EnvironmentType.Ev7">
+            <summary>
+            环境7
+            </summary>
+        </member>
+        <member name="F:IFramework.EnvironmentType.Ev8">
+            <summary>
+            环境8
+            </summary>
+        </member>
+        <member name="F:IFramework.EnvironmentType.Ev9">
+            <summary>
+            环境9
+            </summary>
+        </member>
+        <member name="F:IFramework.EnvironmentType.Extra0">
+            <summary>
+            额外的1
+            </summary>
+        </member>
+        <member name="F:IFramework.EnvironmentType.Extra1">
+            <summary>
+            额外的1
+            </summary>
+        </member>
+        <member name="F:IFramework.EnvironmentType.Extra2">
+            <summary>
+            额外的2
+            </summary>
+        </member>
+        <member name="F:IFramework.EnvironmentType.Extra3">
+            <summary>
+            额外的3
+            </summary>
+        </member>
+        <member name="F:IFramework.EnvironmentType.Extra4">
+            <summary>
+            额外的4
             </summary>
         </member>
         <member name="T:IFramework.IRecyclable">
@@ -269,7 +352,7 @@
             刷新环境
             </summary>
         </member>
-        <member name="P:IFramework.FrameworkEnvironment.currentEnv">
+        <member name="P:IFramework.FrameworkEnvironment.current">
             <summary>
             当前环境
             </summary>
@@ -278,22 +361,6 @@
             <summary>
             框架提供的模块
             </summary>
-        </member>
-        <member name="T:IFramework.FrameworkVersionAttribute">
-            <summary>
-             框架代码版本默认有 1
-            </summary>
-        </member>
-        <member name="P:IFramework.FrameworkVersionAttribute.version">
-            <summary>
-            版本
-            </summary>
-        </member>
-        <member name="M:IFramework.FrameworkVersionAttribute.#ctor(System.Int32)">
-            <summary>
-            Ctor
-            </summary>
-            <param name="version"></param>
         </member>
         <member name="T:IFramework.Injection.FrameworkContainer.Tuple`2">
             http://stackoverflow.com/questions/1171812/multi-key-dictionary-in-c
@@ -2014,6 +2081,26 @@
             绑定对象
             </summary>
         </member>
+        <member name="T:IFramework.BindableObject.BindOperation">
+            <summary>
+            绑定方式
+            </summary>
+        </member>
+        <member name="F:IFramework.BindableObject.BindOperation.Both">
+            <summary>
+            监听+发布
+            </summary>
+        </member>
+        <member name="F:IFramework.BindableObject.BindOperation.Listen">
+            <summary>
+            监听
+            </summary>
+        </member>
+        <member name="F:IFramework.BindableObject.bindOperation">
+            <summary>
+            绑定方式
+            </summary>
+        </member>
         <member name="M:IFramework.BindableObject.#ctor">
             <summary>
             ctor
@@ -2061,13 +2148,14 @@
             绑定器
             </summary>
         </member>
-        <member name="M:IFramework.BindableObjectHandler.BindProperty``1(System.Action{``0},System.Func{``0})">
+        <member name="M:IFramework.BindableObjectHandler.BindProperty``1(System.Action{``0},System.Func{``0},IFramework.BindableObject.BindOperation)">
             <summary>
             绑定
             </summary>
             <typeparam name="T"></typeparam>
             <param name="setter"></param>
             <param name="getter"></param>
+            <param name="operation"></param>
             <returns></returns>
         </member>
         <member name="M:IFramework.BindableObjectHandler.PublishProperty``1(``0,System.String)">
@@ -2171,7 +2259,7 @@
         </member>
         <member name="T:IFramework.OnEnvironmentInitAttribute">
             <summary>
-            框架初始化时候调用被标记的静态类
+            环境初始化时候调用被标记的静态类
             </summary>
         </member>
         <member name="P:IFramework.OnEnvironmentInitAttribute.type">
@@ -2382,24 +2470,24 @@
             释放时
             </summary>
         </member>
-        <member name="T:IFramework.Pool.CapicityPool`1">
+        <member name="T:IFramework.CapicityPool`1">
             <summary>
             有容量的对象池
             </summary>
             <typeparam name="T"></typeparam>
         </member>
-        <member name="P:IFramework.Pool.CapicityPool`1.capcity">
+        <member name="P:IFramework.CapicityPool`1.capcity">
             <summary>
             存储容量
             </summary>
         </member>
-        <member name="M:IFramework.Pool.CapicityPool`1.#ctor(System.Int32)">
+        <member name="M:IFramework.CapicityPool`1.#ctor(System.Int32)">
             <summary>
             Ctor
             </summary>
             <param name="capcity"></param>
         </member>
-        <member name="M:IFramework.Pool.CapicityPool`1.OnSet(`0,IFramework.IEventArgs)">
+        <member name="M:IFramework.CapicityPool`1.OnSet(`0,IFramework.IEventArgs)">
             <summary>
             回收，当数量超过回收失败
             </summary>
@@ -2407,18 +2495,18 @@
             <param name="arg"></param>
             <returns></returns>
         </member>
-        <member name="T:IFramework.Pool.ListPool`1">
+        <member name="T:IFramework.ListPool`1">
             <summary>
             list对象池
             </summary>
             <typeparam name="T"></typeparam>
         </member>
-        <member name="M:IFramework.Pool.ListPool`1.#ctor">
+        <member name="M:IFramework.ListPool`1.#ctor">
             <summary>
             ctor
             </summary>
         </member>
-        <member name="M:IFramework.Pool.ListPool`1.Get(System.Predicate{`0},IFramework.IEventArgs)">
+        <member name="M:IFramework.ListPool`1.Get(System.Predicate{`0},IFramework.IEventArgs)">
             <summary>
             获取
             </summary>
@@ -2426,7 +2514,7 @@
             <param name="arg"></param>
             <returns></returns>
         </member>
-        <member name="M:IFramework.Pool.ListPool`1.Clear(`0,IFramework.IEventArgs)">
+        <member name="M:IFramework.ListPool`1.Clear(`0,IFramework.IEventArgs)">
             <summary>
             清除
             </summary>
@@ -2434,27 +2522,27 @@
             <param name="arg"></param>
             <returns></returns>
         </member>
-        <member name="M:IFramework.Pool.ListPool`1.Contains(`0)">
+        <member name="M:IFramework.ListPool`1.Contains(`0)">
             <summary>
             是否包含
             </summary>
             <param name="t"></param>
             <returns></returns>
         </member>
-        <member name="M:IFramework.Pool.ListPool`1.ForEach(System.Action{`0})">
+        <member name="M:IFramework.ListPool`1.ForEach(System.Action{`0})">
             <summary>
             遍历
             </summary>
             <param name="action"></param>
         </member>
-        <member name="M:IFramework.Pool.ListPool`1.Contains(System.Predicate{`0})">
+        <member name="M:IFramework.ListPool`1.Contains(System.Predicate{`0})">
             <summary>
             是否包含
             </summary>
             <param name="p"></param>
             <returns></returns>
         </member>
-        <member name="M:IFramework.Pool.ListPool`1.Peek">
+        <member name="M:IFramework.ListPool`1.Peek">
             <summary>
             获取第一个元素
             </summary>
@@ -2586,37 +2674,12 @@
             数据重置时
             </summary>
         </member>
-        <member name="T:IFramework.ScriptVersionUpdateAttribute">
-            <summary>
-            代码升级说明
-            </summary>
-        </member>
-        <member name="F:IFramework.ScriptVersionUpdateAttribute.description">
-            <summary>
-            描述
-            </summary>
-        </member>
-        <member name="M:IFramework.ScriptVersionUpdateAttribute.#ctor(System.Int32,System.String)">
-            <summary>
-            ctor
-            </summary>
-            <param name="version"></param>
-            <param name="description"></param>
-        </member>
         <member name="T:IFramework.Framework">
             <summary>
             框架入口
             </summary>
         </member>
         <member name="M:IFramework.Framework.CreateEnv(System.String,IFramework.EnvironmentType)">
-            <summary>
-            创建一个环境
-            </summary>
-            <param name="envName">环境名称</param>
-            <param name=" envType">环境类型</param>
-            <returns>环境</returns>
-        </member>
-        <member name="M:IFramework.Framework.InitEnv(System.String,IFramework.EnvironmentType)">
             <summary>
             实例化环境
             </summary>

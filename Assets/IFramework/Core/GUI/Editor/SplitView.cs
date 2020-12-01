@@ -15,8 +15,9 @@ namespace IFramework.GUITool
     [Serializable]
     public class SplitView
     {
-        private SplitType _splitType = SplitType.Vertical;
-        private float _split = 200;
+        public SplitType splitType = SplitType.Vertical;
+        public float split = 200;
+        public float minSize = 100;
         public event Action<Rect> fistPan, secondPan;
         public event Action onBeginResize;
         public event Action onEndResize;
@@ -48,8 +49,8 @@ namespace IFramework.GUITool
         private bool _resizing;
         public void OnGUI(Rect position)
         {
-            var rs = position.Split(_splitType, _split, 4);
-            var mid = position.SplitRect(_splitType, _split, 4);
+            var rs = position.Split(splitType, split, 4);
+            var mid = position.SplitRect(splitType, split, 4);
             if (fistPan != null)
             {
                 fistPan(rs[0]);
@@ -62,7 +63,7 @@ namespace IFramework.GUITool
             Event e = Event.current;
             if (mid.Contains(e.mousePosition))
             {
-                if (_splitType == SplitType.Vertical)
+                if (splitType == SplitType.Vertical)
                     EditorGUIUtility.AddCursorRect(mid, MouseCursor.ResizeHorizontal);
                 else
                     EditorGUIUtility.AddCursorRect(mid, MouseCursor.ResizeVertical);
@@ -78,16 +79,16 @@ namespace IFramework.GUITool
                 case EventType.MouseDrag:
                     if (dragging)
                     {
-                        switch (_splitType)
+                        switch (splitType)
                         {
                             case SplitType.Vertical:
-                                _split += Event.current.delta.x;
+                                split += Event.current.delta.x;
                                 break;
                             case SplitType.Horizontal:
-                                _split += Event.current.delta.y;
+                                split += Event.current.delta.y;
                                 break;
                         }
-                        _split = Mathf.Clamp(_split, 100, position.width - 100);
+                        split = Mathf.Clamp(split, minSize, splitType== SplitType.Vertical? position.width - minSize: position.height - minSize);
                         if (EditorWindow.focusedWindow != null)
                         {
                             EditorWindow.focusedWindow.Repaint();
